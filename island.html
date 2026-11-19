@@ -1364,11 +1364,15 @@ function evScore(v){let s=0;const l=norm(v);if(l.startsWith(lw(E.st.acc)))s+=100
 const EV_SAMPLE=["Hello! Nice to meet you.","I like red apples.","Let's read together!","The cat is on the mat."];
 let evI=0;
 function evTest(name){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(EV_SAMPLE[evI++%EV_SAMPLE.length]);let v=name?voices.find(x=>x.name===name):pickVoice(E.st.acc);u.lang=v?v.lang:E.st.acc;if(v)u.voice=v;u.rate=E.st.erate||0.95;u.pitch=E.st.epitch||1;speechSynthesis.speak(u)}catch(e){}}
-function evClose(){const o=R.getElementById("evOv");if(o)o.remove();if(S.view==="parent")renderParent()}
+const evR=id=>{const H=document.getElementById("evHost");return H?H.shadowRoot.getElementById(id):null};
+function evClose(){const H=document.getElementById("evHost");if(H)H.remove();if(S.view==="parent")renderParent()}
 function evOpen(){
   loadVoices();
-  let o=R.getElementById("evOv"); if(!o){o=document.createElement("div");o.id="evOv";o.className="evov";$("engroot").appendChild(o);
-    o.addEventListener("click",evClick);o.addEventListener("input",evInput);}
+  let H=document.getElementById("evHost");
+  if(!H){H=document.createElement("div");H.id="evHost";document.body.appendChild(H);const sh=H.attachShadow({mode:"open"});
+    sh.innerHTML=`<style>${ENG_CSS}</style><div id="engroot" style="background:none;min-height:0"><div id="evOv" class="evov"></div></div>`;
+    const ov=sh.getElementById("evOv");ov.addEventListener("click",evClick);ov.addEventListener("input",evInput);}
+  const o=H.shadowRoot.getElementById("evOv");
   const env=voices.filter(v=>norm(v).startsWith("en")&&evScore(v)>-50).sort((a,b)=>evScore(b)-evScore(a));
   const cur=pickVoice(E.st.acc), want=E.voice[E.st.acc]||"";
   const er=E.st.erate||0.95, ep=E.st.epitch||1;
@@ -1402,8 +1406,8 @@ function evClick(e){
   else if(a==="reset"){delete E.st.erate;delete E.st.epitch;E.voice[E.st.acc]="";save();voiceNote();evOpen();evTest("")}
 }
 function evInput(e){
-  if(e.target.id==="evRate"){E.st.erate=+e.target.value;$("evRateV").textContent=E.st.erate.toFixed(2);save()}
-  if(e.target.id==="evPitch"){E.st.epitch=+e.target.value;$("evPitchV").textContent=E.st.epitch.toFixed(2);save()}
+  if(e.target.id==="evRate"){E.st.erate=+e.target.value;evR("evRateV").textContent=E.st.erate.toFixed(2);save()}
+  if(e.target.id==="evPitch"){E.st.epitch=+e.target.value;evR("evPitchV").textContent=E.st.epitch.toFixed(2);save()}
   clearTimeout(evInput.t);evInput.t=setTimeout(()=>evTest(""),350);
 }
 function zhPref(){try{return JSON.parse(localStorage.getItem("ttVoice")||"{}")||{}}catch(e){return {}}}
