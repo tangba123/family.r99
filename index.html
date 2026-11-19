@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1,maximum-scale=1" name="viewport"/>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+<title>魔法數學大冒險</title>
+<style>
+
+.z{display:inline-flex;align-items:center;vertical-align:middle;line-height:1;margin:0 .2em 0 .03em}
+.z .h{display:inline-block}
+.z .b{display:inline-flex;flex-direction:column;justify-content:center;font-size:.4em;line-height:1.02;
+  margin-left:.12em;min-width:1em;font-weight:400;position:relative;letter-spacing:0}
+.z .b span{display:block;text-align:center;position:relative}
+.z .b .l{line-height:.6}
+.z .b .zt{position:absolute;left:100%;top:-.45em;font-style:normal;margin-left:-.05em}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC","Noto Sans CJK TC",sans-serif;background:#1d1b4b;color:#fff;font-size:20px;overflow-x:hidden}
+.nozy .z .b{display:none}.nozy .z{margin:0}
+#bg{position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,#4b3fa8,transparent 50%),radial-gradient(circle at 80% 90%,#a83f8c,transparent 50%),#1d1b4b;z-index:-1}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 96px}
+.bar{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.12);border-radius:18px;padding:8px 12px;margin-bottom:10px}
+.avatar{font-size:34px;width:54px;height:54px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex:none;border:4px solid #ffd84d}
+.rank{flex:1;min-width:0}
+.rank .t{font-weight:900;font-size:19px}
+.xp{height:12px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin-top:3px}
+.xp i{display:block;height:100%;background:linear-gradient(90deg,#ffd84d,#ff8a3d);transition:width .8s}
+.small{font-size:15px;opacity:.9}
+.money{text-align:right;font-weight:900;font-size:19px;line-height:1.5;white-space:nowrap}
+.pill{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.6);color:#fff;border-radius:99px;padding:3px 10px;font-size:14px;cursor:pointer;font-weight:800;font-family:inherit;white-space:nowrap}
+h1{text-align:center;font-size:30px;margin:4px 0;text-shadow:0 4px 0 #6a3fd1}
+h2.sec{font-size:24px;margin:6px 0 10px;text-align:center}
+.page{display:none}.page.on{display:block}
+/* bottom nav */
+.tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;display:flex;justify-content:center;gap:4px;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:15;box-shadow:0 -4px 14px rgba(0,0,0,.25)}
+.tabs button{flex:1;max-width:170px;border:0;background:none;font-family:inherit;color:#7a74a8;font-weight:900;font-size:16px;cursor:pointer;border-radius:14px;padding:4px 0}
+.tabs button .i{font-size:28px;display:block;line-height:1.2}
+.tabs button.on{background:#efeaff;color:#5a35c9}
+.tabs .dot{display:inline-block;width:10px;height:10px;background:#ff5f6d;border-radius:50%;vertical-align:top}
+/* map */
+.board{position:relative;margin:0 auto;max-width:820px;border-radius:26px;overflow:hidden}
+.zone{position:absolute;left:0;right:0}
+.board svg.path{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+.node{position:absolute;transform:translate(-50%,-50%);width:66px;height:66px;border-radius:50%;border:0;cursor:pointer;font-family:inherit;font-weight:900;font-size:24px;color:#4a3a00;background:radial-gradient(circle at 35% 30%,#fff7c2,#ffd84d 60%,#e6a700);box-shadow:0 6px 0 #a87400,0 8px 12px rgba(0,0,0,.3);z-index:2}
+.node.boss{width:80px;height:80px;background:radial-gradient(circle at 35% 30%,#ffd0d0,#ff6b6b 60%,#c03b3b);color:#fff;box-shadow:0 6px 0 #8a2020,0 8px 12px rgba(0,0,0,.3)}
+.node.lock{background:radial-gradient(circle at 35% 30%,#d8d6ea,#9c99bd 60%,#77749a);color:#eee;box-shadow:0 6px 0 #555274;cursor:not-allowed}
+.node.cur{animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
+.node .mon{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-size:28px}
+.node .st{position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);font-size:15px;color:#ffd84d;white-space:nowrap;letter-spacing:1px;text-shadow:0 1px 2px #000}
+.node .st .e{color:rgba(255,255,255,.45)}
+.node .num{line-height:1}
+.node .tm{display:block;font-size:11px;font-weight:800;opacity:.85}
+.zlabel{position:absolute;left:12px;white-space:nowrap;background:rgba(0,0,0,.35);color:#fff;border-radius:14px;padding:2px 12px;font-weight:900;font-size:17px;z-index:3}
+.deco{position:absolute;font-size:30px;transform:translate(-50%,-50%);opacity:.9;pointer-events:none}
+.token{position:absolute;width:58px;height:58px;border-radius:50%;background:#fff;border:4px solid #fff;box-shadow:0 0 0 4px #6a3fd1,0 8px 14px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:34px;transform:translate(-50%,-115%);z-index:5;transition:left .35s ease-in-out,top .35s ease-in-out;pointer-events:none}
+.token.hop{animation:hop .35s}
+@keyframes hop{50%{transform:translate(-50%,-165%)}}
+.secret{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px auto 0;max-width:820px}
+.sbtn{border:0;border-radius:20px;padding:10px;font-family:inherit;cursor:pointer;background:linear-gradient(160deg,#3a2f7a,#6a3fd1);color:#fff;box-shadow:0 6px 0 #241b55;text-align:center}
+.sbtn.lock{background:#4b4870;color:#aaa;box-shadow:0 6px 0 #2e2b4f}
+.sbtn .m{font-size:36px}
+.sbtn b{font-size:19px}
+.under{display:flex;justify-content:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+/* panels */
+.panel{background:#fff;color:#2b2b2b;border-radius:24px;padding:14px;margin-bottom:12px;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+.panel h3{margin:0 0 6px;color:#5a35c9;font-size:21px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.item{border:3px solid #ece8ff;border-radius:18px;padding:8px;text-align:center;background:#faf8ff}
+.item .m{font-size:46px;line-height:1.2}
+.item.own{border-color:#4cd18a;background:#effbf4}
+.item.use{border-color:#ffd84d;background:#fffbe6}
+.item .nm{font-weight:900;font-size:17px}
+.mini{border:0;border-radius:12px;padding:6px 12px;font-size:17px;font-weight:900;cursor:pointer;font-family:inherit;background:#6a3fd1;color:#fff;box-shadow:0 4px 0 #44269a;margin-top:4px}
+.mini.g{background:#4cd18a;box-shadow:0 4px 0 #23995a}.mini.w{background:#eee;color:#555;box-shadow:0 4px 0 #bbb}
+.mini:disabled{opacity:.45;cursor:not-allowed}
+.mini:active{transform:translateY(3px);box-shadow:none}
+/* pet */
+.petstage{position:relative;background:linear-gradient(180deg,#bfe9ff,#e7f8ff 60%,#9be59b 60%,#7fd47f);border-radius:22px;height:300px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.petstage svg{margin-bottom:24px;transition:transform .3s}
+.petstage svg.bounce{animation:bounce .6s}
+@keyframes bounce{30%{transform:translateY(-30px) scale(1.05,.95)}60%{transform:translateY(0) scale(.95,1.05)}}
+.heart{position:absolute;font-size:30px;animation:rise 1.2s forwards;pointer-events:none}
+@keyframes rise{to{transform:translateY(-120px);opacity:0}}
+.grow{height:18px;background:#eee;border-radius:99px;overflow:hidden;margin:6px 0}
+.grow i{display:block;height:100%;background:linear-gradient(90deg,#ff9ac2,#ff6fa5);transition:width .6s}
+.petpick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.petpick button{border:3px solid #ece8ff;border-radius:18px;background:#faf8ff;cursor:pointer;font-family:inherit;padding:6px}
+.petpick button:hover{border-color:#6a3fd1}
+input.txt{font-size:20px;padding:8px 10px;border-radius:12px;border:2px solid #ccc;font-family:inherit;width:100%;max-width:260px}
+/* rewards */
+.rw{display:flex;align-items:center;gap:10px;border:3px solid #ece8ff;border-radius:16px;padding:8px 10px;margin:8px 0;background:#faf8ff}
+.rw .m{font-size:34px}
+.rw .tx{flex:1;font-weight:900;font-size:19px}
+.rw .cost{font-weight:900;color:#c08a00;white-space:nowrap}
+.log{font-size:15px;color:#666;line-height:1.7}
+/* battle */
+#battle{display:none}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hearts{font-size:26px;letter-spacing:2px}
+.score{font-weight:900;font-size:22px;color:#ffd84d}
+.arena{position:relative;background:rgba(255,255,255,.08);border-radius:24px;padding:10px;margin:10px 0;text-align:center;overflow:hidden}
+.monster{font-size:90px;line-height:1.1;display:inline-block}
+.monster.hit{animation:hit .4s}.monster.atk{animation:atk .5s}.monster.dead{animation:dead .8s forwards}
+@keyframes hit{25%{transform:translateX(-14px) rotate(-8deg);filter:brightness(2)}50%{transform:translateX(12px) rotate(6deg)}}
+@keyframes atk{40%{transform:scale(1.4) translateY(20px)}}
+@keyframes dead{to{transform:scale(0) rotate(360deg);opacity:0}}
+.hp{height:16px;background:rgba(0,0,0,.35);border-radius:99px;overflow:hidden;max-width:360px;margin:4px auto}
+.hp i{display:block;height:100%;background:linear-gradient(90deg,#ff5f6d,#ffc371);transition:width .3s}
+.monname{font-weight:900}
+.combo{position:absolute;top:10px;right:14px;font-weight:900;font-size:21px;color:#ffd84d}
+.buddy{position:absolute;left:10px;bottom:6px}
+.dmg{position:absolute;left:50%;top:30%;font-size:38px;font-weight:900;color:#ffd84d;animation:float .9s forwards;pointer-events:none;text-shadow:0 3px 0 #b35c10}
+@keyframes float{from{transform:translate(-50%,0);opacity:1}to{transform:translate(-50%,-70px);opacity:0}}
+.timer{height:10px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;margin:6px 0 0}
+.timer i{display:block;height:100%;background:#4dd2ff}
+.q{background:#fff;color:#2b2b2b;border-radius:24px;padding:10px;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+.qeq{font-size:52px;font-weight:900;font-family:ui-monospace,Menlo,Consolas,monospace}
+.qtext{font-size:23px;font-weight:800;line-height:2.1}
+.ans{display:inline-block;min-width:96px;border-bottom:5px solid #6a3fd1;color:#6a3fd1}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.opts button{font-size:38px;font-weight:900;padding:10px 0;border-radius:20px;border:0;background:#ece8ff;color:#3d2a8f;box-shadow:0 5px 0 #b9b0e8;cursor:pointer;font-family:inherit}
+.opts button:active{transform:translateY(4px);box-shadow:0 1px 0 #b9b0e8}
+.opts button.right{background:#4cd18a;color:#fff;box-shadow:0 5px 0 #23995a}
+.opts button.wrong{background:#ff6b6b;color:#fff;box-shadow:0 5px 0 #c03b3b}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.pad button{font-size:30px;font-weight:900;height:60px;border-radius:16px;border:0;background:#ece8ff;color:#3d2a8f;box-shadow:0 4px 0 #b9b0e8;cursor:pointer;font-family:inherit;white-space:nowrap}
+.pad button.ok{background:#4cd18a;color:#fff;box-shadow:0 4px 0 #23995a;font-size:22px}
+.pad button:active{transform:translateY(3px);box-shadow:none}
+.fb{min-height:44px;font-weight:900;font-size:20px;margin-top:6px;line-height:2}
+.fb.good{color:#23995a}.fb.bad{color:#c03b3b}
+/* overlay */
+.ov{position:fixed;inset:0;background:rgba(10,8,40,.8);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.ov.on{display:flex}
+.card{background:#fff;color:#2b2b2b;border-radius:28px;padding:18px;max-width:430px;width:100%;text-align:center;box-shadow:0 10px 0 rgba(0,0,0,.3);animation:pop .35s;max-height:92vh;overflow:auto}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.card h2{margin:4px 0;font-size:28px;color:#6a3fd1}
+.bigstar{font-size:52px;letter-spacing:4px}
+.btn{border:0;border-radius:18px;padding:11px 18px;font-size:21px;font-weight:900;cursor:pointer;font-family:inherit;background:#6a3fd1;color:#fff;box-shadow:0 5px 0 #44269a;margin:5px}
+.btn.g{background:#4cd18a;box-shadow:0 5px 0 #23995a}.btn.w{background:#eee;color:#333;box-shadow:0 5px 0 #bbb}
+.btn:active{transform:translateY(4px);box-shadow:none}
+.row{display:flex;justify-content:space-between;font-size:19px;padding:2px 10px}
+.row b{color:#6a3fd1}
+.lvup{background:linear-gradient(90deg,#ffe066,#ff9a3d);color:#5a2d00;border-radius:16px;padding:8px;font-weight:900;margin:8px 0;animation:pop .5s}
+.rule{text-align:left;font-size:18px;line-height:2.1;background:#f5f2ff;border-radius:16px;padding:8px 14px;margin:8px 0}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:30}
+
+.titlescr{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;z-index:12;overflow:auto;padding:20px}
+.ttlwrap{max-width:640px}
+.ttl{font-size:44px;line-height:1.7;margin:6px 0 8px;color:#ffe066;text-shadow:0 5px 0 #6a3fd1,0 0 26px rgba(255,216,77,.55)}
+.ttl b{color:#fff}
+.float{position:absolute;font-size:36px;animation:fl 5s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-22px) rotate(10deg)}}
+.ttlhero{display:flex;align-items:flex-end;justify-content:center;gap:12px;margin:6px 0}
+.avatar.big{width:100px;height:100px;font-size:62px;border-width:6px}
+.btn.big{font-size:30px;padding:14px 44px;margin:16px 6px 10px}
+.node.mgnode{background:radial-gradient(circle at 35% 30%,#fff,#7ee0ff 55%,#3aa9d8);box-shadow:0 6px 0 #1f7aa3,0 8px 12px rgba(0,0,0,.3);font-size:30px}
+.node .mtag{position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:13px;background:#fff;color:#1f7aa3;border-radius:8px;padding:0 6px;white-space:nowrap;line-height:1.9}
+.node .hard{position:absolute;top:-6px;right:-16px;background:#ff6b6b;color:#fff;border-radius:10px;font-size:12px;padding:1px 5px;line-height:1.2}
+.zlabel b{font-size:19px;color:#ffe066}
+.diffs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.diff{border:0;border-radius:18px;padding:10px 6px;font-family:inherit;cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:center;color:#2b2b2b}
+.diff.n{background:#e9fbe9;box-shadow:0 5px 0 #8fd6aa}.diff.h{background:#ffe9e9;box-shadow:0 5px 0 #f0a0a0}.diff.lock{opacity:.55;cursor:not-allowed}
+.diff:active{transform:translateY(4px);box-shadow:none}
+.diff b{font-size:22px}.diff span.nz{color:#f2b705;font-size:20px;letter-spacing:2px}.diff i{color:#ccc;font-style:normal}
+.hardtag{display:inline-block;background:#ff6b6b;color:#fff;border-radius:10px;padding:0 10px;font-weight:900;font-size:16px}
+.hardtag.big{font-size:20px;margin:4px 0}
+.astag{color:#1f7aa3;font-size:18px}
+.mghint{text-align:center;font-weight:900;font-size:22px;margin:8px 0;min-height:48px;line-height:2}
+.memo{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:520px;margin:0 auto}
+.mc{height:84px;border:0;border-radius:16px;background:linear-gradient(160deg,#6a3fd1,#a46be8);box-shadow:0 5px 0 #44269a;cursor:pointer;font-family:inherit;font-size:26px;font-weight:900;color:transparent;position:relative}
+.mc::after{content:'?';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px}
+.mc.up{background:#fff;color:#3d2a8f}.mc.up::after{content:''}
+.mc.ok{background:#4cd18a;color:#fff;box-shadow:0 5px 0 #23995a}
+.holes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:460px;margin:0 auto}
+.hole{height:124px;background:radial-gradient(ellipse at 50% 88%,#5a3a1a 0 34%,#7fd47f 36%);border-radius:20px;position:relative;overflow:hidden}
+.mole{position:absolute;left:50%;bottom:-110px;transform:translateX(-50%);width:90px;height:106px;border:0;background:none;cursor:pointer;transition:bottom .18s;font-family:inherit;display:flex;flex-direction:column;align-items:center;padding:0}
+.mole.up{bottom:4px}
+.mole .mf{font-size:54px;line-height:1}
+.mole b{background:#fff;color:#3d2a8f;border-radius:10px;padding:0 8px;font-size:24px;margin-top:-4px}
+.sumgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:520px;margin:0 auto}
+.sc{height:70px;border:0;border-radius:16px;background:#fff;color:#3d2a8f;font-size:28px;font-weight:900;box-shadow:0 5px 0 #b9b0e8;cursor:pointer;font-family:inherit}
+.sc.sel{background:#ffe066}.sc.ok{background:#4cd18a;color:#fff}.sc.bad{background:#ff6b6b;color:#fff}
+.sky{position:relative;height:540px;background:linear-gradient(180deg,#7ad0ff,#d4f1ff);border-radius:22px;overflow:hidden}
+.bub{position:absolute;bottom:-100px;width:100px;height:100px;border-radius:50%;border:3px solid rgba(255,255,255,.95);background:radial-gradient(circle at 30% 30%,#fff,rgba(255,255,255,.4) 30%,rgba(120,170,255,.55));color:#24247a;font-weight:900;font-size:22px;cursor:pointer;font-family:inherit;animation:rise2 6s linear forwards;padding:0}
+@keyframes rise2{to{transform:translateY(-660px)}}
+.bub.popped{opacity:0;transition:opacity .2s}
+.bub.wrongb{background:radial-gradient(circle at 30% 30%,#fff,#ffb3b3)}
+@media(max-width:520px){.zlabel{font-size:12px;right:8px;white-space:normal;line-height:1.6}.zlabel b{font-size:16px}.ttl{font-size:32px}.btn.big{font-size:24px;padding:12px 30px}.mc{height:70px;font-size:20px}.sc{font-size:22px;height:60px}.bub{width:84px;height:84px;font-size:18px}.sky{height:480px}}
+
+
+.sub{text-align:center;opacity:.9;margin:0 0 12px}
+.planets{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px;margin:0 auto}
+.planet{border:0;border-radius:26px;padding:14px 10px;font-family:inherit;cursor:pointer;color:#fff;background:linear-gradient(160deg,var(--pc),#2a2470);box-shadow:0 8px 0 rgba(0,0,0,.3);display:flex;flex-direction:column;align-items:center;gap:4px}
+.planet:active{transform:translateY(5px);box-shadow:0 3px 0 rgba(0,0,0,.3)}
+.planet .orb{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,var(--pc) 55%,rgba(0,0,0,.25));display:flex;align-items:center;justify-content:center;font-size:52px;box-shadow:0 0 24px var(--pc);animation:spin 6s ease-in-out infinite}
+@keyframes spin{50%{transform:translateY(-6px) rotate(6deg)}}
+.planet b{font-size:20px}
+.pbar{width:80%;height:10px;background:rgba(255,255,255,.25);border-radius:99px;overflow:hidden}
+.pbar i{display:block;height:100%;background:#ffe066}
+.maphead{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.maphead h1{flex:1;line-height:1.5}
+.maphead h1 .small{font-size:14px;text-shadow:none}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.72em;line-height:1.05;margin:0 .1em}
+.fr i{font-style:normal;padding:0 .15em}.fr i:first-child{border-bottom:3px solid currentColor}
+.mixw{font-size:1em}
+.qeq.long{font-size:34px}
+.sol .fr{font-size:.8em}
+.pad button.wide{grid-column:span 3}
+.garden{position:relative;height:380px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,#a8e4ff 0%,#dff6ff 45%,#9be59b 45%,#6fcf7a 100%);touch-action:none}
+.garden .sun{position:absolute;right:6%;top:6%;font-size:46px}
+.cloud{position:absolute;width:110px;height:36px;background:#fff;border-radius:40px;opacity:.9;animation:drift 30s linear infinite}
+.cloud::before{content:'';position:absolute;width:50px;height:50px;background:#fff;border-radius:50%;left:20px;top:-24px}
+.cloud.c1{top:12%;left:-20%}.cloud.c2{top:24%;left:-40%;animation-duration:42s;animation-delay:-14s;transform:scale(.7)}
+@keyframes drift{to{left:110%}}
+.furn{position:absolute;font-size:46px;cursor:grab;user-select:none;touch-action:none;z-index:2;filter:drop-shadow(0 4px 2px rgba(0,0,0,.2))}
+.furn.drag{cursor:grabbing;transform:scale(1.2);z-index:9}
+.gpet{position:absolute;bottom:4%;cursor:pointer;z-index:3;animation:wander 10s ease-in-out infinite alternate}
+.gpet svg{display:block;animation:bob 1.2s ease-in-out infinite}
+.gpet.act svg{filter:drop-shadow(0 0 8px #fff6a0)}
+.gpet.jump svg{animation:jump .6s 2}
+.gpet .ptag{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:20px}
+@keyframes wander{0%{transform:translateX(0)}50%{transform:translateX(160px)}100%{transform:translateX(40px)}}
+@keyframes bob{50%{transform:translateY(-5px)}}
+@keyframes jump{40%{transform:translateY(-50px) rotate(-8deg)}}
+.petmini{position:relative}
+.petmini svg.bounce{animation:bounce .6s}
+.petpick{grid-template-columns:repeat(3,1fr)!important}
+.petpick button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:520px){.planets{gap:10px}.planet .orb{width:70px;height:70px;font-size:38px}.planet b{font-size:16px}.garden{height:320px}@keyframes wander{0%{transform:translateX(0)}50%{transform:translateX(70px)}100%{transform:translateX(20px)}}.maphead h1{font-size:20px}.qeq.long{font-size:26px}}
+
+.speak{float:right;border:0;background:#ece8ff;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;margin:-2px -2px 0 6px}
+.revtag{display:inline-block;background:#fff1c2;color:#9a6a00;border-radius:10px;padding:0 10px;font-weight:900;font-size:15px}
+.daily{max-width:760px;margin:0 auto 14px}
+.task{display:flex;align-items:center;gap:10px;margin:8px 0}
+.task .grow{height:10px;margin:2px 0}
+.planet{position:relative}
+.planet .rec{position:absolute;top:8px;right:10px;background:#ffe066;color:#6a4a00;border-radius:10px;padding:0 8px;font-size:14px;font-weight:900}
+.planet.plock{filter:grayscale(.7) brightness(.8)}
+.ldays{display:flex;gap:6px;justify-content:center;margin:10px 0}
+.lday{width:44px;border-radius:12px;background:#eee;padding:4px 0;display:flex;flex-direction:column;align-items:center;font-size:18px}
+.lday.got{background:#d9f2e3}.lday.now{background:#ffe066;transform:scale(1.15)}
+#achToast{position:fixed;top:-120px;left:50%;transform:translateX(-50%);background:#fff;color:#2b2b2b;border-radius:20px;padding:10px 18px;display:flex;gap:10px;align-items:center;box-shadow:0 8px 20px rgba(0,0,0,.35);z-index:40;transition:top .4s;border:4px solid #ffd84d;min-width:240px}
+#achToast.on{top:14px}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.badge{background:rgba(255,255,255,.12);border-radius:18px;padding:10px;text-align:center;color:#ddd}
+.badge.got{background:#fff;color:#2b2b2b;box-shadow:0 5px 0 #ffd84d}
+.badge .be{font-size:42px}.badge b{display:block;font-size:17px}
+.wrongs{display:flex;flex-wrap:wrap;gap:6px}.wrongs span{background:#ffe3e3;border-radius:10px;padding:2px 8px;font-weight:800}
+.rep{width:100%;border-collapse:collapse;font-size:15px;margin-top:6px}
+.rep th{background:#efeaff;padding:4px}.rep td{border-bottom:1px solid #eee;text-align:center;padding:3px}
+textarea.bk{width:100%;max-width:none;height:70px;font-size:12px;margin:6px 0;font-family:monospace}
+@media(max-width:520px){.tabs button{font-size:13px}.tabs button .i{font-size:24px}.badges{grid-template-columns:repeat(2,1fr)}}
+
+@media(max-width:520px){h1{font-size:24px}.qeq{font-size:40px}.monster{font-size:72px}.opts button{font-size:32px}.node{width:56px;height:56px;font-size:21px}.node.boss{width:68px;height:68px}.token{width:50px;height:50px;font-size:28px}}
+</style>
+</head>
+<body>
+<!-- ===== 帳號登入（Firebase）：只用在 GitHub Pages 分享版 ===== -->
+<style>
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#9fd8f0,#4aa8d8);font-family:"Noto Sans TC",system-ui,sans-serif}
+#gate .gbox{background:#fffdf8;border-radius:24px;padding:28px 26px;width:min(92vw,380px);box-shadow:0 10px 30px #0003;text-align:center}
+#gate h1{margin:0 0 4px;font-size:28px}#gate p{margin:4px 0 16px;color:#666;font-size:15px}
+#gate input{width:100%;box-sizing:border-box;font:inherit;font-size:18px;padding:12px 14px;border:2px solid #e6e0d4;border-radius:14px;margin:6px 0}
+#gate button{width:100%;font:inherit;font-size:19px;font-weight:700;border:0;border-radius:14px;padding:13px;margin-top:10px;background:#f2a51f;color:#fff;cursor:pointer}
+#gate button:disabled{opacity:.6}
+#gate .gerr{color:#e0443c;min-height:22px;font-size:15px;margin-top:8px}
+#gate .gtip{font-size:12.5px;color:#888;margin-top:12px;line-height:1.6}
+#acct{position:fixed;left:50%;transform:translateX(-50%);bottom:6px;z-index:60;opacity:.85;display:flex;gap:6px;align-items:center;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:13px}
+#acct span,#acct button{background:#fffdf8e8;border:1px solid #e6e0d4;border-radius:999px;padding:4px 10px;cursor:pointer;color:#333}
+#acct span{cursor:default}
+#allacct{position:fixed;inset:0;z-index:9998;background:#0006;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:30px 10px;font-family:"Noto Sans TC",system-ui,sans-serif}
+#allacct .abox{background:#fffdf8;border-radius:20px;padding:20px;width:min(96vw,760px)}
+#allacct table{width:100%;border-collapse:collapse;font-size:14px}#allacct th,#allacct td{border-bottom:1px solid #e6e0d4;padding:6px;text-align:left}
+#allacct .x{float:right;border:0;background:#eee;border-radius:999px;padding:6px 12px;cursor:pointer}
+</style>
+<div id="gate"><div class="gbox">
+  <h1>🪄 魔法數學大冒險</h1><p>請登入你的帳號</p>
+  <form id="gform" autocomplete="on">
+    <input id="guser" placeholder="帳號" autocomplete="username" autocapitalize="off" required>
+    <input id="gpass" type="password" placeholder="密碼" autocomplete="current-password" required>
+    <button id="gbtn" type="submit">登入</button>
+  </form>
+  <div class="gerr" id="gerr"></div>
+  <div class="gtip">帳號由家長在後台建立。忘記密碼請找家長幫忙重設。</div>
+</div></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut,setPersistence,browserLocalPersistence} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,collection,getDocs,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig={"apiKey": "AIzaSyBhpd4pDiVT9suLCvP4ys35qReI8OlaJQ4", "authDomain": "tangba-123.firebaseapp.com", "projectId": "tangba-123", "storageBucket": "tangba-123.firebasestorage.app", "messagingSenderId": "256828390653", "appId": "1:256828390653:web:fc76cddb05db53f4ccd294"};
+const PARENT_UIDS=["9EQCZLh8l2eISIrzAP1C7cViqXi2"];      // 家長帳號（可以看全部人的紀錄）
+const DOMAIN="@family.app";              // 帳號沒打 @ 時自動補上
+const STORES=[["tt99game", "data_tt99game", "tt99game.owner"]];   // [這頁的瀏覽器資料名稱, 雲端欄位, 主人標記]
+const WATCH=new Set(STORES.map(s=>s[0]));
+
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+setPersistence(auth,browserLocalPersistence).catch(()=>{});
+const $=id=>document.getElementById(id);
+const rawSet=localStorage.setItem.bind(localStorage);
+let user=null, started=false, upT=null, dirty=false;
+
+const ERR={"auth/invalid-credential":"帳號或密碼不對，再試一次","auth/wrong-password":"帳號或密碼不對，再試一次","auth/user-not-found":"沒有這個帳號","auth/invalid-email":"帳號格式不對","auth/user-disabled":"這個帳號已經停用，請找家長","auth/too-many-requests":"試太多次了，請等一下再試","auth/network-request-failed":"網路連不上，請檢查網路"};
+$("gform").addEventListener("submit",async e=>{
+  e.preventDefault(); $("gerr").textContent=""; $("gbtn").disabled=true;
+  let u=$("guser").value.trim().toLowerCase(); if(!u.includes("@")) u+=DOMAIN;
+  try{ await signInWithEmailAndPassword(auth,u,$("gpass").value); }
+  catch(err){ $("gerr").textContent=ERR[err.code]||("登入失敗："+(err.code||err.message)); $("gbtn").disabled=false; }
+});
+
+async function upload(){
+  if(!user||!dirty) return; dirty=false;
+  const o={email:user.email,updatedAt:serverTimestamp()}; STORES.forEach(([k,f])=>{o[f]=localStorage.getItem(k)||""});
+  try{ await setDoc(doc(db,"users",user.uid),o,{merge:true}); setStat("☁️ 已同步"); }
+  catch(e){ dirty=true; setStat("⚠️ 尚未同步"); }
+}
+function queue(){ dirty=true; setStat("☁️ 同步中…"); clearTimeout(upT); upT=setTimeout(upload,2500); }
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"){clearTimeout(upT);upload();} });
+window.addEventListener("pagehide",()=>{clearTimeout(upT);upload();});
+function setStat(s){const el=$("acstat");if(el)el.textContent=s;}
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){ if(started){ location.reload(); } $("gate").style.display="flex"; $("gbtn").disabled=false; return; }
+  user=u; $("gate").querySelector("p").textContent="載入你的紀錄中…";
+  let d={}, ok=true;
+  try{ const snap=await getDoc(doc(db,"users",u.uid)); d=snap.exists()?snap.data():{}; }catch(e){ ok=false; }
+  STORES.forEach(([k,f,ow])=>{
+    const owner=localStorage.getItem(ow), remote=d[f]||"";
+    if(!ok){ if(owner!==u.uid) localStorage.removeItem(k); }        // 離線時只用自己的紀錄
+    else if(remote){ rawSet(k,remote); }
+    else if(owner&&owner!==u.uid){ localStorage.removeItem(k); }    // 別人的紀錄不要帶過來
+    else if(!owner&&localStorage.getItem(k)){ dirty=true; }         // 第一次登入：把這台裝置原本的紀錄搬上去
+    rawSet(ow,u.uid);
+  });
+  start(u);
+  if(dirty) upload();
+});
+
+function start(u){
+  if(started) return; started=true;
+  localStorage.setItem=function(k,v){ rawSet(k,v); if(WATCH.has(k)) queue(); };
+  const rawRm=localStorage.removeItem.bind(localStorage); localStorage.removeItem=function(k){ rawRm(k); if(WATCH.has(k)) queue(); };
+  $("gate").style.display="none";
+  const name=(u.email||"").replace(DOMAIN,"");
+  const bar=document.createElement("div"); bar.id="acct";
+  bar.innerHTML=`<span>👤 ${name.replace(/[<>&]/g,"")}</span><span id="acstat">☁️ 已同步</span>${PARENT_UIDS.includes(u.uid)?'<button id="acall">👨‍👩‍👧 全部帳號</button>':""}<button id="acout">登出</button>`;
+  document.body.appendChild(bar);
+  $("acout").onclick=async()=>{ clearTimeout(upT); await upload(); [["islandExplorer.v1","","islandExplorer.owner"],["tt99game","","tt99game.owner"],["tt99","","tt99.owner"],["tt99g10","","tt99g10.owner"]].forEach(([k,,ow])=>{localStorage.removeItem(k);localStorage.removeItem(ow)}); await signOut(auth); };
+  if($("acall")) $("acall").onclick=showAll;
+  // 依序執行遊戲程式
+  document.querySelectorAll('script[type="text/x-deferred"]').forEach(old=>{ const s=document.createElement("script"); s.textContent=old.textContent; old.replaceWith(s); });
+}
+
+async function showAll(){
+  const box=document.createElement("div"); box.id="allacct"; box.innerHTML='<div class="abox"><button class="x">✕ 關閉</button><h2>👨‍👩‍👧 全部帳號的紀錄</h2><p style="font-size:13px;color:#888">隊員、貝殼等欄位是島嶼探險隊的紀錄。</p><p id="aload">讀取中…</p></div>';
+  document.body.appendChild(box); box.querySelector(".x").onclick=()=>box.remove();
+  try{
+    const qs=await getDocs(collection(db,"users")); const rows=[];
+    qs.forEach(d=>{ const v=d.data(); let m={}; try{m=JSON.parse(v.data||"{}")}catch(e){}
+      const other=[["data_tt99game","數學大冒險"],["data_tt99","乘法遊樂園"],["data_tt99g10","乘法遊戲島"]].filter(([f])=>v[f]).map(([,n])=>n).join("、")||"—";
+      const profs=Object.values(m.profiles||{});
+      const when=v.updatedAt&&v.updatedAt.toDate?v.updatedAt.toDate().toLocaleString("zh-TW"):"—";
+      if(!profs.length) rows.push(`<tr><td>${(v.email||"").replace(DOMAIN,"")}</td><td>—</td><td></td><td></td><td></td><td></td><td>${other}</td><td>${when}</td></tr>`);
+      profs.forEach(p=>{ const lv=Object.keys(p.levels||{}).length, wr=Object.keys(p.wrong||{}).length, e=p.eng||{};
+        const ed=Object.keys((e.stats||{}).days||{}).length, el=Object.values(e.learned||{}).reduce((s,x)=>s+Object.keys(x).length,0);
+        rows.push(`<tr><td>${(v.email||"").replace(DOMAIN,"")}</td><td>${String(p.name||"").replace(/[<>&]/g,"")}</td><td>🐚 ${p.shells||0}</td><td>${lv} 關</td><td>${wr} 題</td><td>英文 ${ed} 天・${el} 課</td><td>${other}</td><td>${when}</td></tr>`); });
+    });
+    box.querySelector("#aload").outerHTML=`<table><tr><th>帳號</th><th>隊員</th><th>貝殼</th><th>闖過</th><th>錯題</th><th>英文島</th><th>其他遊戲</th><th>最後同步</th></tr>${rows.join("")}</table><p style="font-size:13px;color:#888">新增、停用帳號或重設密碼，請到 Firebase 主控台 → Authentication → 使用者。</p>`;
+  }catch(e){ box.querySelector("#aload").textContent="讀不到（請確認資料庫規則裡有你的家長 UID）："+(e.code||e.message); }
+}
+</script>
+
+
+<div id="bg"></div>
+<div class="titlescr" id="title">
+<span class="float nz" style="left:8%;top:12%">✨</span><span class="float nz" style="right:10%;top:18%;animation-delay:1s">🪐</span><span class="float nz" style="left:14%;bottom:18%;animation-delay:2s">⭐</span><span class="float nz" style="right:12%;bottom:22%;animation-delay:.5s">🔮</span><span class="float nz" style="left:46%;top:5%;animation-delay:1.5s">🚀</span>
+<div class="ttlwrap">
+<div class="small"><span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">乘</span><span class="b"><span>ㄔ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span>．<span class="z"><span class="h">加</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄚ</span></span></span><span class="z"><span class="h">減</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span>．<span class="z"><span class="h">數</span><span class="b"><span>ㄕ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">學</span><span class="b"><span>ㄒ</span><span>ㄩ</span><span>ㄝ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">運</span><span class="b"><span>ㄩ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">算</span><span class="b"><span>ㄙ</span><span>ㄨ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span></div>
+<h1 class="ttl" id="ttl"></h1>
+<div class="ttlhero"><div class="avatar big nz" id="ttlAv"></div><div id="ttlPet"></div></div>
+<div class="small" id="ttlInfo"></div>
+<button class="btn big g" id="startBtn"><span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span><span class="z"><span class="h">始</span><span class="b"><span>ㄕ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">冒</span><span class="b"><span>ㄇ</span><span>ㄠ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">險</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span></button>
+<div class="under"><button class="pill sfxBtn"></button><button class="pill musBtn"></button><button class="pill zyBtn"><span class="z"><span class="h">注</span><span class="b"><span>ㄓ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span>：<span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button><button class="pill howBtn"><span class="z"><span class="h">怎</span><span class="b"><span>ㄗ</span><span>ㄣ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">麼</span><span class="b"><span class="l">˙</span><span>ㄇ</span><span>ㄜ</span></span></span><span class="z"><span class="h">玩</span><span class="b"><span>ㄨ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span>？</button></div>
+</div>
+</div>
+<div class="wrap" id="main" style="display:none">
+<div class="bar">
+<div class="avatar nz" id="avatar">🧒</div>
+<div class="rank">
+<div class="t"><span class="nz" id="lvNum">Lv.1</span>　<span id="rankName"></span></div>
+<div class="xp"><i id="xpBar"></i></div>
+<div class="small" id="xpText"></div>
+</div>
+<div class="money nz">🪙 <span id="coins">0</span><br/>⭐ <span id="totalStars">0</span></div>
+</div>
+<div class="page" id="p-hub"></div>
+<div class="page" id="p-map">
+<div class="maphead"><button class="pill" id="toHub">🪐 <span class="z"><span class="h">數</span><span class="b"><span>ㄕ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">學</span><span class="b"><span>ㄒ</span><span>ㄩ</span><span>ㄝ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">星</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">球</span><span class="b"><span>ㄑ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˊ</i></span></span></span></button><h1 id="mapTitle"></h1><span style="width:90px"></span></div>
+<div class="board" id="board"></div>
+<div class="secret" id="secret"></div>
+<div class="under"><button class="pill" id="speedBtn"></button><button class="pill sfxBtn"></button><button class="pill musBtn"></button><button class="pill zyBtn"><span class="z"><span class="h">注</span><span class="b"><span>ㄓ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span>：<span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button><button class="pill howBtn"><span class="z"><span class="h">怎</span><span class="b"><span>ㄗ</span><span>ㄣ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">麼</span><span class="b"><span class="l">˙</span><span>ㄇ</span><span>ㄜ</span></span></span><span class="z"><span class="h">玩</span><span class="b"><span>ㄨ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span>？</button><button class="pill" id="mapParent">🔒 <span class="z"><span class="h">家</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄚ</span></span></span><span class="z"><span class="h">長</span><span class="b"><span>ㄓ</span><span>ㄤ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">設</span><span class="b"><span>ㄕ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">定</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄥ<i class="zt">ˋ</i></span></span></span></button></div>
+</div>
+<div class="page" id="p-pet"></div>
+<div class="page" id="p-shop"></div>
+<div class="page" id="p-ach"></div>
+<div class="page" id="p-reward"></div>
+<div id="battle">
+<div class="top">
+<button class="pill" id="quitBtn">← <span class="z"><span class="h">離</span><span class="b"><span>ㄌ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button>
+<div class="hearts nz" id="hearts"></div>
+<div class="score nz">分數 <span id="score">0</span></div>
+</div>
+<div class="arena">
+<div class="combo nz" id="combo"></div>
+<div class="monname" id="monName"></div>
+<div class="monster nz" id="mon"></div>
+<div class="hp"><i id="hpBar"></i></div>
+<div class="small nz" id="hpText"></div>
+<div class="buddy" id="buddy"></div>
+</div>
+<div class="timer"><i id="timer"></i></div>
+<div class="small nz" style="text-align:right">⏱ <b id="tsec"></b>s</div>
+<div class="q">
+<div id="qArea"></div>
+<div class="fb" id="fb"></div>
+<div id="inputArea"></div>
+</div>
+</div>
+<div id="miniView" style="display:none">
+<div class="top"><button class="pill" id="mgQuit">← <span class="z"><span class="h">離</span><span class="b"><span>ㄌ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button><div class="monname" id="mgTitle"></div><div class="score nz">分數 <span id="mgScore">0</span></div></div>
+<div id="mgTime"><div class="timer"><i id="mgTimeBar"></i></div><div class="small nz" style="text-align:right">⏱ <b id="mgSec"></b>s</div></div>
+<div class="mghint" id="mgHint"></div>
+<div id="mgBody"></div>
+</div>
+</div>
+<div class="tabs" id="tabs">
+<button class="on" data-p="hub"><span class="i nz">🪐</span><span class="z"><span class="h">冒</span><span class="b"><span>ㄇ</span><span>ㄠ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">險</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span></button>
+<button data-p="pet"><span class="i nz">🐾</span><span class="z"><span class="h">寵</span><span class="b"><span>ㄔ</span><span>ㄨ</span><span>ㄥ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">物</span><span class="b"><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">園</span><span class="b"><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span> <span class="dot" id="petDot" style="display:none"></span></button>
+<button data-p="shop"><span class="i nz">🛍️</span><span class="z"><span class="h">商</span><span class="b"><span>ㄕ</span><span>ㄤ</span></span></span><span class="z"><span class="h">店</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span></button>
+<button data-p="ach"><span class="i nz">🏅</span><span class="z"><span class="h">成</span><span class="b"><span>ㄔ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">就</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˋ</i></span></span></span></button>
+<button data-p="reward"><span class="i nz">🎁</span><span class="z"><span class="h">獎</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄤ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">勵</span><span class="b"><span>ㄌ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span></button>
+</div>
+<div class="ov" id="ov"><div class="card" id="ovCard"></div></div>
+<div id="achToast"></div><script type="text/x-deferred">
+var ZY={"$1又": [null, null, "ㄧㄡˋ"], "$2分之$1": [null, null, "ㄈㄣ", "ㄓ", null, null], "10以內加法": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "10以內加減": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄐㄧㄚ", "ㄐㄧㄢˇ"], "10以內大魔王": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "10以內減法": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "10連擊": [null, null, "ㄌㄧㄢˊ", "ㄐㄧˊ"], "20以內加減": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄐㄧㄚ", "ㄐㄧㄢˇ"], "20以內大魔王": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "20以內退位減法": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄊㄨㄟˋ", "ㄨㄟˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "20以內進位加法": [null, null, "ㄧˇ", "ㄋㄟˋ", "ㄐㄧㄣˋ", "ㄨㄟˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "30連擊": [null, null, "ㄌㄧㄢˊ", "ㄐㄧˊ"], "{a}、{b}、{c}這三個數的平均是多少？": [null, null, null, null, null, null, null, null, null, null, null, "ㄓㄜˋ", "ㄙㄢ", "ㄍㄜˋ", "ㄕㄨˋ", "ㄉㄜ˙", "ㄆㄧㄥˊ", "ㄐㄩㄣ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "{a}公尺{b}公分是幾公分？": [null, null, null, "ㄍㄨㄥ", "ㄔˇ", null, null, null, "ㄍㄨㄥ", "ㄈㄣ", "ㄕˋ", "ㄐㄧˇ", "ㄍㄨㄥ", "ㄈㄣ", null], "{a}公里{b}公尺是幾公尺？": [null, null, null, "ㄍㄨㄥ", "ㄌㄧˇ", null, null, null, "ㄍㄨㄥ", "ㄔˇ", "ㄕˋ", "ㄐㄧˇ", "ㄍㄨㄥ", "ㄔˇ", null], "{a}分{b}秒是幾秒？": [null, null, null, "ㄈㄣ", null, null, null, "ㄇㄧㄠˇ", "ㄕˋ", "ㄐㄧˇ", "ㄇㄧㄠˇ", null], "{a}和{b}的最大公因數是多少？": [null, null, null, "ㄏㄜˊ", null, null, null, "ㄉㄜ˙", "ㄗㄨㄟˋ", "ㄉㄚˋ", "ㄍㄨㄥ", "ㄧㄣ", "ㄕㄨˋ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "{a}和{b}的最小公倍數是多少？": [null, null, null, "ㄏㄜˊ", null, null, null, "ㄉㄜ˙", "ㄗㄨㄟˋ", "ㄒㄧㄠˇ", "ㄍㄨㄥ", "ㄅㄟˋ", "ㄕㄨˋ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "{a}時{b}分是幾分？": [null, null, null, "ㄕˊ", null, null, null, "ㄈㄣ", "ㄕˋ", "ㄐㄧˇ", "ㄈㄣ", null], "{a}的{b}倍是多少？": [null, null, null, "ㄉㄜ˙", null, null, null, "ㄅㄟˋ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "{a}的{p}%是多少？": [null, null, null, "ㄉㄜ˙", null, null, null, null, "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "{n}的乘法": [null, null, null, "ㄉㄜ˙", "ㄔㄥˊ", "ㄈㄚˇ"], "{n}連擊！": [null, null, null, "ㄌㄧㄢˊ", "ㄐㄧˊ", null], "⏰|時鐘怪": [null, null, "ㄕˊ", "ㄓㄨㄥ", "ㄍㄨㄞˋ"], "□ 裡填數字": [null, null, "ㄌㄧˇ", "ㄊㄧㄢˊ", "ㄕㄨˋ", "ㄗˋ"], "☄️|彗星": [null, null, null, "ㄏㄨㄟˋ", "ㄒㄧㄥ"], "⚖️|天平怪": [null, null, null, "ㄊㄧㄢ", "ㄆㄧㄥˊ", "ㄍㄨㄞˋ"], "⚡|閃電俠": [null, null, "ㄕㄢˇ", "ㄉㄧㄢˋ", "ㄒㄧㄚˊ"], "⚡|閃電精靈": [null, null, "ㄕㄢˇ", "ㄉㄧㄢˋ", "ㄐㄧㄥ", "ㄌㄧㄥˊ"], "⭕|圓圓怪": [null, null, "ㄩㄢˊ", "ㄩㄢˊ", "ㄍㄨㄞˋ"], "一一得一": ["ㄧ", "ㄧ", "ㄉㄜˊ", "ㄧ"], "一七得七": ["ㄧ", "ㄑㄧ", "ㄉㄜˊ", "ㄑㄧ"], "一三得三": ["ㄧ", "ㄙㄢ", "ㄉㄜˊ", "ㄙㄢ"], "一九得九": ["ㄧ", "ㄐㄧㄡˇ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "一二得二": ["ㄧ", "ㄦˋ", "ㄉㄜˊ", "ㄦˋ"], "一五得五": ["ㄧ", "ㄨˇ", "ㄉㄜˊ", "ㄨˇ"], "一位小數加法": ["ㄧ", "ㄨㄟˋ", "ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "一位小數減法": ["ㄧ", "ㄨㄟˋ", "ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "一個點心": ["ㄧ", "ㄍㄜˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ"], "一八得八": ["ㄧ", "ㄅㄚ", "ㄉㄜˊ", "ㄅㄚ"], "一六得六": ["ㄧ", "ㄌㄧㄡˋ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "一共答對{n}題": ["ㄧ", "ㄍㄨㄥˋ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, "ㄊㄧˊ"], "一十": ["ㄧ", "ㄕˊ"], "一四得四": ["ㄧ", "ㄙˋ", "ㄉㄜˊ", "ㄙˋ"], "一場戰鬥連續答對10題": ["ㄧ", "ㄔㄤˇ", "ㄓㄢˋ", "ㄉㄡˋ", "ㄌㄧㄢˊ", "ㄒㄩˋ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, "ㄊㄧˊ"], "一場戰鬥連續答對30題": ["ㄧ", "ㄔㄤˇ", "ㄓㄢˋ", "ㄉㄡˋ", "ㄌㄧㄢˊ", "ㄒㄩˋ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, "ㄊㄧˊ"], "一張門票{a}元，買{b}張要付多少元？": ["ㄧ", "ㄓㄤ", "ㄇㄣˊ", "ㄆㄧㄠˋ", null, null, null, "ㄩㄢˊ", null, "ㄇㄞˇ", null, null, null, "ㄓㄤ", "ㄧㄠˋ", "ㄈㄨˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄩㄢˊ", null], "一本書有{a}頁，看了{b}頁，還有幾頁沒看？": ["ㄧ", "ㄅㄣˇ", "ㄕㄨ", "ㄧㄡˇ", null, null, null, "ㄧㄝˋ", null, "ㄎㄢˋ", "ㄌㄜ˙", null, null, null, "ㄧㄝˋ", null, "ㄏㄞˊ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄧㄝˋ", "ㄇㄟˊ", "ㄎㄢˋ", null], "一枝鉛筆{a}元，買{b}枝要付多少元？": ["ㄧ", "ㄓ", "ㄑㄧㄢ", "ㄅㄧˇ", null, null, null, "ㄩㄢˊ", null, "ㄇㄞˇ", null, null, null, "ㄓ", "ㄧㄠˋ", "ㄈㄨˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄩㄢˊ", null], "一枝鉛筆{a}元，買{b}枝，付{c}元，可以找回幾元？": ["ㄧ", "ㄓ", "ㄑㄧㄢ", "ㄅㄧˇ", null, null, null, "ㄩㄢˊ", null, "ㄇㄞˇ", null, null, null, "ㄓ", null, "ㄈㄨˋ", null, null, null, "ㄩㄢˊ", null, "ㄎㄜˇ", "ㄧˇ", "ㄓㄠˇ", "ㄏㄨㄟˊ", "ㄐㄧˇ", "ㄩㄢˊ", null], "一瓶牛奶{a}元，買{b}瓶要付多少元？": ["ㄧ", "ㄆㄧㄥˊ", "ㄋㄧㄡˊ", "ㄋㄞˇ", null, null, null, "ㄩㄢˊ", null, "ㄇㄞˇ", null, null, null, "ㄆㄧㄥˊ", "ㄧㄠˋ", "ㄈㄨˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄩㄢˊ", null], "一盒有{a}顆糖果，{b}盒一共有幾顆？": ["ㄧ", "ㄏㄜˊ", "ㄧㄡˇ", null, null, null, "ㄎㄜ", "ㄊㄤˊ", "ㄍㄨㄛˇ", null, null, null, null, "ㄏㄜˊ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄎㄜ", null], "一起玩": ["ㄧ", "ㄑㄧˇ", "ㄨㄢˊ"], "一～二年級": ["ㄧ", null, "ㄦˋ", "ㄋㄧㄢˊ", "ㄐㄧˊ"], "七一得七": ["ㄑㄧ", "ㄧ", "ㄉㄜˊ", "ㄑㄧ"], "七七四十九": ["ㄑㄧ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄐㄧㄡˇ"], "七三二十一": ["ㄑㄧ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄧ"], "七九六十三": ["ㄑㄧ", "ㄐㄧㄡˇ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙㄢ"], "七二十四": ["ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "七五三十五": ["ㄑㄧ", "ㄨˇ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "七八九特訓": ["ㄑㄧ", "ㄅㄚ", "ㄐㄧㄡˇ", "ㄊㄜˋ", "ㄒㄩㄣˋ"], "七八五十六": ["ㄑㄧ", "ㄅㄚ", "ㄨˇ", "ㄕˊ", "ㄌㄧㄡˋ"], "七六四十二": ["ㄑㄧ", "ㄌㄧㄡˋ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "七四二十八": ["ㄑㄧ", "ㄙˋ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "三一得三": ["ㄙㄢ", "ㄧ", "ㄉㄜˊ", "ㄙㄢ"], "三七二十一": ["ㄙㄢ", "ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄧ"], "三三得九": ["ㄙㄢ", "ㄙㄢ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "三九二十七": ["ㄙㄢ", "ㄐㄧㄡˇ", "ㄦˋ", "ㄕˊ", "ㄑㄧ"], "三二得六": ["ㄙㄢ", "ㄦˋ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "三五十五": ["ㄙㄢ", "ㄨˇ", "ㄕˊ", "ㄨˇ"], "三位數乘一位數": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄧ", "ㄨㄟˋ", "ㄕㄨˋ"], "三位數加法": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "三位數加減": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄐㄧㄢˇ"], "三位數大魔王": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "三位數挑戰": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄊㄧㄠ", "ㄓㄢˋ"], "三位數減法": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "三位數退位減法": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄊㄨㄟˋ", "ㄨㄟˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "三位數進位加法": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄣˋ", "ㄨㄟˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "三位數除以一位數": ["ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄔㄨˊ", "ㄧˇ", "ㄧ", "ㄨㄟˋ", "ㄕㄨˋ"], "三個任務都完成了！再送你3個點心": ["ㄙㄢ", "ㄍㄜˋ", "ㄖㄣˋ", "ㄨˋ", "ㄉㄡ", "ㄨㄢˊ", "ㄔㄥˊ", "ㄌㄜ˙", null, "ㄗㄞˋ", "ㄙㄨㄥˋ", "ㄋㄧˇ", null, "ㄍㄜˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ"], "三八二十四": ["ㄙㄢ", "ㄅㄚ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "三六十八": ["ㄙㄢ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄅㄚ"], "三四十二": ["ㄙㄢ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "三～四年級": ["ㄙㄢ", null, "ㄙˋ", "ㄋㄧㄢˊ", "ㄐㄧˊ"], "下一關": ["ㄒㄧㄚˋ", "ㄧ", "ㄍㄨㄢ"], "不要": ["ㄅㄨˊ", "ㄧㄠˋ"], "不設定": ["ㄅㄨˋ", "ㄕㄜˋ", "ㄉㄧㄥˋ"], "中年級全破": ["ㄓㄨㄥ", "ㄋㄧㄢˊ", "ㄐㄧˊ", "ㄑㄩㄢˊ", "ㄆㄛˋ"], "中年級數學運算應用": ["ㄓㄨㄥ", "ㄋㄧㄢˊ", "ㄐㄧˊ", "ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄩㄣˋ", "ㄙㄨㄢˋ", "ㄧㄥˋ", "ㄩㄥˋ"], "乘法": ["ㄔㄥˊ", "ㄈㄚˇ"], "乘法大魔王": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "乘法小騎士": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄒㄧㄠˇ", "ㄑㄧˊ", "ㄕˋ"], "乘法應用題": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "乘法應用題大挑戰": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ", "ㄉㄚˋ", "ㄊㄧㄠ", "ㄓㄢˋ"], "乘法比大小": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄅㄧˇ", "ㄉㄚˋ", "ㄒㄧㄠˇ"], "乘法魔法師": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄇㄛˊ", "ㄈㄚˇ", "ㄕ"], "乘法魔法王": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄇㄛˊ", "ㄈㄚˇ", "ㄨㄤˊ"], "九一得九": ["ㄐㄧㄡˇ", "ㄧ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "九七六十三": ["ㄐㄧㄡˇ", "ㄑㄧ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙㄢ"], "九三二十七": ["ㄐㄧㄡˇ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄑㄧ"], "九九乘法森林": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄙㄣ", "ㄌㄧㄣˊ"], "九九乘法森林全破": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄙㄣ", "ㄌㄧㄣˊ", "ㄑㄩㄢˊ", "ㄆㄛˋ"], "九九八十一": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄅㄚ", "ㄕˊ", "ㄧ"], "九九勇者": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄩㄥˇ", "ㄓㄜˇ"], "九九大師": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄉㄚˋ", "ㄕ"], "九九除法": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄔㄨˊ", "ㄈㄚˇ"], "九二十八": ["ㄐㄧㄡˇ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "九五四十五": ["ㄐㄧㄡˇ", "ㄨˇ", "ㄙˋ", "ㄕˊ", "ㄨˇ"], "九八七十二": ["ㄐㄧㄡˇ", "ㄅㄚ", "ㄑㄧ", "ㄕˊ", "ㄦˋ"], "九六五十四": ["ㄐㄧㄡˇ", "ㄌㄧㄡˋ", "ㄨˇ", "ㄕˊ", "ㄙˋ"], "九四三十六": ["ㄐㄧㄡˇ", "ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "二一得二": ["ㄦˋ", "ㄧ", "ㄉㄜˊ", "ㄦˋ"], "二七十四": ["ㄦˋ", "ㄑㄧ", "ㄕˊ", "ㄙˋ"], "二三位數綜合": ["ㄦˋ", "ㄙㄢ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄗㄨㄥˋ", "ㄏㄜˊ"], "二三得六": ["ㄦˋ", "ㄙㄢ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "二九十八": ["ㄦˋ", "ㄐㄧㄡˇ", "ㄕˊ", "ㄅㄚ"], "二二得四": ["ㄦˋ", "ㄦˋ", "ㄉㄜˊ", "ㄙˋ"], "二五一十": ["ㄦˋ", "ㄨˇ", "ㄧ", "ㄕˊ"], "二位小數加減": ["ㄦˋ", "ㄨㄟˋ", "ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄐㄧㄢˇ"], "二位數乘一位數": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄧ", "ㄨㄟˋ", "ㄕㄨˋ"], "二位數乘二位數": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ"], "二位數加法": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "二位數加減": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄐㄧㄢˇ"], "二位數大魔王": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "二位數減法": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "二位數退位減法": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄊㄨㄟˋ", "ㄨㄟˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "二位數進位加法": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄣˋ", "ㄨㄟˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "二位數除以一位數": ["ㄦˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄔㄨˊ", "ㄧˇ", "ㄧ", "ㄨㄟˋ", "ㄕㄨˋ"], "二八十六": ["ㄦˋ", "ㄅㄚ", "ㄕˊ", "ㄌㄧㄡˋ"], "二六十二": ["ㄦˋ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄦˋ"], "二四得八": ["ㄦˋ", "ㄙˋ", "ㄉㄜˊ", "ㄅㄚ"], "二年級．九九乘法": ["ㄦˋ", "ㄋㄧㄢˊ", "ㄐㄧˊ", null, "ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄔㄥˊ", "ㄈㄚˇ"], "五一得五": ["ㄨˇ", "ㄧ", "ㄉㄜˊ", "ㄨˇ"], "五七三十五": ["ㄨˇ", "ㄑㄧ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "五三十五": ["ㄨˇ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "五九四十五": ["ㄨˇ", "ㄐㄧㄡˇ", "ㄙˋ", "ㄕˊ", "ㄨˇ"], "五二一十": ["ㄨˇ", "ㄦˋ", "ㄧ", "ㄕˊ"], "五五二十五": ["ㄨˇ", "ㄨˇ", "ㄦˋ", "ㄕˊ", "ㄨˇ"], "五個點心": ["ㄨˇ", "ㄍㄜˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ"], "五八四十": ["ㄨˇ", "ㄅㄚ", "ㄙˋ", "ㄕˊ"], "五六三十": ["ㄨˇ", "ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ"], "五四二十": ["ㄨˇ", "ㄙˋ", "ㄦˋ", "ㄕˊ"], "五～六年級": ["ㄨˇ", null, "ㄌㄧㄡˋ", "ㄋㄧㄢˊ", "ㄐㄧˊ"], "交換律配對": ["ㄐㄧㄠ", "ㄏㄨㄢˋ", "ㄌㄩˋ", "ㄆㄟˋ", "ㄉㄨㄟˋ"], "今天的任務全部完成了，明天見！": ["ㄐㄧㄣ", "ㄊㄧㄢ", "ㄉㄜ˙", "ㄖㄣˋ", "ㄨˋ", "ㄑㄩㄢˊ", "ㄅㄨˋ", "ㄨㄢˊ", "ㄔㄥˊ", "ㄌㄜ˙", null, "ㄇㄧㄥˊ", "ㄊㄧㄢ", "ㄐㄧㄢˋ", null], "今日任務": ["ㄐㄧㄣ", "ㄖˋ", "ㄖㄣˋ", "ㄨˋ"], "佈置高手": ["ㄅㄨˋ", "ㄓˋ", "ㄍㄠ", "ㄕㄡˇ"], "低年級加減法應用": ["ㄉㄧ", "ㄋㄧㄢˊ", "ㄐㄧˊ", "ㄐㄧㄚ", "ㄐㄧㄢˇ", "ㄈㄚˇ", "ㄧㄥˋ", "ㄩㄥˋ"], "使用中": ["ㄕˇ", "ㄩㄥˋ", "ㄓㄨㄥ"], "倒數速度：": ["ㄉㄠˋ", "ㄕㄨˇ", "ㄙㄨˋ", "ㄉㄨˋ", null], "備份碼不正確，請再檢查一次。": ["ㄅㄟˋ", "ㄈㄣˋ", "ㄇㄚˇ", "ㄅㄨˋ", "ㄓㄥˋ", "ㄑㄩㄝˋ", null, "ㄑㄧㄥˇ", "ㄗㄞˋ", "ㄐㄧㄢˇ", "ㄔㄚˊ", "ㄧ", "ㄘˋ", null], "傳說": ["ㄔㄨㄢˊ", "ㄕㄨㄛ"], "傳說寵物": ["ㄔㄨㄢˊ", "ㄕㄨㄛ", "ㄔㄨㄥˇ", "ㄨˋ"], "儲存": ["ㄔㄨˇ", "ㄘㄨㄣˊ"], "儲存名字": ["ㄔㄨˇ", "ㄘㄨㄣˊ", "ㄇㄧㄥˊ", "ㄗˋ"], "儲存好了！": ["ㄔㄨˇ", "ㄘㄨㄣˊ", "ㄏㄠˇ", "ㄌㄜ˙", null], "先不要": ["ㄒㄧㄢ", "ㄅㄨˊ", "ㄧㄠˋ"], "先乘除後加減": ["ㄒㄧㄢ", "ㄔㄥˊ", "ㄔㄨˊ", "ㄏㄡˋ", "ㄐㄧㄚ", "ㄐㄧㄢˇ"], "先打贏前一關才能走到這裡喔！": ["ㄒㄧㄢ", "ㄉㄚˇ", "ㄧㄥˊ", "ㄑㄧㄢˊ", "ㄧ", "ㄍㄨㄢ", "ㄘㄞˊ", "ㄋㄥˊ", "ㄗㄡˇ", "ㄉㄠˋ", "ㄓㄜˋ", "ㄌㄧˇ", "ㄛ", null], "兌換": ["ㄉㄨㄟˋ", "ㄏㄨㄢˋ"], "兌換成功！": ["ㄉㄨㄟˋ", "ㄏㄨㄢˋ", "ㄔㄥˊ", "ㄍㄨㄥ", null], "兌換紀錄": ["ㄉㄨㄟˋ", "ㄏㄨㄢˋ", "ㄐㄧˋ", "ㄌㄨˋ"], "兌換！": ["ㄉㄨㄟˋ", "ㄏㄨㄢˋ", null], "全部混在一起": ["ㄑㄩㄢˊ", "ㄅㄨˋ", "ㄏㄨㄣˋ", "ㄗㄞˋ", "ㄧ", "ㄑㄧˇ"], "兩次輸入的密碼不一樣": ["ㄌㄧㄤˇ", "ㄘˋ", "ㄕㄨ", "ㄖㄨˋ", "ㄉㄜ˙", "ㄇㄧˋ", "ㄇㄚˇ", "ㄅㄨˋ", "ㄧ", "ㄧㄤˋ"], "兩步驟應用題": ["ㄌㄧㄤˇ", "ㄅㄨˋ", "ㄓㄡˋ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "八一得八": ["ㄅㄚ", "ㄧ", "ㄉㄜˊ", "ㄅㄚ"], "八七五十六": ["ㄅㄚ", "ㄑㄧ", "ㄨˇ", "ㄕˊ", "ㄌㄧㄡˋ"], "八三二十四": ["ㄅㄚ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "八九七十二": ["ㄅㄚ", "ㄐㄧㄡˇ", "ㄑㄧ", "ㄕˊ", "ㄦˋ"], "八二十六": ["ㄅㄚ", "ㄦˋ", "ㄕˊ", "ㄌㄧㄡˋ"], "八五四十": ["ㄅㄚ", "ㄨˇ", "ㄙˋ", "ㄕˊ"], "八八六十四": ["ㄅㄚ", "ㄅㄚ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙˋ"], "八六四十八": ["ㄅㄚ", "ㄌㄧㄡˋ", "ㄙˋ", "ㄕˊ", "ㄅㄚ"], "八四三十二": ["ㄅㄚ", "ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "公主": ["ㄍㄨㄥ", "ㄓㄨˇ"], "公車上有{a}人，下車{b}人，又上車{c}人，現在車上有幾人？": ["ㄍㄨㄥ", "ㄔㄜ", "ㄕㄤˋ", "ㄧㄡˇ", null, null, null, "ㄖㄣˊ", null, "ㄒㄧㄚˋ", "ㄔㄜ", null, null, null, "ㄖㄣˊ", null, "ㄧㄡˋ", "ㄕㄤˋ", "ㄔㄜ", null, null, null, "ㄖㄣˊ", null, "ㄒㄧㄢˋ", "ㄗㄞˋ", "ㄔㄜ", "ㄕㄤˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄖㄣˊ", null], "六一得六": ["ㄌㄧㄡˋ", "ㄧ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "六七四十二": ["ㄌㄧㄡˋ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "六三十八": ["ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ", "ㄅㄚ"], "六九五十四": ["ㄌㄧㄡˋ", "ㄐㄧㄡˇ", "ㄨˇ", "ㄕˊ", "ㄙˋ"], "六二十二": ["ㄌㄧㄡˋ", "ㄦˋ", "ㄕˊ", "ㄦˋ"], "六五三十": ["ㄌㄧㄡˋ", "ㄨˇ", "ㄙㄢ", "ㄕˊ"], "六八四十八": ["ㄌㄧㄡˋ", "ㄅㄚ", "ㄙˋ", "ㄕˊ", "ㄅㄚ"], "六六三十六": ["ㄌㄧㄡˋ", "ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "六四二十四": ["ㄌㄧㄡˋ", "ㄙˋ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "再吃{n}個點心就會長大": ["ㄗㄞˋ", "ㄔ", null, null, null, "ㄍㄜˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ", "ㄐㄧㄡˋ", "ㄏㄨㄟˋ", "ㄓㄤˇ", "ㄉㄚˋ"], "再玩一次": ["ㄗㄞˋ", "ㄨㄢˊ", "ㄧ", "ㄘˋ"], "再試一次！": ["ㄗㄞˋ", "ㄕˋ", "ㄧ", "ㄘˋ", null], "再輸入一次": ["ㄗㄞˋ", "ㄕㄨ", "ㄖㄨˋ", "ㄧ", "ㄘˋ"], "冰冰企鵝": ["ㄅㄧㄥ", "ㄅㄧㄥ", "ㄑㄧˋ", "ㄜˊ"], "出發！": ["ㄔㄨ", "ㄈㄚ", null], "分數": ["ㄈㄣ", "ㄕㄨˋ"], "分數乘分數": ["ㄈㄣ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄈㄣ", "ㄕㄨˋ"], "分數乘整數": ["ㄈㄣ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄓㄥˇ", "ㄕㄨˋ"], "分數大魔王": ["ㄈㄣ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "分數小數大魔王": ["ㄈㄣ", "ㄕㄨˋ", "ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "分數綜合": ["ㄈㄣ", "ㄕㄨˋ", "ㄗㄨㄥˋ", "ㄏㄜˊ"], "分數與小數": ["ㄈㄣ", "ㄕㄨˋ", "ㄩˇ", "ㄒㄧㄠˇ", "ㄕㄨˋ"], "刪除": ["ㄕㄢ", "ㄔㄨˊ"], "加": ["ㄐㄧㄚ"], "加減應用題": ["ㄐㄧㄚ", "ㄐㄧㄢˇ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "加減法全破": ["ㄐㄧㄚ", "ㄐㄧㄢˇ", "ㄈㄚˇ", "ㄑㄩㄢˊ", "ㄆㄛˋ"], "加減法最終決戰": ["ㄐㄧㄚ", "ㄐㄧㄢˇ", "ㄈㄚˇ", "ㄗㄨㄟˋ", "ㄓㄨㄥ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "十": ["ㄕˊ"], "升到Lv.5": ["ㄕㄥ", "ㄉㄠˋ", null, null, null, null], "升到Lv.{n}就打開": ["ㄕㄥ", "ㄉㄠˋ", null, null, null, null, null, null, "ㄐㄧㄡˋ", "ㄉㄚˇ", "ㄎㄞ"], "升級了！": ["ㄕㄥ", "ㄐㄧˊ", "ㄌㄜ˙", null], "半徑{r}公分的圓，面積是多少平方公分？（圓周率用3.14）": ["ㄅㄢˋ", "ㄐㄧㄥˋ", null, null, null, "ㄍㄨㄥ", "ㄈㄣ", "ㄉㄜ˙", "ㄩㄢˊ", null, "ㄇㄧㄢˋ", "ㄐㄧ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄆㄧㄥˊ", "ㄈㄤ", "ㄍㄨㄥ", "ㄈㄣ", null, null, "ㄩㄢˊ", "ㄓㄡ", "ㄌㄩˋ", "ㄩㄥˋ", null, null, null, null, null], "去小遊戲": ["ㄑㄩˋ", "ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ"], "取名": ["ㄑㄩˇ", "ㄇㄧㄥˊ"], "取消": ["ㄑㄩˇ", "ㄒㄧㄠ"], "口訣小達人": ["ㄎㄡˇ", "ㄐㄩㄝˊ", "ㄒㄧㄠˇ", "ㄉㄚˊ", "ㄖㄣˊ"], "只戳破算式正確的泡泡": ["ㄓˇ", "ㄔㄨㄛ", "ㄆㄛˋ", "ㄙㄨㄢˋ", "ㄕˋ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄜ˙", "ㄆㄠˋ", "ㄆㄠˋ"], "只戳破算式正確的泡泡！": ["ㄓˇ", "ㄔㄨㄛ", "ㄆㄛˋ", "ㄙㄨㄢˋ", "ㄕˋ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄜ˙", "ㄆㄠˋ", "ㄆㄠˋ", null], "可以改圖示、名字和需要的金幣，改好以後按「儲存」。": ["ㄎㄜˇ", "ㄧˇ", "ㄍㄞˇ", "ㄊㄨˊ", "ㄕˋ", null, "ㄇㄧㄥˊ", "ㄗˋ", "ㄏㄜˊ", "ㄒㄩ", "ㄧㄠˋ", "ㄉㄜ˙", "ㄐㄧㄣ", "ㄅㄧˋ", null, "ㄍㄞˇ", "ㄏㄠˇ", "ㄧˇ", "ㄏㄡˋ", "ㄢˋ", null, "ㄔㄨˇ", "ㄘㄨㄣˊ", null, null], "同分母分數加法": ["ㄊㄨㄥˊ", "ㄈㄣ", "ㄇㄨˇ", "ㄈㄣ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "同分母分數減法": ["ㄊㄨㄥˊ", "ㄈㄣ", "ㄇㄨˇ", "ㄈㄣ", "ㄕㄨˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "名字改好了！": ["ㄇㄧㄥˊ", "ㄗˋ", "ㄍㄞˇ", "ㄏㄠˇ", "ㄌㄜ˙", null], "向日葵": ["ㄒㄧㄤˋ", "ㄖˋ", "ㄎㄨㄟˊ"], "命中！": ["ㄇㄧㄥˋ", "ㄓㄨㄥˋ", null], "哥哥有{a}元，弟弟比哥哥少{b}元，弟弟有幾元？": ["ㄍㄜ", "ㄍㄜ˙", "ㄧㄡˇ", null, null, null, "ㄩㄢˊ", null, "ㄉㄧˋ", "ㄉㄧ˙", "ㄅㄧˇ", "ㄍㄜ", "ㄍㄜ˙", "ㄕㄠˇ", null, null, null, "ㄩㄢˊ", null, "ㄉㄧˋ", "ㄉㄧ˙", "ㄧㄡˇ", "ㄐㄧˇ", "ㄩㄢˊ", null], "商店": ["ㄕㄤ", "ㄉㄧㄢˋ"], "單位換算與綜合": ["ㄉㄢ", "ㄨㄟˋ", "ㄏㄨㄢˋ", "ㄙㄨㄢˋ", "ㄩˇ", "ㄗㄨㄥˋ", "ㄏㄜˊ"], "噴水池": ["ㄆㄣ", "ㄕㄨㄟˇ", "ㄔˊ"], "四一得四": ["ㄙˋ", "ㄧ", "ㄉㄜˊ", "ㄙˋ"], "四七二十八": ["ㄙˋ", "ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "四三十二": ["ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "四九三十六": ["ㄙˋ", "ㄐㄧㄡˇ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "四二得八": ["ㄙˋ", "ㄦˋ", "ㄉㄜˊ", "ㄅㄚ"], "四五二十": ["ㄙˋ", "ㄨˇ", "ㄦˋ", "ㄕˊ"], "四位數加減": ["ㄙˋ", "ㄨㄟˋ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄐㄧㄢˇ"], "四八三十二": ["ㄙˋ", "ㄅㄚ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "四六二十四": ["ㄙˋ", "ㄌㄧㄡˋ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "四則應用題": ["ㄙˋ", "ㄗㄜˊ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "四則運算": ["ㄙˋ", "ㄗㄜˊ", "ㄩㄣˋ", "ㄙㄨㄢˋ"], "四則運算大魔王": ["ㄙˋ", "ㄗㄜˊ", "ㄩㄣˋ", "ㄙㄨㄢˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "四四十六": ["ㄙˋ", "ㄙˋ", "ㄕˊ", "ㄌㄧㄡˋ"], "四秒閃電": ["ㄙˋ", "ㄇㄧㄠˇ", "ㄕㄢˇ", "ㄉㄧㄢˋ"], "回地圖": ["ㄏㄨㄟˊ", "ㄉㄧˋ", "ㄊㄨˊ"], "因數倍數大魔王": ["ㄧㄣ", "ㄕㄨˋ", "ㄅㄟˋ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "因數倍數混合": ["ㄧㄣ", "ㄕㄨˋ", "ㄅㄟˋ", "ㄕㄨˋ", "ㄏㄨㄣˋ", "ㄏㄜˊ"], "因數與倍數": ["ㄧㄣ", "ㄕㄨˋ", "ㄩˇ", "ㄅㄟˋ", "ㄕㄨˋ"], "困難": ["ㄎㄨㄣˋ", "ㄋㄢˊ"], "困難模式打開了！": ["ㄎㄨㄣˋ", "ㄋㄢˊ", "ㄇㄛˊ", "ㄕˋ", "ㄉㄚˇ", "ㄎㄞ", "ㄌㄜ˙", null], "困難模式拿到三顆星10次": ["ㄎㄨㄣˋ", "ㄋㄢˊ", "ㄇㄛˊ", "ㄕˋ", "ㄋㄚˊ", "ㄉㄠˋ", "ㄙㄢ", "ㄎㄜ", "ㄒㄧㄥ", null, null, "ㄘˋ"], "困難高手": ["ㄎㄨㄣˋ", "ㄋㄢˊ", "ㄍㄠ", "ㄕㄡˇ"], "圈圈": ["ㄑㄩㄢ", "ㄑㄩㄢ"], "圓面積": ["ㄩㄢˊ", "ㄇㄧㄢˋ", "ㄐㄧ"], "圖形平均大魔王": ["ㄊㄨˊ", "ㄒㄧㄥˊ", "ㄆㄧㄥˊ", "ㄐㄩㄣ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "圖形與平均": ["ㄊㄨˊ", "ㄒㄧㄥˊ", "ㄩˇ", "ㄆㄧㄥˊ", "ㄐㄩㄣ"], "圖書館有{a}本書，又買了{b}本，現在一共有幾本？": ["ㄊㄨˊ", "ㄕㄨ", "ㄍㄨㄢˇ", "ㄧㄡˇ", null, null, null, "ㄅㄣˇ", "ㄕㄨ", null, "ㄧㄡˋ", "ㄇㄞˇ", "ㄌㄜ˙", null, null, null, "ㄅㄣˇ", null, "ㄒㄧㄢˋ", "ㄗㄞˋ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄅㄣˇ", null], "在一個區域玩過全部6個小遊戲": ["ㄗㄞˋ", "ㄧ", "ㄍㄜˋ", "ㄑㄩ", "ㄩˋ", "ㄨㄢˊ", "ㄍㄨㄛˋ", "ㄑㄩㄢˊ", "ㄅㄨˋ", null, "ㄍㄜˋ", "ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ"], "在數學星球上選一個區域，沿著地圖一格一格往前走！": ["ㄗㄞˋ", "ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄒㄧㄥ", "ㄑㄧㄡˊ", "ㄕㄤˋ", "ㄒㄩㄢˇ", "ㄧ", "ㄍㄜˋ", "ㄑㄩ", "ㄩˋ", null, "ㄧㄢˊ", "ㄓㄨˋ", "ㄉㄧˋ", "ㄊㄨˊ", "ㄧ", "ㄍㄜˊ", "ㄧ", "ㄍㄜˊ", "ㄨㄤˇ", "ㄑㄧㄢˊ", "ㄗㄡˇ", null], "在錯題特訓答對{n}題": ["ㄗㄞˋ", "ㄘㄨㄛˋ", "ㄊㄧˊ", "ㄊㄜˋ", "ㄒㄩㄣˋ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, "ㄊㄧˊ"], "城堡": ["ㄔㄥˊ", "ㄅㄠˇ"], "填空大師": ["ㄊㄧㄢˊ", "ㄎㄨㄥˋ", "ㄉㄚˋ", "ㄕ"], "多一份少一份": ["ㄉㄨㄛ", "ㄧ", "ㄈㄣˋ", "ㄕㄠˇ", "ㄧ", "ㄈㄣˋ"], "多一點": ["ㄉㄨㄛ", "ㄧ", "ㄉㄧㄢˇ"], "多玩10分鐘": ["ㄉㄨㄛ", "ㄨㄢˊ", null, null, "ㄈㄣ", "ㄓㄨㄥ"], "大數大魔王": ["ㄉㄚˋ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "大數應用題": ["ㄉㄚˋ", "ㄕㄨˋ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "大數運算": ["ㄉㄚˋ", "ㄕㄨˋ", "ㄩㄣˋ", "ㄙㄨㄢˋ"], "大朋友": ["ㄉㄚˋ", "ㄆㄥˊ", "ㄧㄡˇ"], "大樹": ["ㄉㄚˋ", "ㄕㄨˋ"], "太棒了！": ["ㄊㄞˋ", "ㄅㄤˋ", "ㄌㄜ˙", null], "太空人": ["ㄊㄞˋ", "ㄎㄨㄥ", "ㄖㄣˊ"], "太難的區域先鎖起來：": ["ㄊㄞˋ", "ㄋㄢˊ", "ㄉㄜ˙", "ㄑㄩ", "ㄩˋ", "ㄒㄧㄢ", "ㄙㄨㄛˇ", "ㄑㄧˇ", "ㄌㄞˊ", null], "好厲害！": ["ㄏㄠˇ", "ㄌㄧˋ", "ㄏㄞˋ", null], "好！": ["ㄏㄠˇ", null], "姐姐有{a}張貼紙，妹妹有{b}張，姐姐比妹妹多幾張？": ["ㄐㄧㄝˇ", "ㄐㄧㄝ˙", "ㄧㄡˇ", null, null, null, "ㄓㄤ", "ㄊㄧㄝ", "ㄓˇ", null, "ㄇㄟˋ", "ㄇㄟ˙", "ㄧㄡˇ", null, null, null, "ㄓㄤ", null, "ㄐㄧㄝˇ", "ㄐㄧㄝ˙", "ㄅㄧˇ", "ㄇㄟˋ", "ㄇㄟ˙", "ㄉㄨㄛ", "ㄐㄧˇ", "ㄓㄤ", null], "媽媽有{a}元，買文具用了{b}元，還剩幾元？": ["ㄇㄚ", "ㄇㄚ˙", "ㄧㄡˇ", null, null, null, "ㄩㄢˊ", null, "ㄇㄞˇ", "ㄨㄣˊ", "ㄐㄩˋ", "ㄩㄥˋ", "ㄌㄜ˙", null, null, null, "ㄩㄢˊ", null, "ㄏㄞˊ", "ㄕㄥˋ", "ㄐㄧˇ", "ㄩㄢˊ", null], "媽媽買了{a}個蘋果和{b}個橘子，吃掉{c}個，還剩幾個？": ["ㄇㄚ", "ㄇㄚ˙", "ㄇㄞˇ", "ㄌㄜ˙", null, null, null, "ㄍㄜˋ", "ㄆㄧㄥˊ", "ㄍㄨㄛˇ", "ㄏㄜˊ", null, null, null, "ㄍㄜˋ", "ㄐㄩˊ", "ㄗ˙", null, "ㄔ", "ㄉㄧㄠˋ", null, null, null, "ㄍㄜˋ", null, "ㄏㄞˊ", "ㄕㄥˋ", "ㄐㄧˇ", "ㄍㄜˋ", null], "孩子的名字": ["ㄏㄞˊ", "ㄗ˙", "ㄉㄜ˙", "ㄇㄧㄥˊ", "ㄗˋ"], "孩子的年級": ["ㄏㄞˊ", "ㄗ˙", "ㄉㄜ˙", "ㄋㄧㄢˊ", "ㄐㄧˊ"], "定價{a}元的玩具打{z}折，要付多少元？": ["ㄉㄧㄥˋ", "ㄐㄧㄚˋ", null, null, null, "ㄩㄢˊ", "ㄉㄜ˙", "ㄨㄢˊ", "ㄐㄩˋ", "ㄉㄚˇ", null, null, null, "ㄓㄜˊ", null, "ㄧㄠˋ", "ㄈㄨˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄩㄢˊ", null], "家具商店": ["ㄐㄧㄚ", "ㄐㄩˋ", "ㄕㄤ", "ㄉㄧㄢˋ"], "家具放進寵物園了！可以拖曳換位置。": ["ㄐㄧㄚ", "ㄐㄩˋ", "ㄈㄤˋ", "ㄐㄧㄣˋ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄩㄢˊ", "ㄌㄜ˙", null, "ㄎㄜˇ", "ㄧˇ", "ㄊㄨㄛ", "ㄧㄝˋ", "ㄏㄨㄢˋ", "ㄨㄟˋ", "ㄓˋ", null], "家長小工具": ["ㄐㄧㄚ", "ㄓㄤˇ", "ㄒㄧㄠˇ", "ㄍㄨㄥ", "ㄐㄩˋ"], "家長設定": ["ㄐㄧㄚ", "ㄓㄤˇ", "ㄕㄜˋ", "ㄉㄧㄥˋ"], "密碼不對": ["ㄇㄧˋ", "ㄇㄚˇ", "ㄅㄨˋ", "ㄉㄨㄟˋ"], "密碼要是4到6位數字": ["ㄇㄧˋ", "ㄇㄚˇ", "ㄧㄠˋ", "ㄕˋ", null, "ㄉㄠˋ", null, "ㄨㄟˋ", "ㄕㄨˋ", "ㄗˋ"], "密碼設定好了！請記住它。": ["ㄇㄧˋ", "ㄇㄚˇ", "ㄕㄜˋ", "ㄉㄧㄥˋ", "ㄏㄠˇ", "ㄌㄜ˙", null, "ㄑㄧㄥˇ", "ㄐㄧˋ", "ㄓㄨˋ", "ㄊㄚ", null], "寵物園已經住滿了！": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄩㄢˊ", "ㄧˇ", "ㄐㄧㄥ", "ㄓㄨˋ", "ㄇㄢˇ", "ㄌㄜ˙", null], "寵物園擺5個家具": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄩㄢˊ", "ㄅㄞˇ", null, "ㄍㄜˋ", "ㄐㄧㄚ", "ㄐㄩˋ"], "寵物園的家具和新寵物蛋，在「寵物」頁面購買。": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄩㄢˊ", "ㄉㄜ˙", "ㄐㄧㄚ", "ㄐㄩˋ", "ㄏㄜˊ", "ㄒㄧㄣ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄉㄢˋ", null, "ㄗㄞˋ", null, "ㄔㄨㄥˇ", "ㄨˋ", null, "ㄧㄝˋ", "ㄇㄧㄢˋ", "ㄍㄡˋ", "ㄇㄞˇ", null], "寵物大家庭": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄉㄚˋ", "ㄐㄧㄚ", "ㄊㄧㄥˊ"], "寵物孵化了": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄈㄨ", "ㄏㄨㄚˋ", "ㄌㄜ˙"], "寵物小屋": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄒㄧㄠˇ", "ㄨ"], "寵物長大了！": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄓㄤˇ", "ㄉㄚˋ", "ㄌㄜ˙", null], "寵物點心": ["ㄔㄨㄥˇ", "ㄨˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ"], "寶寶": ["ㄅㄠˇ", "ㄅㄠˇ"], "小仙子": ["ㄒㄧㄠˇ", "ㄒㄧㄢ", "ㄗ˙"], "小兔子": ["ㄒㄧㄠˇ", "ㄊㄨˋ", "ㄗ˙"], "小勇者": ["ㄒㄧㄠˇ", "ㄩㄥˇ", "ㄓㄜˇ"], "小女孩": ["ㄒㄧㄠˇ", "ㄋㄩˇ", "ㄏㄞˊ"], "小小應用題": ["ㄒㄧㄠˇ", "ㄒㄧㄠˇ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "小數": ["ㄒㄧㄠˇ", "ㄕㄨˋ"], "小數乘小數": ["ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄒㄧㄠˇ", "ㄕㄨˋ"], "小數乘整數": ["ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄓㄥˇ", "ㄕㄨˋ"], "小數四則混合": ["ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄙˋ", "ㄗㄜˊ", "ㄏㄨㄣˋ", "ㄏㄜˊ"], "小數大魔王": ["ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "小數應用題": ["ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "小數綜合": ["ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄗㄨㄥˋ", "ㄏㄜˊ"], "小數除以整數": ["ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄔㄨˊ", "ㄧˇ", "ㄓㄥˇ", "ㄕㄨˋ"], "小朋友": ["ㄒㄧㄠˇ", "ㄆㄥˊ", "ㄧㄡˇ"], "小花圃": ["ㄒㄧㄠˇ", "ㄏㄨㄚ", "ㄆㄨˇ"], "小貓咪": ["ㄒㄧㄠˇ", "ㄇㄠ", "ㄇㄧ"], "小遊戲": ["ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ"], "小遊戲收集家": ["ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ", "ㄕㄡ", "ㄐㄧˊ", "ㄐㄧㄚ"], "小遊戲結束！": ["ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ", "ㄐㄧㄝˊ", "ㄕㄨˋ", null], "小雞跳格子": ["ㄒㄧㄠˇ", "ㄐㄧ", "ㄊㄧㄠˋ", "ㄍㄜˊ", "ㄗ˙"], "少一點": ["ㄕㄠˇ", "ㄧ", "ㄉㄧㄢˇ"], "工廠做了{a}個玩具，賣掉{b}個，還剩幾個？": ["ㄍㄨㄥ", "ㄔㄤˇ", "ㄗㄨㄛˋ", "ㄌㄜ˙", null, null, null, "ㄍㄜˋ", "ㄨㄢˊ", "ㄐㄩˋ", null, "ㄇㄞˋ", "ㄉㄧㄠˋ", null, null, null, "ㄍㄜˋ", null, "ㄏㄞˊ", "ㄕㄥˋ", "ㄐㄧˇ", "ㄍㄜˋ", null], "差一點！": ["ㄔㄚˋ", "ㄧ", "ㄉㄧㄢˇ", null], "已兌現": ["ㄧˇ", "ㄉㄨㄟˋ", "ㄒㄧㄢˋ"], "已有{n}個": ["ㄧˇ", "ㄧㄡˇ", null, null, null, "ㄍㄜˋ"], "已經拿到{n}顆星星": ["ㄧˇ", "ㄐㄧㄥ", "ㄋㄚˊ", "ㄉㄠˋ", null, null, null, "ㄎㄜ", "ㄒㄧㄥ", "ㄒㄧㄥ"], "已經是傳說寵物了！": ["ㄧˇ", "ㄐㄧㄥ", "ㄕˋ", "ㄔㄨㄢˊ", "ㄕㄨㄛ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄌㄜ˙", null], "已經答對{n}題": ["ㄧˇ", "ㄐㄧㄥ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, "ㄊㄧˊ"], "已經複製好了！": ["ㄧˇ", "ㄐㄧㄥ", "ㄈㄨˋ", "ㄓˋ", "ㄏㄠˇ", "ㄌㄜ˙", null], "已領取": ["ㄧˇ", "ㄌㄧㄥˇ", "ㄑㄩˇ"], "布丁熊": ["ㄅㄨˋ", "ㄉㄧㄥ", "ㄒㄩㄥˊ"], "帳篷": ["ㄓㄤˋ", "ㄆㄥˊ"], "帶分數變假分數": ["ㄉㄞˋ", "ㄈㄣ", "ㄕㄨˋ", "ㄅㄧㄢˋ", "ㄐㄧㄚˇ", "ㄈㄣ", "ㄕㄨˋ"], "幫牠取名字": ["ㄅㄤ", "ㄊㄚ", "ㄑㄩˇ", "ㄇㄧㄥˊ", "ㄗˋ"], "平均數": ["ㄆㄧㄥˊ", "ㄐㄩㄣ", "ㄕㄨˋ"], "年級": ["ㄋㄧㄢˊ", "ㄐㄧˊ"], "幽靈七七四十九": ["ㄧㄡ", "ㄌㄧㄥˊ", "ㄑㄧ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄐㄧㄡˇ"], "幾": ["ㄐㄧˇ"], "彩虹": ["ㄘㄞˇ", "ㄏㄨㄥˊ"], "彩虹六六大順": ["ㄘㄞˇ", "ㄏㄨㄥˊ", "ㄌㄧㄡˋ", "ㄌㄧㄡˋ", "ㄉㄚˋ", "ㄕㄨㄣˋ"], "得": ["ㄉㄜˊ"], "忍者": ["ㄖㄣˇ", "ㄓㄜˇ"], "忘記密碼": ["ㄨㄤˋ", "ㄐㄧˋ", "ㄇㄧˋ", "ㄇㄚˇ"], "忘記密碼？": ["ㄨㄤˋ", "ㄐㄧˋ", "ㄇㄧˋ", "ㄇㄚˇ", null], "快去找爸爸媽媽領獎勵吧！": ["ㄎㄨㄞˋ", "ㄑㄩˋ", "ㄓㄠˇ", "ㄅㄚˋ", "ㄅㄚ˙", "ㄇㄚ", "ㄇㄚ˙", "ㄌㄧㄥˇ", "ㄐㄧㄤˇ", "ㄌㄧˋ", "ㄅㄚ˙", null], "怎麼玩？": ["ㄗㄣˇ", "ㄇㄜ˙", "ㄨㄢˊ", null], "怪獸還剩{n}格血，加油！": ["ㄍㄨㄞˋ", "ㄕㄡˋ", "ㄏㄞˊ", "ㄕㄥˋ", null, null, null, "ㄍㄜˊ", "ㄒㄧㄝˇ", null, "ㄐㄧㄚ", "ㄧㄡˊ", null], "恐龍": ["ㄎㄨㄥˇ", "ㄌㄨㄥˊ"], "應用題和幾倍": ["ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ", "ㄏㄜˊ", "ㄐㄧˇ", "ㄅㄟˋ"], "應用題大挑戰": ["ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ", "ㄉㄚˋ", "ㄊㄧㄠ", "ㄓㄢˋ"], "應用題大魔王": ["ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "成": ["ㄔㄥˊ"], "成就徽章牆": ["ㄔㄥˊ", "ㄐㄧㄡˋ", "ㄏㄨㄟ", "ㄓㄤ", "ㄑㄧㄤˊ"], "我的寵物園": ["ㄨㄛˇ", "ㄉㄜ˙", "ㄔㄨㄥˇ", "ㄨˋ", "ㄩㄢˊ"], "我的紀錄": ["ㄨㄛˇ", "ㄉㄜ˙", "ㄐㄧˋ", "ㄌㄨˋ"], "所有題型大集合": ["ㄙㄨㄛˇ", "ㄧㄡˇ", "ㄊㄧˊ", "ㄒㄧㄥˊ", "ㄉㄚˋ", "ㄐㄧˊ", "ㄏㄜˊ"], "打出{n}連擊": ["ㄉㄚˇ", "ㄔㄨ", null, null, null, "ㄌㄧㄢˊ", "ㄐㄧˊ"], "打地鼠": ["ㄉㄚˇ", "ㄉㄧˋ", "ㄕㄨˇ"], "打贏100關": ["ㄉㄚˇ", "ㄧㄥˊ", null, null, null, "ㄍㄨㄢ"], "打贏20關": ["ㄉㄚˇ", "ㄧㄥˊ", null, null, "ㄍㄨㄢ"], "打贏{n}次困難模式": ["ㄉㄚˇ", "ㄧㄥˊ", null, null, null, "ㄘˋ", "ㄎㄨㄣˋ", "ㄋㄢˊ", "ㄇㄛˊ", "ㄕˋ"], "打贏{n}關": ["ㄉㄚˇ", "ㄧㄥˊ", null, null, null, "ㄍㄨㄢ"], "打贏中年級30關": ["ㄉㄚˇ", "ㄧㄥˊ", "ㄓㄨㄥ", "ㄋㄧㄢˊ", "ㄐㄧˊ", null, null, "ㄍㄨㄢ"], "打贏九九乘法森林30關": ["ㄉㄚˇ", "ㄧㄥˊ", "ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄙㄣ", "ㄌㄧㄣˊ", null, null, "ㄍㄨㄢ"], "打贏低年級30關": ["ㄉㄚˇ", "ㄧㄥˊ", "ㄉㄧ", "ㄋㄧㄢˊ", "ㄐㄧˊ", null, null, "ㄍㄨㄢ"], "打贏普通才能挑戰": ["ㄉㄚˇ", "ㄧㄥˊ", "ㄆㄨˇ", "ㄊㄨㄥ", "ㄘㄞˊ", "ㄋㄥˊ", "ㄊㄧㄠ", "ㄓㄢˋ"], "打贏的關卡": ["ㄉㄚˇ", "ㄧㄥˊ", "ㄉㄜ˙", "ㄍㄨㄢ", "ㄎㄚˇ"], "打贏第一關": ["ㄉㄚˇ", "ㄧㄥˊ", "ㄉㄧˋ", "ㄧ", "ㄍㄨㄢ"], "打贏高年級30關": ["ㄉㄚˇ", "ㄧㄥˊ", "ㄍㄠ", "ㄋㄧㄢˊ", "ㄐㄧˊ", null, null, "ㄍㄨㄢ"], "打開了新的祕密關卡！": ["ㄉㄚˇ", "ㄎㄞ", "ㄌㄜ˙", "ㄒㄧㄣ", "ㄉㄜ˙", "ㄇㄧˋ", "ㄇㄧˋ", "ㄍㄨㄢ", "ㄎㄚˇ", null], "找出兩張加起來剛好的卡片": ["ㄓㄠˇ", "ㄔㄨ", "ㄌㄧㄤˇ", "ㄓㄤ", "ㄐㄧㄚ", "ㄑㄧˇ", "ㄌㄞˊ", "ㄍㄤ", "ㄏㄠˇ", "ㄉㄜ˙", "ㄎㄚˇ", "ㄆㄧㄢˋ"], "找出兩張加起來是": ["ㄓㄠˇ", "ㄔㄨ", "ㄌㄧㄤˇ", "ㄓㄤ", "ㄐㄧㄚ", "ㄑㄧˇ", "ㄌㄞˊ", "ㄕˋ"], "把寵物蛋孵出來": ["ㄅㄚˇ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄉㄢˋ", "ㄈㄨ", "ㄔㄨ", "ㄌㄞˊ"], "把寵物養到傳說": ["ㄅㄚˇ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄧㄤˇ", "ㄉㄠˋ", "ㄔㄨㄢˊ", "ㄕㄨㄛ"], "把答錯過的題目打敗": ["ㄅㄚˇ", "ㄉㄚˊ", "ㄘㄨㄛˋ", "ㄍㄨㄛˋ", "ㄉㄜ˙", "ㄊㄧˊ", "ㄇㄨˋ", "ㄉㄚˇ", "ㄅㄞˋ"], "把算式和答案配成一對": ["ㄅㄚˇ", "ㄙㄨㄢˋ", "ㄕˋ", "ㄏㄜˊ", "ㄉㄚˊ", "ㄢˋ", "ㄆㄟˋ", "ㄔㄥˊ", "ㄧ", "ㄉㄨㄟˋ"], "折扣計算": ["ㄓㄜˊ", "ㄎㄡˋ", "ㄐㄧˋ", "ㄙㄨㄢˋ"], "括號先算": ["ㄎㄨㄛˋ", "ㄏㄠˋ", "ㄒㄧㄢ", "ㄙㄨㄢˋ"], "挑戰": ["ㄊㄧㄠ", "ㄓㄢˋ"], "推薦": ["ㄊㄨㄟ", "ㄐㄧㄢˋ"], "換上": ["ㄏㄨㄢˋ", "ㄕㄤˋ"], "換手機或換網址時，把備份碼貼到新的地方，就能接著玩。": ["ㄏㄨㄢˋ", "ㄕㄡˇ", "ㄐㄧ", "ㄏㄨㄛˋ", "ㄏㄨㄢˋ", "ㄨㄤˇ", "ㄓˇ", "ㄕˊ", null, "ㄅㄚˇ", "ㄅㄟˋ", "ㄈㄣˋ", "ㄇㄚˇ", "ㄊㄧㄝ", "ㄉㄠˋ", "ㄒㄧㄣ", "ㄉㄜ˙", "ㄉㄧˋ", "ㄈㄤ", null, "ㄐㄧㄡˋ", "ㄋㄥˊ", "ㄐㄧㄝ", "ㄓㄜ˙", "ㄨㄢˊ", null], "摸摸頭": ["ㄇㄛ", "ㄇㄛ", "ㄊㄡˊ"], "收下！": ["ㄕㄡ", "ㄒㄧㄚˋ", null], "收起全部家具重新擺": ["ㄕㄡ", "ㄑㄧˇ", "ㄑㄩㄢˊ", "ㄅㄨˋ", "ㄐㄧㄚ", "ㄐㄩˋ", "ㄔㄨㄥˊ", "ㄒㄧㄣ", "ㄅㄞˇ"], "攻擊！": ["ㄍㄨㄥ", "ㄐㄧˊ", null], "敲出拿著正確答案的地鼠": ["ㄑㄧㄠ", "ㄔㄨ", "ㄋㄚˊ", "ㄓㄨˋ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄚˊ", "ㄢˋ", "ㄉㄜ˙", "ㄉㄧˋ", "ㄕㄨˇ"], "數學大博士": ["ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄉㄚˋ", "ㄅㄛˊ", "ㄕˋ"], "數學小博士": ["ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄒㄧㄠˇ", "ㄅㄛˊ", "ㄕˋ"], "數學星球": ["ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄒㄧㄥ", "ㄑㄧㄡˊ"], "數學星球守護者": ["ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄒㄧㄥ", "ㄑㄧㄡˊ", "ㄕㄡˇ", "ㄏㄨˋ", "ㄓㄜˇ"], "數學星球會把適合的區域標成「推薦」。": ["ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄒㄧㄥ", "ㄑㄧㄡˊ", "ㄏㄨㄟˋ", "ㄅㄚˇ", "ㄕˋ", "ㄏㄜˊ", "ㄉㄜ˙", "ㄑㄩ", "ㄩˋ", "ㄅㄧㄠ", "ㄔㄥˊ", null, "ㄊㄨㄟ", "ㄐㄧㄢˋ", null, null], "數學魔法城最終決戰": ["ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄇㄛˊ", "ㄈㄚˇ", "ㄔㄥˊ", "ㄗㄨㄟˋ", "ㄓㄨㄥ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "新增一個": ["ㄒㄧㄣ", "ㄗㄥ", "ㄧ", "ㄍㄜˋ"], "新的獎勵": ["ㄒㄧㄣ", "ㄉㄜ˙", "ㄐㄧㄤˇ", "ㄌㄧˋ"], "新紀錄！": ["ㄒㄧㄣ", "ㄐㄧˋ", "ㄌㄨˋ", null], "方塊填空陣": ["ㄈㄤ", "ㄎㄨㄞˋ", "ㄊㄧㄢˊ", "ㄎㄨㄥˋ", "ㄓㄣˋ"], "旋轉木馬": ["ㄒㄩㄢˊ", "ㄓㄨㄢˇ", "ㄇㄨˋ", "ㄇㄚˇ"], "日期": ["ㄖˋ", "ㄑㄧˊ"], "時速{v}公里的汽車，{t}小時可以走幾公里？": ["ㄕˊ", "ㄙㄨˋ", null, null, null, "ㄍㄨㄥ", "ㄌㄧˇ", "ㄉㄜ˙", "ㄑㄧˋ", "ㄔㄜ", null, null, null, null, "ㄒㄧㄠˇ", "ㄕˊ", "ㄎㄜˇ", "ㄧˇ", "ㄗㄡˇ", "ㄐㄧˇ", "ㄍㄨㄥ", "ㄌㄧˇ", null], "時間到！": ["ㄕˊ", "ㄐㄧㄢ", "ㄉㄠˋ", null], "時間換算": ["ㄕˊ", "ㄐㄧㄢ", "ㄏㄨㄢˋ", "ㄙㄨㄢˋ"], "普通": ["ㄆㄨˇ", "ㄊㄨㄥ"], "暴龍三六連擊": ["ㄅㄠˋ", "ㄌㄨㄥˊ", "ㄙㄢ", "ㄌㄧㄡˋ", "ㄌㄧㄢˊ", "ㄐㄧˊ"], "更改密碼": ["ㄍㄥ", "ㄍㄞˇ", "ㄇㄧˋ", "ㄇㄚˇ"], "最多連擊": ["ㄗㄨㄟˋ", "ㄉㄨㄛ", "ㄌㄧㄢˊ", "ㄐㄧˊ"], "最大公因數": ["ㄗㄨㄟˋ", "ㄉㄚˋ", "ㄍㄨㄥ", "ㄧㄣ", "ㄕㄨˋ"], "最小公倍數": ["ㄗㄨㄟˋ", "ㄒㄧㄠˇ", "ㄍㄨㄥ", "ㄅㄟˋ", "ㄕㄨˋ"], "最常答錯的題目": ["ㄗㄨㄟˋ", "ㄔㄤˊ", "ㄉㄚˊ", "ㄘㄨㄛˋ", "ㄉㄜ˙", "ㄊㄧˊ", "ㄇㄨˋ"], "最近7天週報": ["ㄗㄨㄟˋ", "ㄐㄧㄣˋ", null, "ㄊㄧㄢ", "ㄓㄡ", "ㄅㄠˋ"], "最難的6、7、8、9": ["ㄗㄨㄟˋ", "ㄋㄢˊ", "ㄉㄜ˙", null, null, null, null, null, null, null], "最需要加強的關卡": ["ㄗㄨㄟˋ", "ㄒㄩ", "ㄧㄠˋ", "ㄐㄧㄚ", "ㄑㄧㄤˊ", "ㄉㄜ˙", "ㄍㄨㄢ", "ㄎㄚˇ"], "最高{n}分": ["ㄗㄨㄟˋ", "ㄍㄠ", null, null, null, "ㄈㄣ"], "最高分：普通{a}，困難{b}": ["ㄗㄨㄟˋ", "ㄍㄠ", "ㄈㄣ", null, "ㄆㄨˇ", "ㄊㄨㄥ", null, null, null, null, "ㄎㄨㄣˋ", "ㄋㄢˊ", null, null, null], "最高紀錄{n}題": ["ㄗㄨㄟˋ", "ㄍㄠ", "ㄐㄧˋ", "ㄌㄨˋ", null, null, null, "ㄊㄧˊ"], "有一隻寵物長到「小朋友」，就可以領養新的寵物蛋。": ["ㄧㄡˇ", "ㄧ", "ㄓ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄓㄤˇ", "ㄉㄠˋ", null, "ㄒㄧㄠˇ", "ㄆㄥˊ", "ㄧㄡˇ", null, null, "ㄐㄧㄡˋ", "ㄎㄜˇ", "ㄧˇ", "ㄌㄧㄥˇ", "ㄧㄤˇ", "ㄒㄧㄣ", "ㄉㄜ˙", "ㄔㄨㄥˇ", "ㄨˋ", "ㄉㄢˋ", null], "有新的家具可以買了！": ["ㄧㄡˇ", "ㄒㄧㄣ", "ㄉㄜ˙", "ㄐㄧㄚ", "ㄐㄩˋ", "ㄎㄜˇ", "ㄧˇ", "ㄇㄞˇ", "ㄌㄜ˙", null], "有餘數的除法（商）": ["ㄧㄡˇ", "ㄩˊ", "ㄕㄨˋ", "ㄉㄜ˙", "ㄔㄨˊ", "ㄈㄚˇ", null, "ㄕㄤ", null], "有餘數的除法（餘數）": ["ㄧㄡˇ", "ㄩˊ", "ㄕㄨˋ", "ㄉㄜ˙", "ㄔㄨˊ", "ㄈㄚˇ", null, "ㄩˊ", "ㄕㄨˋ", null], "棉花兔": ["ㄇㄧㄢˊ", "ㄏㄨㄚ", "ㄊㄨˋ"], "森林之王最終決戰": ["ㄙㄣ", "ㄌㄧㄣˊ", "ㄓ", "ㄨㄤˊ", "ㄗㄨㄟˋ", "ㄓㄨㄥ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "森林守護者決戰": ["ㄙㄣ", "ㄌㄧㄣˊ", "ㄕㄡˇ", "ㄏㄨˋ", "ㄓㄜˇ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "森林深處": ["ㄙㄣ", "ㄌㄧㄣˊ", "ㄕㄣ", "ㄔㄨˋ"], "標準": ["ㄅㄧㄠ", "ㄓㄨㄣˇ"], "標準大約是：打贏一關得到{a}到{b}金幣": ["ㄅㄧㄠ", "ㄓㄨㄣˇ", "ㄉㄚˋ", "ㄩㄝ", "ㄕˋ", null, "ㄉㄚˇ", "ㄧㄥˊ", "ㄧ", "ㄍㄨㄢ", "ㄉㄜˊ", "ㄉㄠˋ", null, null, null, "ㄉㄠˋ", null, null, null, "ㄐㄧㄣ", "ㄅㄧˋ"], "樹上有{a}隻小鳥，又飛來{b}隻，現在有幾隻？": ["ㄕㄨˋ", "ㄕㄤˋ", "ㄧㄡˇ", null, null, null, "ㄓ", "ㄒㄧㄠˇ", "ㄋㄧㄠˇ", null, "ㄧㄡˋ", "ㄈㄟ", "ㄌㄞˊ", null, null, null, "ㄓ", null, "ㄒㄧㄢˋ", "ㄗㄞˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄓ", null], "橘子貓": ["ㄐㄩˊ", "ㄗ˙", "ㄇㄠ"], "機器人總複習": ["ㄐㄧ", "ㄑㄧˋ", "ㄖㄣˊ", "ㄗㄨㄥˇ", "ㄈㄨˋ", "ㄒㄧˊ"], "正確率": ["ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄌㄩˋ"], "每一關有普通和困難，打贏普通就能挑戰困難。": ["ㄇㄟˇ", "ㄧ", "ㄍㄨㄢ", "ㄧㄡˇ", "ㄆㄨˇ", "ㄊㄨㄥ", "ㄏㄜˊ", "ㄎㄨㄣˋ", "ㄋㄢˊ", null, "ㄉㄚˇ", "ㄧㄥˊ", "ㄆㄨˇ", "ㄊㄨㄥ", "ㄐㄧㄡˋ", "ㄋㄥˊ", "ㄊㄧㄠ", "ㄓㄢˋ", "ㄎㄨㄣˋ", "ㄋㄢˊ", null], "每一關給的金幣": ["ㄇㄟˇ", "ㄧ", "ㄍㄨㄢ", "ㄍㄟˇ", "ㄉㄜ˙", "ㄐㄧㄣ", "ㄅㄧˋ"], "每一題都有倒數計時，答錯或時間到會少一顆愛心。": ["ㄇㄟˇ", "ㄧ", "ㄊㄧˊ", "ㄉㄡ", "ㄧㄡˇ", "ㄉㄠˋ", "ㄕㄨˇ", "ㄐㄧˋ", "ㄕˊ", null, "ㄉㄚˊ", "ㄘㄨㄛˋ", "ㄏㄨㄛˋ", "ㄕˊ", "ㄐㄧㄢ", "ㄉㄠˋ", "ㄏㄨㄟˋ", "ㄕㄠˇ", "ㄧ", "ㄎㄜ", "ㄞˋ", "ㄒㄧㄣ", null], "每個區域有30關，每過五關有一個小遊戲。": ["ㄇㄟˇ", "ㄍㄜˋ", "ㄑㄩ", "ㄩˋ", "ㄧㄡˇ", null, null, "ㄍㄨㄢ", null, "ㄇㄟˇ", "ㄍㄨㄛˋ", "ㄨˇ", "ㄍㄨㄢ", "ㄧㄡˇ", "ㄧ", "ㄍㄜˋ", "ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ", null], "每個小朋友有{a}張貼紙，{b}個小朋友一共有幾張？": ["ㄇㄟˇ", "ㄍㄜˋ", "ㄒㄧㄠˇ", "ㄆㄥˊ", "ㄧㄡˇ", "ㄧㄡˇ", null, null, null, "ㄓㄤ", "ㄊㄧㄝ", "ㄓˇ", null, null, null, null, "ㄍㄜˋ", "ㄒㄧㄠˇ", "ㄆㄥˊ", "ㄧㄡˇ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄓㄤ", null], "每日登入獎勵": ["ㄇㄟˇ", "ㄖˋ", "ㄉㄥ", "ㄖㄨˋ", "ㄐㄧㄤˇ", "ㄌㄧˋ"], "每箱有{a}瓶果汁，{b}箱一共有幾瓶？": ["ㄇㄟˇ", "ㄒㄧㄤ", "ㄧㄡˇ", null, null, null, "ㄆㄧㄥˊ", "ㄍㄨㄛˇ", "ㄓ", null, null, null, null, "ㄒㄧㄤ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄆㄧㄥˊ", null], "每袋有{a}個蘋果，{b}袋一共有幾個？": ["ㄇㄟˇ", "ㄉㄞˋ", "ㄧㄡˇ", null, null, null, "ㄍㄜˋ", "ㄆㄧㄥˊ", "ㄍㄨㄛˇ", null, null, null, null, "ㄉㄞˋ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄍㄜˋ", null], "每輛車坐{a}個人，{b}輛車可以坐幾個人？": ["ㄇㄟˇ", "ㄌㄧㄤˋ", "ㄔㄜ", "ㄗㄨㄛˋ", null, null, null, "ㄍㄜˋ", "ㄖㄣˊ", null, null, null, null, "ㄌㄧㄤˋ", "ㄔㄜ", "ㄎㄜˇ", "ㄧˇ", "ㄗㄨㄛˋ", "ㄐㄧˇ", "ㄍㄜˋ", "ㄖㄣˊ", null], "每關答滿5題後才會列出來。": ["ㄇㄟˇ", "ㄍㄨㄢ", "ㄉㄚˊ", "ㄇㄢˇ", null, "ㄊㄧˊ", "ㄏㄡˋ", "ㄘㄞˊ", "ㄏㄨㄟˋ", "ㄌㄧㄝˋ", "ㄔㄨ", "ㄌㄞˊ", null], "每題{s}秒": ["ㄇㄟˇ", "ㄊㄧˊ", null, null, null, "ㄇㄧㄠˇ"], "比": ["ㄅㄧˇ"], "比多比少": ["ㄅㄧˇ", "ㄉㄨㄛ", "ㄅㄧˇ", "ㄕㄠˇ"], "比與比值": ["ㄅㄧˇ", "ㄩˇ", "ㄅㄧˇ", "ㄓˊ"], "氣球": ["ㄑㄧˋ", "ㄑㄧㄡˊ"], "汽車{t}小時走了{d}公里，時速是多少公里？": ["ㄑㄧˋ", "ㄔㄜ", null, null, null, "ㄒㄧㄠˇ", "ㄕˊ", "ㄗㄡˇ", "ㄌㄜ˙", null, null, null, "ㄍㄨㄥ", "ㄌㄧˇ", null, "ㄕˊ", "ㄙㄨˋ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄍㄨㄥ", "ㄌㄧˇ", null], "泡泡大爆炸": ["ㄆㄠˋ", "ㄆㄠˋ", "ㄉㄚˋ", "ㄅㄠˋ", "ㄓㄚˋ"], "注音：開": ["ㄓㄨˋ", "ㄧㄣ", null, "ㄎㄞ"], "注音：關": ["ㄓㄨˋ", "ㄧㄣ", null, "ㄍㄨㄢ"], "海洋大魔王決戰": ["ㄏㄞˇ", "ㄧㄤˊ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "減": ["ㄐㄧㄢˇ"], "湊十高手": ["ㄘㄡˋ", "ㄕˊ", "ㄍㄠ", "ㄕㄡˇ"], "湊數高手": ["ㄘㄡˋ", "ㄕㄨˋ", "ㄍㄠ", "ㄕㄡˇ"], "火山六七八九": ["ㄏㄨㄛˇ", "ㄕㄢ", "ㄌㄧㄡˋ", "ㄑㄧ", "ㄅㄚ", "ㄐㄧㄡˇ"], "無限挑戰": ["ㄨˊ", "ㄒㄧㄢˋ", "ㄊㄧㄠ", "ㄓㄢˋ"], "無限挑戰30題": ["ㄨˊ", "ㄒㄧㄢˋ", "ㄊㄧㄠ", "ㄓㄢˋ", null, null, "ㄊㄧˊ"], "無限挑戰答對30題": ["ㄨˊ", "ㄒㄧㄢˋ", "ㄊㄧㄠ", "ㄓㄢˋ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, "ㄊㄧˊ"], "無限挑戰結束！": ["ㄨˊ", "ㄒㄧㄢˋ", "ㄊㄧㄠ", "ㄓㄢˋ", "ㄐㄧㄝˊ", "ㄕㄨˋ", null], "熊貓": ["ㄒㄩㄥˊ", "ㄇㄠ"], "狐狸翻一倍": ["ㄏㄨˊ", "ㄌㄧˊ", "ㄈㄢ", "ㄧˊ", "ㄅㄟˋ"], "獅子王的考驗": ["ㄕ", "ㄗ˙", "ㄨㄤˊ", "ㄉㄜ˙", "ㄎㄠˇ", "ㄧㄢˋ"], "獎勵": ["ㄐㄧㄤˇ", "ㄌㄧˋ"], "獎勵卡": ["ㄐㄧㄤˇ", "ㄌㄧˋ", "ㄎㄚˇ"], "獎勵和需要的金幣": ["ㄐㄧㄤˇ", "ㄌㄧˋ", "ㄏㄜˊ", "ㄒㄩ", "ㄧㄠˋ", "ㄉㄜ˙", "ㄐㄧㄣ", "ㄅㄧˋ"], "獨角獸": ["ㄉㄨˊ", "ㄐㄧㄠˇ", "ㄕㄡˋ"], "獲得新成就！": ["ㄏㄨㄛˋ", "ㄉㄜˊ", "ㄒㄧㄣ", "ㄔㄥˊ", "ㄐㄧㄡˋ", null], "玩{n}個小遊戲": ["ㄨㄢˊ", null, null, null, "ㄍㄜˋ", "ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ"], "玩了{a}天，答了{b}題，正確率{c}，打贏{d}關": ["ㄨㄢˊ", "ㄌㄜ˙", null, null, null, "ㄊㄧㄢ", null, "ㄉㄚˊ", "ㄌㄜ˙", null, null, null, "ㄊㄧˊ", null, "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄌㄩˋ", null, null, null, null, "ㄉㄚˇ", "ㄧㄥˊ", null, null, null, "ㄍㄨㄢ"], "玩具熊": ["ㄨㄢˊ", "ㄐㄩˋ", "ㄒㄩㄥˊ"], "現在沒有錯題，太厲害了！": ["ㄒㄧㄢˋ", "ㄗㄞˋ", "ㄇㄟˊ", "ㄧㄡˇ", "ㄘㄨㄛˋ", "ㄊㄧˊ", null, "ㄊㄞˋ", "ㄌㄧˋ", "ㄏㄞˋ", "ㄌㄜ˙", null], "甜甜圈應用題": ["ㄊㄧㄢˊ", "ㄊㄧㄢˊ", "ㄑㄩㄢ", "ㄧㄥˋ", "ㄩㄥˋ", "ㄊㄧˊ"], "產生備份碼": ["ㄔㄢˇ", "ㄕㄥ", "ㄅㄟˋ", "ㄈㄣˋ", "ㄇㄚˇ"], "用金幣換爸爸媽媽準備的獎勵。換好以後，拿給爸爸媽媽看！": ["ㄩㄥˋ", "ㄐㄧㄣ", "ㄅㄧˋ", "ㄏㄨㄢˋ", "ㄅㄚˋ", "ㄅㄚ˙", "ㄇㄚ", "ㄇㄚ˙", "ㄓㄨㄣˇ", "ㄅㄟˋ", "ㄉㄜ˙", "ㄐㄧㄤˇ", "ㄌㄧˋ", null, "ㄏㄨㄢˋ", "ㄏㄠˇ", "ㄧˇ", "ㄏㄡˋ", null, "ㄋㄚˊ", "ㄍㄟˇ", "ㄅㄚˋ", "ㄅㄚ˙", "ㄇㄚ", "ㄇㄚ˙", "ㄎㄢˋ", null], "異分母分數加法": ["ㄧˋ", "ㄈㄣ", "ㄇㄨˇ", "ㄈㄣ", "ㄕㄨˋ", "ㄐㄧㄚ", "ㄈㄚˇ"], "異分母分數減法": ["ㄧˋ", "ㄈㄣ", "ㄇㄨˇ", "ㄈㄣ", "ㄕㄨˋ", "ㄐㄧㄢˇ", "ㄈㄚˇ"], "百分率": ["ㄅㄞˇ", "ㄈㄣ", "ㄌㄩˋ"], "百分率與速率": ["ㄅㄞˇ", "ㄈㄣ", "ㄌㄩˋ", "ㄩˇ", "ㄙㄨˋ", "ㄌㄩˋ"], "百分率速率大魔王": ["ㄅㄞˇ", "ㄈㄣ", "ㄌㄩˋ", "ㄙㄨˋ", "ㄌㄩˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "的魔法乘法大冒險": ["ㄉㄜ˙", "ㄇㄛˊ", "ㄈㄚˇ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄉㄚˋ", "ㄇㄠˋ", "ㄒㄧㄢˇ"], "盒子裡有{a}顆糖果，吃掉{b}顆，還剩幾顆？": ["ㄏㄜˊ", "ㄗ˙", "ㄌㄧˇ", "ㄧㄡˇ", null, null, null, "ㄎㄜ", "ㄊㄤˊ", "ㄍㄨㄛˇ", null, "ㄔ", "ㄉㄧㄠˋ", null, null, null, "ㄎㄜ", null, "ㄏㄞˊ", "ㄕㄥˋ", "ㄐㄧˇ", "ㄎㄜ", null], "盤子裡有{a}顆草莓，吃掉{b}顆，還剩幾顆？": ["ㄆㄢˊ", "ㄗ˙", "ㄌㄧˇ", "ㄧㄡˇ", null, null, null, "ㄎㄜ", "ㄘㄠˇ", "ㄇㄟˊ", null, "ㄔ", "ㄉㄧㄠˋ", null, null, null, "ㄎㄜ", null, "ㄏㄞˊ", "ㄕㄥˋ", "ㄐㄧˇ", "ㄎㄜ", null], "看你一共能答對幾題": ["ㄎㄢˋ", "ㄋㄧˇ", "ㄧ", "ㄍㄨㄥˋ", "ㄋㄥˊ", "ㄉㄚˊ", "ㄉㄨㄟˋ", "ㄐㄧˇ", "ㄊㄧˊ"], "真的要清除嗎？再按一次": ["ㄓㄣ", "ㄉㄜ˙", "ㄧㄠˋ", "ㄑㄧㄥ", "ㄔㄨˊ", "ㄇㄚ˙", null, "ㄗㄞˋ", "ㄢˋ", "ㄧ", "ㄘˋ"], "知道了": ["ㄓ", "ㄉㄠˋ", "ㄌㄜ˙"], "破關": ["ㄆㄛˋ", "ㄍㄨㄢ"], "破關大王": ["ㄆㄛˋ", "ㄍㄨㄢ", "ㄉㄚˋ", "ㄨㄤˊ"], "破關小達人": ["ㄆㄛˋ", "ㄍㄨㄢ", "ㄒㄧㄠˇ", "ㄉㄚˊ", "ㄖㄣˊ"], "破關成功！": ["ㄆㄛˋ", "ㄍㄨㄢ", "ㄔㄥˊ", "ㄍㄨㄥ", null], "確定": ["ㄑㄩㄝˋ", "ㄉㄧㄥˋ"], "確定要用備份碼取代現在的進度嗎？": ["ㄑㄩㄝˋ", "ㄉㄧㄥˋ", "ㄧㄠˋ", "ㄩㄥˋ", "ㄅㄟˋ", "ㄈㄣˋ", "ㄇㄚˇ", "ㄑㄩˇ", "ㄉㄞˋ", "ㄒㄧㄢˋ", "ㄗㄞˋ", "ㄉㄜ˙", "ㄐㄧㄣˋ", "ㄉㄨˋ", "ㄇㄚ˙", null], "空格": ["ㄎㄨㄥˋ", "ㄍㄜˊ"], "章魚八隻腳": ["ㄓㄤ", "ㄩˊ", "ㄅㄚ", "ㄓ", "ㄐㄧㄠˇ"], "第{n}關": ["ㄉㄧˋ", null, null, null, "ㄍㄨㄢ"], "第一次玩完送100金幣！": ["ㄉㄧˋ", "ㄧ", "ㄘˋ", "ㄨㄢˊ", "ㄨㄢˊ", "ㄙㄨㄥˋ", null, null, null, "ㄐㄧㄣ", "ㄅㄧˋ", null], "第一次破關": ["ㄉㄧˋ", "ㄧ", "ㄘˋ", "ㄆㄛˋ", "ㄍㄨㄢ"], "第七單元：2、5、4、8": ["ㄉㄧˋ", "ㄑㄧ", "ㄉㄢ", "ㄩㄢˊ", null, null, null, null, null, null, null, null], "第九單元：3、6、7、9": ["ㄉㄧˋ", "ㄐㄧㄡˇ", "ㄉㄢ", "ㄩㄢˊ", null, null, null, null, null, null, null, null], "等一下": ["ㄉㄥˇ", "ㄧˊ", "ㄒㄧㄚˋ"], "等於": ["ㄉㄥˇ", "ㄩˊ"], "等級升到Lv.10": ["ㄉㄥˇ", "ㄐㄧˊ", "ㄕㄥ", "ㄉㄠˋ", null, null, null, null, null], "等級升到Lv.5": ["ㄉㄥˇ", "ㄐㄧˊ", "ㄕㄥ", "ㄉㄠˋ", null, null, null, null], "答對1000題": ["ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, null, "ㄊㄧˊ"], "答對100題": ["ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, "ㄊㄧˊ"], "答對{n}題": ["ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, "ㄊㄧˊ"], "答對{n}題，每題{s}秒": ["ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, "ㄊㄧˊ", null, "ㄇㄟˇ", "ㄊㄧˊ", null, null, null, "ㄇㄧㄠˇ"], "答對了！": ["ㄉㄚˊ", "ㄉㄨㄟˋ", "ㄌㄜ˙", null], "答對的題目": ["ㄉㄚˊ", "ㄉㄨㄟˋ", "ㄉㄜ˙", "ㄊㄧˊ", "ㄇㄨˋ"], "答案不對": ["ㄉㄚˊ", "ㄢˋ", "ㄅㄨˋ", "ㄉㄨㄟˋ"], "糖糖": ["ㄊㄤˊ", "ㄊㄤˊ"], "紅花有{a}朵，黃花比紅花多{b}朵，黃花有幾朵？": ["ㄏㄨㄥˊ", "ㄏㄨㄚ", "ㄧㄡˇ", null, null, null, "ㄉㄨㄛˇ", null, "ㄏㄨㄤˊ", "ㄏㄨㄚ", "ㄅㄧˇ", "ㄏㄨㄥˊ", "ㄏㄨㄚ", "ㄉㄨㄛ", null, null, null, "ㄉㄨㄛˇ", null, "ㄏㄨㄤˊ", "ㄏㄨㄚ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄉㄨㄛˇ", null], "累積答對1000題": ["ㄌㄟˋ", "ㄐㄧ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, null, "ㄊㄧˊ"], "累積答對100題": ["ㄌㄟˋ", "ㄐㄧ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, "ㄊㄧˊ"], "經驗值": ["ㄐㄧㄥ", "ㄧㄢˋ", "ㄓˊ"], "經驗值{a}，再{b}就升級": ["ㄐㄧㄥ", "ㄧㄢˋ", "ㄓˊ", null, null, null, null, "ㄗㄞˋ", null, null, null, "ㄐㄧㄡˋ", "ㄕㄥ", "ㄐㄧˊ"], "經驗值{a}，最高等級！": ["ㄐㄧㄥ", "ㄧㄢˋ", "ㄓˊ", null, null, null, null, "ㄗㄨㄟˋ", "ㄍㄠ", "ㄉㄥˇ", "ㄐㄧˊ", null], "綜合挑戰": ["ㄗㄨㄥˋ", "ㄏㄜˊ", "ㄊㄧㄠ", "ㄓㄢˋ"], "總分": ["ㄗㄨㄥˇ", "ㄈㄣ"], "繼續打": ["ㄐㄧˋ", "ㄒㄩˋ", "ㄉㄚˇ"], "美人魚": ["ㄇㄟˇ", "ㄖㄣˊ", "ㄩˊ"], "翻了{n}次": ["ㄈㄢ", "ㄌㄜ˙", null, null, null, "ㄘˋ"], "翻牌記憶王": ["ㄈㄢ", "ㄆㄞˊ", "ㄐㄧˋ", "ㄧˋ", "ㄨㄤˊ"], "翻開兩張，算式和答案一樣就配對成功！": ["ㄈㄢ", "ㄎㄞ", "ㄌㄧㄤˇ", "ㄓㄤ", null, "ㄙㄨㄢˋ", "ㄕˋ", "ㄏㄜˊ", "ㄉㄚˊ", "ㄢˋ", "ㄧ", "ㄧㄤˋ", "ㄐㄧㄡˋ", "ㄆㄟˋ", "ㄉㄨㄟˋ", "ㄔㄥˊ", "ㄍㄨㄥ", null], "老鷹高空大戰": ["ㄌㄠˇ", "ㄧㄥ", "ㄍㄠ", "ㄎㄨㄥ", "ㄉㄚˋ", "ㄓㄢˋ"], "自己按數字作答": ["ㄗˋ", "ㄐㄧˇ", "ㄢˋ", "ㄕㄨˋ", "ㄗˋ", "ㄗㄨㄛˋ", "ㄉㄚˊ"], "草原二五大會考": ["ㄘㄠˇ", "ㄩㄢˊ", "ㄦˋ", "ㄨˇ", "ㄉㄚˋ", "ㄏㄨㄟˋ", "ㄎㄠˇ"], "草原大魔王決戰": ["ㄘㄠˇ", "ㄩㄢˊ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "薄荷龍": ["ㄅㄛˋ", "ㄏㄜˊ", "ㄌㄨㄥˊ"], "蘑菇": ["ㄇㄛˊ", "ㄍㄨ"], "蛋": ["ㄉㄢˋ"], "蛋孵出來了！": ["ㄉㄢˋ", "ㄈㄨ", "ㄔㄨ", "ㄌㄞˊ", "ㄌㄜ˙", null], "蜜蜂三三飛": ["ㄇㄧˋ", "ㄈㄥ", "ㄙㄢ", "ㄙㄢ", "ㄈㄟ"], "複習題": ["ㄈㄨˋ", "ㄒㄧˊ", "ㄊㄧˊ"], "複製": ["ㄈㄨˋ", "ㄓˋ"], "要再練習：": ["ㄧㄠˋ", "ㄗㄞˋ", "ㄌㄧㄢˋ", "ㄒㄧˊ", null], "要用{n}金幣兌換嗎？": ["ㄧㄠˋ", "ㄩㄥˋ", null, null, null, "ㄐㄧㄣ", "ㄅㄧˋ", "ㄉㄨㄟˋ", "ㄏㄨㄢˋ", "ㄇㄚ˙", null], "要用{n}金幣買這個頭像嗎？": ["ㄧㄠˋ", "ㄩㄥˋ", null, null, null, "ㄐㄧㄣ", "ㄅㄧˋ", "ㄇㄞˇ", "ㄓㄜˋ", "ㄍㄜˋ", "ㄊㄡˊ", "ㄒㄧㄤˋ", "ㄇㄚ˙", null], "要用{n}金幣領養這顆蛋嗎？": ["ㄧㄠˋ", "ㄩㄥˋ", null, null, null, "ㄐㄧㄣ", "ㄅㄧˋ", "ㄌㄧㄥˇ", "ㄧㄤˇ", "ㄓㄜˋ", "ㄎㄜ", "ㄉㄢˋ", "ㄇㄚ˙", null], "要離開這一關嗎？分數不會保留喔。": ["ㄧㄠˋ", "ㄌㄧˊ", "ㄎㄞ", "ㄓㄜˋ", "ㄧ", "ㄍㄨㄢ", "ㄇㄚ˙", null, "ㄈㄣ", "ㄕㄨˋ", "ㄅㄨˋ", "ㄏㄨㄟˋ", "ㄅㄠˇ", "ㄌㄧㄡˊ", "ㄛ", null], "見習小勇者": ["ㄐㄧㄢˋ", "ㄒㄧˊ", "ㄒㄧㄠˇ", "ㄩㄥˇ", "ㄓㄜˇ"], "覺得金幣來得太快或太慢，可以調整。": ["ㄐㄩㄝˊ", "ㄉㄜ˙", "ㄐㄧㄣ", "ㄅㄧˋ", "ㄌㄞˊ", "ㄉㄜˊ", "ㄊㄞˋ", "ㄎㄨㄞˋ", "ㄏㄨㄛˋ", "ㄊㄞˋ", "ㄇㄢˋ", null, "ㄎㄜˇ", "ㄧˇ", "ㄉㄧㄠˋ", "ㄓㄥˇ", null], "設定": ["ㄕㄜˋ", "ㄉㄧㄥˋ"], "設定家長密碼": ["ㄕㄜˋ", "ㄉㄧㄥˋ", "ㄐㄧㄚ", "ㄓㄤˇ", "ㄇㄧˋ", "ㄇㄚˇ"], "請家長算出答案，答對就可以重新設定密碼。": ["ㄑㄧㄥˇ", "ㄐㄧㄚ", "ㄓㄤˇ", "ㄙㄨㄢˋ", "ㄔㄨ", "ㄉㄚˊ", "ㄢˋ", null, "ㄉㄚˊ", "ㄉㄨㄟˋ", "ㄐㄧㄡˋ", "ㄎㄜˇ", "ㄧˇ", "ㄔㄨㄥˊ", "ㄒㄧㄣ", "ㄕㄜˋ", "ㄉㄧㄥˋ", "ㄇㄧˋ", "ㄇㄚˇ", null], "請家長設定4到6位數字的密碼，以後打開家長設定都要輸入。": ["ㄑㄧㄥˇ", "ㄐㄧㄚ", "ㄓㄤˇ", "ㄕㄜˋ", "ㄉㄧㄥˋ", null, "ㄉㄠˋ", null, "ㄨㄟˋ", "ㄕㄨˋ", "ㄗˋ", "ㄉㄜ˙", "ㄇㄧˋ", "ㄇㄚˇ", null, "ㄧˇ", "ㄏㄡˋ", "ㄉㄚˇ", "ㄎㄞ", "ㄐㄧㄚ", "ㄓㄤˇ", "ㄕㄜˋ", "ㄉㄧㄥˋ", "ㄉㄨ", "ㄧㄠˋ", "ㄕㄨ", "ㄖㄨˋ", null], "請輸入家長密碼": ["ㄑㄧㄥˇ", "ㄕㄨ", "ㄖㄨˋ", "ㄐㄧㄚ", "ㄓㄤˇ", "ㄇㄧˋ", "ㄇㄚˇ"], "請長按文字框手動複製。": ["ㄑㄧㄥˇ", "ㄓㄤˇ", "ㄢˋ", "ㄨㄣˊ", "ㄗˋ", "ㄎㄨㄤ", "ㄕㄡˇ", "ㄉㄨㄥˋ", "ㄈㄨˋ", "ㄓˋ", null], "買！": ["ㄇㄞˇ", null], "貼紙一張": ["ㄊㄧㄝ", "ㄓˇ", "ㄧ", "ㄓㄤ"], "超級挑戰": ["ㄔㄠ", "ㄐㄧˊ", "ㄊㄧㄠ", "ㄓㄢˋ"], "超級英雄": ["ㄔㄠ", "ㄐㄧˊ", "ㄧㄥ", "ㄒㄩㄥˊ"], "趴": ["ㄆㄚ"], "輕鬆": ["ㄑㄧㄥ", "ㄙㄨㄥ"], "輸入密碼": ["ㄕㄨ", "ㄖㄨˋ", "ㄇㄧˋ", "ㄇㄚˇ"], "送100金幣": ["ㄙㄨㄥˋ", null, null, null, "ㄐㄧㄣ", "ㄅㄧˋ"], "這個區域對現在的你來說有點難，請爸爸媽媽在家長設定打開。": ["ㄓㄜˋ", "ㄍㄜˋ", "ㄑㄩ", "ㄩˋ", "ㄉㄨㄟˋ", "ㄒㄧㄢˋ", "ㄗㄞˋ", "ㄉㄜ˙", "ㄋㄧˇ", "ㄌㄞˊ", "ㄕㄨㄛ", "ㄧㄡˇ", "ㄉㄧㄢˇ", "ㄋㄢˊ", null, "ㄑㄧㄥˇ", "ㄅㄚˋ", "ㄅㄚ˙", "ㄇㄚ", "ㄇㄚ˙", "ㄗㄞˋ", "ㄐㄧㄚ", "ㄓㄤˇ", "ㄕㄜˋ", "ㄉㄧㄥˋ", "ㄉㄚˇ", "ㄎㄞ", null], "速率": ["ㄙㄨˋ", "ㄌㄩˋ"], "連加變乘法": ["ㄌㄧㄢˊ", "ㄐㄧㄚ", "ㄅㄧㄢˋ", "ㄔㄥˊ", "ㄈㄚˇ"], "連續7天": ["ㄌㄧㄢˊ", "ㄒㄩˋ", null, "ㄊㄧㄢ"], "連續7天來玩": ["ㄌㄧㄢˊ", "ㄒㄩˋ", null, "ㄊㄧㄢ", "ㄌㄞˊ", "ㄨㄢˊ"], "連續7天有大禮物喔！": ["ㄌㄧㄢˊ", "ㄒㄩˋ", null, "ㄊㄧㄢ", "ㄧㄡˇ", "ㄉㄚˋ", "ㄌㄧˇ", "ㄨˋ", "ㄛ", null], "連續{n}天": ["ㄌㄧㄢˊ", "ㄒㄩˋ", null, null, null, "ㄊㄧㄢ"], "連續登入": ["ㄌㄧㄢˊ", "ㄒㄩˋ", "ㄉㄥ", "ㄖㄨˋ"], "連續第{n}天來玩！": ["ㄌㄧㄢˊ", "ㄒㄩˋ", "ㄉㄧˋ", null, null, null, "ㄊㄧㄢ", "ㄌㄞˊ", "ㄨㄢˊ", null], "週末小禮物": ["ㄓㄡ", "ㄇㄛˋ", "ㄒㄧㄠˇ", "ㄌㄧˇ", "ㄨˋ"], "進位乘法": ["ㄐㄧㄣˋ", "ㄨㄟˋ", "ㄔㄥˊ", "ㄈㄚˇ"], "進度備份碼": ["ㄐㄧㄣˋ", "ㄉㄨˋ", "ㄅㄟˋ", "ㄈㄣˋ", "ㄇㄚˇ"], "遊戲全部重來": ["ㄧㄡˊ", "ㄒㄧˋ", "ㄑㄩㄢˊ", "ㄅㄨˋ", "ㄔㄨㄥˊ", "ㄌㄞˊ"], "運算最終決戰": ["ㄩㄣˋ", "ㄙㄨㄢˋ", "ㄗㄨㄟˋ", "ㄓㄨㄥ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "選一個區域，開始你的冒險！": ["ㄒㄩㄢˇ", "ㄧ", "ㄍㄜˋ", "ㄑㄩ", "ㄩˋ", null, "ㄎㄞ", "ㄕˇ", "ㄋㄧˇ", "ㄉㄜ˙", "ㄇㄠˋ", "ㄒㄧㄢˇ", null], "選一個點心": ["ㄒㄩㄢˇ", "ㄧ", "ㄍㄜˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ"], "選一顆寵物蛋": ["ㄒㄩㄢˇ", "ㄧ", "ㄎㄜ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄉㄢˋ"], "選好以後，牠會先變成一顆蛋。打贏關卡得到點心，餵牠吃就會長大！": ["ㄒㄩㄢˇ", "ㄏㄠˇ", "ㄧˇ", "ㄏㄡˋ", null, "ㄊㄚ", "ㄏㄨㄟˋ", "ㄒㄧㄢ", "ㄅㄧㄢˋ", "ㄔㄥˊ", "ㄧ", "ㄎㄜ", "ㄉㄢˋ", null, "ㄉㄚˇ", "ㄧㄥˊ", "ㄍㄨㄢ", "ㄎㄚˇ", "ㄉㄜˊ", "ㄉㄠˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ", null, "ㄨㄟˋ", "ㄊㄚ", "ㄔ", "ㄐㄧㄡˋ", "ㄏㄨㄟˋ", "ㄓㄤˇ", "ㄉㄚˋ", null], "還剩多少": ["ㄏㄞˊ", "ㄕㄥˋ", "ㄉㄨㄛ", "ㄕㄠˇ"], "還原進度": ["ㄏㄞˊ", "ㄩㄢˊ", "ㄐㄧㄣˋ", "ㄉㄨˋ"], "還原：把備份碼貼在下面，按「還原進度」。": ["ㄏㄞˊ", "ㄩㄢˊ", null, "ㄅㄚˇ", "ㄅㄟˋ", "ㄈㄣˋ", "ㄇㄚˇ", "ㄊㄧㄝ", "ㄗㄞˋ", "ㄒㄧㄚˋ", "ㄇㄧㄢˋ", null, "ㄢˋ", null, "ㄏㄞˊ", "ㄩㄢˊ", "ㄐㄧㄣˋ", "ㄉㄨˋ", null, null], "還沒兌現的": ["ㄏㄞˊ", "ㄇㄟˊ", "ㄉㄨㄟˋ", "ㄒㄧㄢˋ", "ㄉㄜ˙"], "還沒有答錯的紀錄。": ["ㄏㄞˊ", "ㄇㄟˊ", "ㄧㄡˇ", "ㄉㄚˊ", "ㄘㄨㄛˋ", "ㄉㄜ˙", "ㄐㄧˋ", "ㄌㄨˋ", null], "金幣": ["ㄐㄧㄣ", "ㄅㄧˋ"], "金幣可以買頭像、寵物園家具，也能換爸爸媽媽準備的獎勵。": ["ㄐㄧㄣ", "ㄅㄧˋ", "ㄎㄜˇ", "ㄧˇ", "ㄇㄞˇ", "ㄊㄡˊ", "ㄒㄧㄤˋ", null, "ㄔㄨㄥˇ", "ㄨˋ", "ㄩㄢˊ", "ㄐㄧㄚ", "ㄐㄩˋ", null, "ㄧㄝˇ", "ㄋㄥˊ", "ㄏㄨㄢˋ", "ㄅㄚˋ", "ㄅㄚ˙", "ㄇㄚ", "ㄇㄚ˙", "ㄓㄨㄣˇ", "ㄅㄟˋ", "ㄉㄜ˙", "ㄐㄧㄤˇ", "ㄌㄧˋ", null], "金幣哪裡來？打關卡就會得到，分數越高金幣越多！": ["ㄐㄧㄣ", "ㄅㄧˋ", "ㄋㄚˇ", "ㄌㄧˇ", "ㄌㄞˊ", null, "ㄉㄚˇ", "ㄍㄨㄢ", "ㄎㄚˇ", "ㄐㄧㄡˋ", "ㄏㄨㄟˋ", "ㄉㄜˊ", "ㄉㄠˋ", null, "ㄈㄣ", "ㄕㄨˋ", "ㄩㄝˋ", "ㄍㄠ", "ㄐㄧㄣ", "ㄅㄧˋ", "ㄩㄝˋ", "ㄉㄨㄛ", null], "錯題有{n}題": ["ㄘㄨㄛˋ", "ㄊㄧˊ", "ㄧㄡˇ", null, null, null, "ㄊㄧˊ"], "錯題特訓": ["ㄘㄨㄛˋ", "ㄊㄧˊ", "ㄊㄜˋ", "ㄒㄩㄣˋ"], "長{a}公分、寬{b}公分、高{c}公分的長方體，體積是多少立方公分？": ["ㄓㄤˇ", null, null, null, "ㄍㄨㄥ", "ㄈㄣ", null, "ㄎㄨㄢ", null, null, null, "ㄍㄨㄥ", "ㄈㄣ", null, "ㄍㄠ", null, null, null, "ㄍㄨㄥ", "ㄈㄣ", "ㄉㄜ˙", "ㄓㄤˇ", "ㄈㄤ", "ㄊㄧˇ", null, "ㄊㄧˇ", "ㄐㄧ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄌㄧˋ", "ㄈㄤ", "ㄍㄨㄥ", "ㄈㄣ", null], "長度換算": ["ㄔㄤˊ", "ㄉㄨˋ", "ㄏㄨㄢˋ", "ㄙㄨㄢˋ"], "長方體體積": ["ㄓㄤˇ", "ㄈㄤ", "ㄊㄧˇ", "ㄊㄧˇ", "ㄐㄧ"], "閃電快打": ["ㄕㄢˇ", "ㄉㄧㄢˋ", "ㄎㄨㄞˋ", "ㄉㄚˇ"], "開": ["ㄎㄞ"], "開始！": ["ㄎㄞ", "ㄕˇ", null], "關": ["ㄍㄨㄢ"], "關閉": ["ㄍㄨㄢ", "ㄅㄧˋ"], "除以": ["ㄔㄨˊ", "ㄧˇ"], "除法": ["ㄔㄨˊ", "ㄈㄚˇ"], "除法大魔王": ["ㄔㄨˊ", "ㄈㄚˇ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "離開": ["ㄌㄧˊ", "ㄎㄞ"], "雲朵羊": ["ㄩㄣˊ", "ㄉㄨㄛˇ", "ㄧㄤˊ"], "零一二三四五六七八九": ["ㄌㄧㄥˊ", "ㄧ", "ㄦˋ", "ㄙㄢ", "ㄙˋ", "ㄨˇ", "ㄌㄧㄡˋ", "ㄑㄧ", "ㄅㄚ", "ㄐㄧㄡˇ"], "需要寵物長到": ["ㄒㄩ", "ㄧㄠˋ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄓㄤˇ", "ㄉㄠˋ"], "青蛙數五五": ["ㄑㄧㄥ", "ㄨㄚ", "ㄕㄨˋ", "ㄨˇ", "ㄨˇ"], "音效：": ["ㄧㄣ", "ㄒㄧㄠˋ", null], "音樂：": ["ㄧㄣ", "ㄌㄜˋ", null], "領養新寵物": ["ㄌㄧㄥˇ", "ㄧㄤˇ", "ㄒㄧㄣ", "ㄔㄨㄥˇ", "ㄨˋ"], "領養！": ["ㄌㄧㄥˇ", "ㄧㄤˇ", null], "頭像": ["ㄊㄡˊ", "ㄒㄧㄤˋ"], "題數": ["ㄊㄧˊ", "ㄕㄨˋ"], "養滿6隻寵物": ["ㄧㄤˇ", "ㄇㄢˇ", null, "ㄓ", "ㄔㄨㄥˇ", "ㄨˋ"], "餘": ["ㄩˊ"], "餵寵物{n}次": ["ㄨㄟˋ", "ㄔㄨㄥˇ", "ㄨˋ", null, null, null, "ㄘˋ"], "餵點心": ["ㄨㄟˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ"], "首頁": ["ㄕㄡˇ", "ㄧㄝˋ"], "首頁會顯示「名字＋的魔法乘法大冒險」。": ["ㄕㄡˇ", "ㄧㄝˋ", "ㄏㄨㄟˋ", "ㄒㄧㄢˇ", "ㄕˋ", null, "ㄇㄧㄥˊ", "ㄗˋ", null, "ㄉㄜ˙", "ㄇㄛˊ", "ㄈㄚˇ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄉㄚˋ", "ㄇㄠˋ", "ㄒㄧㄢˇ", null, null], "高年級全破": ["ㄍㄠ", "ㄋㄧㄢˊ", "ㄐㄧˊ", "ㄑㄩㄢˊ", "ㄆㄛˋ"], "高年級數學運算應用": ["ㄍㄠ", "ㄋㄧㄢˊ", "ㄐㄧˊ", "ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄩㄣˋ", "ㄙㄨㄢˋ", "ㄧㄥˋ", "ㄩㄥˋ"], "魔法師": ["ㄇㄛˊ", "ㄈㄚˇ", "ㄕ"], "魔法王決戰": ["ㄇㄛˊ", "ㄈㄚˇ", "ㄨㄤˊ", "ㄐㄩㄝˊ", "ㄓㄢˋ"], "鯊魚手指魔法": ["ㄕㄚ", "ㄩˊ", "ㄕㄡˇ", "ㄓˇ", "ㄇㄛˊ", "ㄈㄚˇ"], "點寵物可以切換；家具可以拖曳到喜歡的位置。": ["ㄉㄧㄢˇ", "ㄔㄨㄥˇ", "ㄨˋ", "ㄎㄜˇ", "ㄧˇ", "ㄑㄧㄝˋ", "ㄏㄨㄢˋ", null, "ㄐㄧㄚ", "ㄐㄩˋ", "ㄎㄜˇ", "ㄧˇ", "ㄊㄨㄛ", "ㄧㄝˋ", "ㄉㄠˋ", "ㄒㄧˇ", "ㄏㄨㄢ", "ㄉㄜ˙", "ㄨㄟˋ", "ㄓˋ", null], "點心吃完了，去打關卡或玩小遊戲吧！": ["ㄉㄧㄢˇ", "ㄒㄧㄣ", "ㄔ", "ㄨㄢˊ", "ㄌㄜ˙", null, "ㄑㄩˋ", "ㄉㄚˇ", "ㄍㄨㄢ", "ㄎㄚˇ", "ㄏㄨㄛˋ", "ㄨㄢˊ", "ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ", "ㄅㄚ˙", null], "點心哪裡來？打贏關卡，每顆星星送一個點心；小遊戲也會送點心。": ["ㄉㄧㄢˇ", "ㄒㄧㄣ", "ㄋㄚˇ", "ㄌㄧˇ", "ㄌㄞˊ", null, "ㄉㄚˇ", "ㄧㄥˊ", "ㄍㄨㄢ", "ㄎㄚˇ", null, "ㄇㄟˇ", "ㄎㄜ", "ㄒㄧㄥ", "ㄒㄧㄥ", "ㄙㄨㄥˋ", "ㄧ", "ㄍㄜˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ", null, "ㄒㄧㄠˇ", "ㄧㄡˊ", "ㄒㄧˋ", "ㄧㄝˇ", "ㄏㄨㄟˋ", "ㄙㄨㄥˋ", "ㄉㄧㄢˇ", "ㄒㄧㄣ", null], "，圈圈裡要填大於、小於，還是等於": [null, "ㄑㄩㄢ", "ㄑㄩㄢ", "ㄌㄧˇ", "ㄧㄠˋ", "ㄊㄧㄢˊ", "ㄉㄚˋ", "ㄩˊ", null, "ㄒㄧㄠˇ", "ㄩˊ", null, "ㄏㄞˊ", "ㄕˋ", "ㄉㄥˇ", "ㄩˊ"], "，空格是什麼": [null, "ㄎㄨㄥˋ", "ㄍㄜˊ", "ㄕˋ", "ㄕㄣˊ", "ㄇㄜ˙"], "，答案是什麼": [null, "ㄉㄚˊ", "ㄢˋ", "ㄕˋ", "ㄕㄣˊ", "ㄇㄜ˙"], "🌀|漩渦怪": [null, null, "ㄒㄩㄢˊ", "ㄨㄛ", "ㄍㄨㄞˋ"], "🌋|火山巨人": [null, null, "ㄏㄨㄛˇ", "ㄕㄢ", "ㄐㄩˋ", "ㄖㄣˊ"], "🌋|火山怪": [null, null, "ㄏㄨㄛˇ", "ㄕㄢ", "ㄍㄨㄞˋ"], "🌌|星雲怪": [null, null, "ㄒㄧㄥ", "ㄩㄣˊ", "ㄍㄨㄞˋ"], "🌟|乘法森林之王": [null, null, "ㄔㄥˊ", "ㄈㄚˇ", "ㄙㄣ", "ㄌㄧㄣˊ", "ㄓ", "ㄨㄤˊ"], "🌩️|雷神": [null, null, null, "ㄌㄟˊ", "ㄕㄣˊ"], "🍉|西瓜怪": [null, null, "ㄒㄧ", "ㄍㄨㄚ", "ㄍㄨㄞˋ"], "🍕|披薩分數怪": [null, null, "ㄆㄧ", "ㄙㄚˋ", "ㄈㄣ", "ㄕㄨˋ", "ㄍㄨㄞˋ"], "🍕|披薩怪": [null, null, "ㄆㄧ", "ㄙㄚˋ", "ㄍㄨㄞˋ"], "🍩|甜甜圈": [null, null, "ㄊㄧㄢˊ", "ㄊㄧㄢˊ", "ㄑㄩㄢ"], "🍩|甜甜圈怪": [null, null, "ㄊㄧㄢˊ", "ㄊㄧㄢˊ", "ㄑㄩㄢ", "ㄍㄨㄞˋ"], "🍫|巧克力怪": [null, null, "ㄑㄧㄠˇ", "ㄎㄜˋ", "ㄌㄧˋ", "ㄍㄨㄞˋ"], "🍭|棒棒糖": [null, null, "ㄅㄤˋ", "ㄅㄤˋ", "ㄊㄤˊ"], "🍰|蛋糕怪": [null, null, "ㄉㄢˋ", "ㄍㄠ", "ㄍㄨㄞˋ"], "🎂|分數大魔王": [null, null, "ㄈㄣ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "🎂|分數蛋糕王": [null, null, "ㄈㄣ", "ㄕㄨˋ", "ㄉㄢˋ", "ㄍㄠ", "ㄨㄤˊ"], "🏎️|速率大魔王": [null, null, null, "ㄙㄨˋ", "ㄌㄩˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "🏦|銀行家": [null, null, "ㄧㄣˊ", "ㄏㄤˊ", "ㄐㄧㄚ˙"], "🏯|因數城主": [null, null, "ㄧㄣ", "ㄕㄨˋ", "ㄔㄥˊ", "ㄓㄨˇ"], "🏷️|打折怪": [null, null, null, "ㄉㄚˇ", "ㄓㄜˊ", "ㄍㄨㄞˋ"], "🐆|獵豹": [null, null, "ㄌㄧㄝˋ", "ㄅㄠˋ"], "🐆|獵豹閃電": [null, null, "ㄌㄧㄝˋ", "ㄅㄠˋ", "ㄕㄢˇ", "ㄉㄧㄢˋ"], "🐉|第九單元大魔王": [null, null, "ㄉㄧˋ", "ㄐㄧㄡˇ", "ㄉㄢ", "ㄩㄢˊ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "🐉|運算巨龍": [null, null, "ㄩㄣˋ", "ㄙㄨㄢˋ", "ㄐㄩˋ", "ㄌㄨㄥˊ"], "🐊|鱷魚": [null, null, "ㄜˋ", "ㄩˊ"], "🐊|鱷魚大王": [null, null, "ㄜˋ", "ㄩˊ", "ㄉㄚˋ", "ㄨㄤˊ"], "🐌|蝸牛慢慢": [null, null, "ㄨㄛ", "ㄋㄧㄡˊ", "ㄇㄢˋ", "ㄇㄢˋ"], "🐑|綿羊咩咩": [null, null, "ㄇㄧㄢˊ", "ㄧㄤˊ", "ㄇㄧㄝ", "ㄇㄧㄝ"], "🐒|猴子吱吱": [null, null, "ㄏㄡˊ", "ㄗ˙", "ㄓ", "ㄓ"], "🐘|大象嘟嘟": [null, null, "ㄉㄚˋ", "ㄒㄧㄤˋ", "ㄉㄨ", "ㄉㄨ"], "🐙|八爪章魚": [null, null, "ㄅㄚ", "ㄓㄠˇ", "ㄓㄤ", "ㄩˊ"], "🐙|章魚博士": [null, null, "ㄓㄤ", "ㄩˊ", "ㄅㄛˊ", "ㄕˋ"], "🐛|毛毛蟲": [null, null, "ㄇㄠˊ", "ㄇㄠˊ", "ㄔㄨㄥˊ"], "🐝|嗡嗡蜂": [null, null, "ㄨㄥ", "ㄨㄥ", "ㄈㄥ"], "🐝|蜜蜂嗡嗡": [null, null, "ㄇㄧˋ", "ㄈㄥ", "ㄨㄥ", "ㄨㄥ"], "🐞|瓢蟲點點": [null, null, "ㄆㄧㄠˊ", "ㄔㄨㄥˊ", "ㄉㄧㄢˇ", "ㄉㄧㄢˇ"], "🐡|河豚鼓鼓": [null, null, "ㄏㄜˊ", "ㄊㄨㄣˊ", "ㄍㄨˇ", "ㄍㄨˇ"], "🐢|慢慢龜": [null, null, "ㄇㄢˋ", "ㄇㄢˋ", "ㄍㄨㄟ"], "🐢|海龜爺爺": [null, null, "ㄏㄞˇ", "ㄍㄨㄟ", "ㄧㄝˊ", "ㄧㄝˊ"], "🐣|小雞嘰嘰": [null, null, "ㄒㄧㄠˇ", "ㄐㄧ", "ㄐㄧ", "ㄐㄧ"], "🐥|黃小鴨": [null, null, "ㄏㄨㄤˊ", "ㄒㄧㄠˇ", "ㄧㄚ"], "🐧|企鵝搖搖": [null, null, "ㄑㄧˋ", "ㄜˊ", "ㄧㄠˊ", "ㄧㄠˊ"], "🐨|無尾熊": [null, null, "ㄨˊ", "ㄨㄟˇ", "ㄒㄩㄥˊ"], "🐭|小老鼠吱吱": [null, null, "ㄒㄧㄠˇ", "ㄌㄠˇ", "ㄕㄨˇ", "ㄓ", "ㄓ"], "🐮|乳牛哞哞": [null, null, "ㄖㄨˇ", "ㄋㄧㄡˊ", "ㄇㄡ", "ㄇㄡ"], "🐰|跳跳兔": [null, null, "ㄊㄧㄠˋ", "ㄊㄧㄠˋ", "ㄊㄨˋ"], "🐱|貓咪喵喵": [null, null, "ㄇㄠ", "ㄇㄧ", "ㄇㄧㄠ", "ㄇㄧㄠ"], "🐲|加減法龍王": [null, null, "ㄐㄧㄚ", "ㄐㄧㄢˇ", "ㄈㄚˇ", "ㄌㄨㄥˊ", "ㄨㄤˊ"], "🐲|第七單元大魔王": [null, null, "ㄉㄧˋ", "ㄑㄧ", "ㄉㄢ", "ㄩㄢˊ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "🐶|小狗汪汪": [null, null, "ㄒㄧㄠˇ", "ㄍㄡˇ", "ㄨㄤ", "ㄨㄤ"], "🐷|小豬嚕嚕": [null, null, "ㄒㄧㄠˇ", "ㄓㄨ", "ㄌㄨˇ", "ㄌㄨˇ"], "🐸|跳跳蛙": [null, null, "ㄊㄧㄠˋ", "ㄊㄧㄠˋ", "ㄨㄚ"], "🐸|青蛙呱呱": [null, null, "ㄑㄧㄥ", "ㄨㄚ", "ㄍㄨ", "ㄍㄨ"], "🐹|倉鼠球球": [null, null, "ㄘㄤ", "ㄕㄨˇ", "ㄑㄧㄡˊ", "ㄑㄧㄡˊ"], "🐻|熊熊大王": [null, null, "ㄒㄩㄥˊ", "ㄒㄩㄥˊ", "ㄉㄚˋ", "ㄨㄤˊ"], "🐿️|松鼠莉莉": [null, null, null, "ㄙㄨㄥ", "ㄕㄨˇ", "ㄌㄧˋ", "ㄌㄧˋ"], "👑|九九魔法王": [null, null, "ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄇㄛˊ", "ㄈㄚˇ", "ㄨㄤˊ"], "👑|運算島之王": [null, null, "ㄩㄣˋ", "ㄙㄨㄢˋ", "ㄉㄠˇ", "ㄓ", "ㄨㄤˊ"], "👻|七七幽靈": [null, null, "ㄑㄧ", "ㄑㄧ", "ㄧㄡ", "ㄌㄧㄥˊ"], "👾|太空小怪": [null, null, "ㄊㄞˋ", "ㄎㄨㄥ", "ㄒㄧㄠˇ", "ㄍㄨㄞˋ"], "💎|鑽石怪": [null, null, "ㄗㄨㄢ", "ㄕˊ", "ㄍㄨㄞˋ"], "💰|金幣怪": [null, null, "ㄐㄧㄣ", "ㄅㄧˋ", "ㄍㄨㄞˋ"], "📊|圖表怪": [null, null, "ㄊㄨˊ", "ㄅㄧㄠˇ", "ㄍㄨㄞˋ"], "📏|尺子怪": [null, null, "ㄔˇ", "ㄗ˙", "ㄍㄨㄞˋ"], "📐|三角板": [null, null, "ㄙㄢ", "ㄐㄧㄠˇ", "ㄅㄢˇ"], "📦|箱子怪": [null, null, "ㄒㄧㄤ", "ㄗ˙", "ㄍㄨㄞˋ"], "🔢|數字精靈": [null, null, "ㄕㄨˋ", "ㄗˋ", "ㄐㄧㄥ", "ㄌㄧㄥˊ"], "🕵️|數學偵探": [null, null, null, "ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄓㄣ", "ㄊㄢˋ"], "🗿|石像大魔王": [null, null, "ㄕˊ", "ㄒㄧㄤˋ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄨㄤˊ"], "🚀|火箭隊長": [null, null, "ㄏㄨㄛˇ", "ㄐㄧㄢˋ", "ㄉㄨㄟˋ", "ㄓㄤˇ"], "🚄|高鐵怪": [null, null, "ㄍㄠ", "ㄊㄧㄝˇ", "ㄍㄨㄞˋ"], "🛒|購物車": [null, null, "ㄍㄡˋ", "ㄨˋ", "ㄔㄜ"], "🛸|飛碟小飛": [null, null, "ㄈㄟ", "ㄉㄧㄝˊ", "ㄒㄧㄠˇ", "ㄈㄟ"], "🤑|小數大富翁": [null, null, "ㄒㄧㄠˇ", "ㄕㄨˋ", "ㄉㄚˋ", "ㄈㄨˋ", "ㄨㄥ"], "🤖|乘法機器人": [null, null, "ㄔㄥˊ", "ㄈㄚˇ", "ㄐㄧ", "ㄑㄧˋ", "ㄖㄣˊ"], "🤖|機器人小鐵": [null, null, "ㄐㄧ", "ㄑㄧˋ", "ㄖㄣˊ", "ㄒㄧㄠˇ", "ㄊㄧㄝˇ"], "🥧|派派": [null, null, "ㄆㄞˋ", "ㄆㄞˋ"], "🦀|螃蟹橫橫": [null, null, "ㄆㄤˊ", "ㄒㄧㄝˋ", "ㄏㄥˊ", "ㄏㄥˊ"], "🦁|獅子大王": [null, null, "ㄕ", "ㄗ˙", "ㄉㄚˋ", "ㄨㄤˊ"], "🦁|獅子王": [null, null, "ㄕ", "ㄗ˙", "ㄨㄤˊ"], "🦄|彩虹馬": [null, null, "ㄘㄞˇ", "ㄏㄨㄥˊ", "ㄇㄚˇ"], "🦅|老鷹": [null, null, "ㄌㄠˇ", "ㄧㄥ"], "🦅|老鷹隊長": [null, null, "ㄌㄠˇ", "ㄧㄥ", "ㄉㄨㄟˋ", "ㄓㄤˇ"], "🦆|鴨子呱呱": [null, null, "ㄧㄚ", "ㄗ˙", "ㄍㄨ", "ㄍㄨ"], "🦈|大白鯊": [null, null, "ㄉㄚˋ", "ㄅㄞˊ", "ㄕㄚ"], "🦈|鯊魚艦長": [null, null, "ㄕㄚ", "ㄩˊ", "ㄐㄧㄢˋ", "ㄓㄤˇ"], "🦉|貓頭鷹": [null, null, "ㄇㄠ", "ㄊㄡˊ", "ㄧㄥ"], "🦉|貓頭鷹博士": [null, null, "ㄇㄠ", "ㄊㄡˊ", "ㄧㄥ", "ㄅㄛˊ", "ㄕˋ"], "🦊|狐狸小火": [null, null, "ㄏㄨˊ", "ㄌㄧˊ", "ㄒㄧㄠˇ", "ㄏㄨㄛˇ"], "🦋|蝴蝶飛飛": [null, null, "ㄏㄨˊ", "ㄉㄧㄝˊ", "ㄈㄟ", "ㄈㄟ"], "🦍|森林大猩猩": [null, null, "ㄙㄣ", "ㄌㄧㄣˊ", "ㄉㄚˋ", "ㄒㄧㄥ", "ㄒㄧㄥ"], "🦎|蜥蜴": [null, null, "ㄒㄧ", "ㄧˋ"], "🦑|魷魚墨墨": [null, null, "ㄧㄡˊ", "ㄩˊ", "ㄇㄛˋ", "ㄇㄛˋ"], "🦒|長頸鹿大王": [null, null, "ㄓㄤˇ", "ㄐㄧㄥˇ", "ㄌㄨˋ", "ㄉㄚˋ", "ㄨㄤˊ"], "🦓|斑馬條條": [null, null, "ㄅㄢ", "ㄇㄚˇ", "ㄊㄧㄠˊ", "ㄊㄧㄠˊ"], "🦔|刺蝟咚咚": [null, null, "ㄘˋ", "ㄨㄟˋ", "ㄉㄨㄥ", "ㄉㄨㄥ"], "🦕|長頸龍": [null, null, "ㄓㄤˇ", "ㄐㄧㄥˇ", "ㄌㄨㄥˊ"], "🦖|小暴龍": [null, null, "ㄒㄧㄠˇ", "ㄅㄠˋ", "ㄌㄨㄥˊ"], "🦖|暴龍": [null, null, "ㄅㄠˋ", "ㄌㄨㄥˊ"], "🦘|袋鼠跳跳": [null, null, "ㄉㄞˋ", "ㄕㄨˇ", "ㄊㄧㄠˋ", "ㄊㄧㄠˋ"], "🦛|河馬大王": [null, null, "ㄏㄜˊ", "ㄇㄚˇ", "ㄉㄚˋ", "ㄨㄤˊ"], "🦜|鸚鵡": [null, null, "ㄧㄥ", "ㄨˇ"], "🦝|小浣熊": [null, null, "ㄒㄧㄠˇ", "ㄏㄨㄢˋ", "ㄒㄩㄥˊ"], "🦾|鋼鐵手臂": [null, null, "ㄍㄤ", "ㄊㄧㄝˇ", "ㄕㄡˇ", "ㄅㄧˋ"], "🧁|杯子蛋糕": [null, null, "ㄅㄟ", "ㄗ˙", "ㄉㄢˋ", "ㄍㄠ"], "🧙|小巫師": [null, null, "ㄒㄧㄠˇ", "ㄨ", "ㄕ"], "🧙‍♂️|數學大魔法師": [null, null, null, null, null, "ㄕㄨˋ", "ㄒㄩㄝˊ", "ㄉㄚˋ", "ㄇㄛˊ", "ㄈㄚˇ", "ㄕ"], "🧚|小精靈": [null, null, "ㄒㄧㄠˇ", "ㄐㄧㄥ", "ㄌㄧㄥˊ"], "🧛|吸血鬼": [null, null, "ㄒㄧ", "ㄒㄧㄝˇ", "ㄍㄨㄟˇ"], "🧞|神燈精靈": [null, null, "ㄕㄣˊ", "ㄉㄥ", "ㄐㄧㄥ", "ㄌㄧㄥˊ"], "🧩|拼圖怪": [null, null, "ㄆㄧㄣ", "ㄊㄨˊ", "ㄍㄨㄞˋ"], "🧩|方塊怪": [null, null, "ㄈㄤ", "ㄎㄨㄞˋ", "ㄍㄨㄞˋ"], "🧪|實驗怪": [null, null, "ㄕˊ", "ㄧㄢˋ", "ㄍㄨㄞˋ"], "🧮|算盤老人": [null, null, "ㄙㄨㄢˋ", "ㄆㄢˊ", "ㄌㄠˇ", "ㄖㄣˊ"]};
+function $(id){return document.getElementById(id)}
+function rb(ch,b){var light=b.indexOf('˙')>=0,body=b.replace('˙',''),tone='';
+ if('ˊˇˋ'.indexOf(body.slice(-1))>=0&&body.length>1){tone=body.slice(-1);body=body.slice(0,-1)}
+ var s='';for(var i=0;i<body.length;i++)s+='<span>'+body[i]+(i==body.length-1&&tone?'<i class="zt">'+tone+'</i>':'')+'</span>';
+ if(light)s='<span class="l">˙</span>'+s;return '<span class="z"><span class="h">'+ch+'</span><span class="b">'+s+'</span></span>'}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function T(tpl,v){var bs=ZY[tpl],out='';for(var i=0;i<tpl.length;i++){var ch=tpl[i];
+ if(ch=='{'&&v){var j=tpl.indexOf('}',i);out+='<b class="nz">'+esc(v[tpl.slice(i+1,j)])+'</b>';i=j;continue}
+ var b=bs?bs[i]:null;out+=b?rb(ch,b):esc(ch)}return out}
+function TT(s){return ZY[s]?T(s):esc(s)}
+var CN='零一二三四五六七八九';
+function cnNum(n){if(n<10)return CN[n];if(n==10)return'一十';var t=Math.floor(n/10),o=n%10;return(t==1?'十':CN[t]+'十')+(o?CN[o]:'')}
+function kjText(a,b){var p=a*b;return p<10?CN[a]+CN[b]+'得'+CN[p]:CN[a]+CN[b]+cnNum(p)}
+function KJ(a,b){var s=kjText(a,b),bs=ZY[s],o='';for(var i=0;i<s.length;i++)o+=bs&&bs[i]?rb(s[i],bs[i]):s[i];return o}
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+// ================= 小工具 =================
+function pick(a){return a[rnd(0,a.length-1)]}
+function fmt(n){var s=(Math.round(n*100)/100).toFixed(2);return s.replace(/\.?0+$/,'')}
+function eqv(a,b){return Math.abs(a-b)<1e-6}
+function gcd(a,b){return b?gcd(b,a%b):a}
+function lcm(a,b){return a*b/gcd(a,b)}
+function F(n,d){return '<span class="fr"><i>'+n+'</i><i>'+d+'</i></span>'}
+function Q(h,ans,sol,o){o=o||{};o.h=h;o.ans=ans;o.sol=sol;return o}
+function W(t,tv,h,ans,sol,o){o=Q(h,ans,sol,o);o.t=t;o.tv=tv;return o}
+
+// ================= 題目產生器 =================
+function noCarryAdd(dig){var a=0,b=0,p=1;for(var i=0;i<dig;i++){var x=rnd(i==dig-1?1:0,i==dig-1?7:9),y=rnd(i==dig-1?1:0,(i==dig-1?8:9)-x);a+=x*p;b+=y*p;p*=10}return[a,b]}
+function noBorrowSub(dig){var a=0,b=0,p=1;for(var i=0;i<dig;i++){var x=rnd(i==dig-1?2:0,9),y=rnd(i==dig-1?1:0,i==dig-1?x-1:x);a+=x*p;b+=y*p;p*=10}return[a,b]}
+function addQ(a,b){return Q(a+' + '+b+' = ?',a+b,a+' + '+b+' = '+(a+b))}
+function subQ(a,b){return Q(a+' − '+b+' = ?',a-b,a+' − '+b+' = '+(a-b))}
+var GEN={
+ // ---- 低年級 ----
+ add10:function(){var a=rnd(1,9),b=rnd(1,10-a);return addQ(a,b)},
+ sub10:function(){var a=rnd(2,10),b=rnd(1,a);return subQ(a,b)},
+ make10:function(){var a=rnd(1,9);return Q('□ + '+a+' = 10',10-a,(10-a)+' + '+a+' = 10')},
+ add20c:function(){var a=rnd(2,9),b=rnd(11-a,9);return addQ(a,b)},
+ sub20b:function(){var a=rnd(11,18),b=rnd(a%10+1,9);return subQ(a,b)},
+ add2d:function(){var x=noCarryAdd(2);return addQ(x[0],x[1])},
+ add2dc:function(h){var a0=rnd(1,9),b0=rnd(10-a0,9),a1=rnd(1,7),b1=rnd(1,8-a1);return addQ(a1*10+a0,b1*10+b0)},
+ sub2d:function(){var x=noBorrowSub(2);return subQ(x[0],x[1])},
+ sub2db:function(){var a1=rnd(2,9),b1=rnd(1,a1-1),a0=rnd(0,8),b0=rnd(a0+1,9);return subQ(a1*10+a0,b1*10+b0)},
+ add3d:function(h){if(h)return GEN.add3dc(h);var x=noCarryAdd(3);return addQ(x[0],x[1])},
+ sub3d:function(h){if(h)return GEN.sub3db(h);var x=noBorrowSub(3);return subQ(x[0],x[1])},
+ add3dc:function(h){if(h){var a1=rnd(2,9),b1=rnd(10-a1,9),a2=rnd(1,8),b2=rnd(9-a2,9),a3=rnd(1,4),b3=rnd(1,8-a3);return addQ(a3*100+a2*10+a1,b3*100+b2*10+b1)}
+  var a1=rnd(1,9),b1=rnd(10-a1,9),a2=rnd(0,7),b2=rnd(0,8-a2),a3=rnd(1,4),b3=rnd(1,8-a3);return addQ(a3*100+a2*10+a1,b3*100+b2*10+b1)},
+ sub3db:function(h){if(h){var a3=rnd(3,9),b3=rnd(1,a3-2),a2=rnd(0,7),b2=rnd(a2+1,9),a1=rnd(0,7),b1=rnd(a1+1,9);return subQ(a3*100+a2*10+a1,b3*100+b2*10+b1)}
+  var a3=rnd(2,9),b3=rnd(1,a3-1),a2=rnd(1,9),b2=rnd(0,a2-1),a1=rnd(0,8),b1=rnd(a1+1,9);return subQ(a3*100+a2*10+a1,b3*100+b2*10+b1)},
+ blankAS:function(h){var a=rnd(12,h?89:49),b=rnd(11,h?89:49);if(Math.random()<.5)return Q('□ + '+b+' = '+(a+b),a,a+' + '+b+' = '+(a+b));var c=a+b;return Q(c+' − □ = '+a,b,c+' − '+b+' = '+a)},
+ wSmall:function(){var a=rnd(3,12),b=rnd(2,8);return pick([
+  function(){return W('樹上有{a}隻小鳥，又飛來{b}隻，現在有幾隻？',{a:a,b:b},'',a+b,a+' + '+b+' = '+(a+b))},
+  function(){var c=a+b;return W('盤子裡有{a}顆草莓，吃掉{b}顆，還剩幾顆？',{a:c,b:b},'',a,c+' − '+b+' = '+a)}])()},
+ wMore:function(h){var a=rnd(h?120:25,h?480:89),b=rnd(h?30:5,h?99:19);return pick([
+  function(){return W('紅花有{a}朵，黃花比紅花多{b}朵，黃花有幾朵？',{a:a,b:b},'',a+b,a+' + '+b+' = '+(a+b))},
+  function(){return W('哥哥有{a}元，弟弟比哥哥少{b}元，弟弟有幾元？',{a:a,b:b},'',a-b,a+' − '+b+' = '+(a-b))},
+  function(){var c=a-b;return W('姐姐有{a}張貼紙，妹妹有{b}張，姐姐比妹妹多幾張？',{a:a,b:c},'',b,a+' − '+c+' = '+b)}])()},
+ wLeft:function(h){var a=rnd(h?150:30,h?600:99),b=rnd(h?40:8,h?140:29);return pick([
+  function(){return W('盒子裡有{a}顆糖果，吃掉{b}顆，還剩幾顆？',{a:a,b:b},'',a-b,a+' − '+b+' = '+(a-b))},
+  function(){return W('一本書有{a}頁，看了{b}頁，還有幾頁沒看？',{a:a,b:b},'',a-b,a+' − '+b+' = '+(a-b))},
+  function(){return W('媽媽有{a}元，買文具用了{b}元，還剩幾元？',{a:a,b:b},'',a-b,a+' − '+b+' = '+(a-b))}])()},
+ wTwo:function(h){var a=rnd(h?40:20,h?90:45),b=rnd(5,15),c=rnd(3,18);return pick([
+  function(){return W('公車上有{a}人，下車{b}人，又上車{c}人，現在車上有幾人？',{a:a,b:b,c:c},'',a-b+c,a+' − '+b+' + '+c+' = '+(a-b+c))},
+  function(){return W('媽媽買了{a}個蘋果和{b}個橘子，吃掉{c}個，還剩幾個？',{a:a,b:b,c:c},'',a+b-c,a+' + '+b+' − '+c+' = '+(a+b-c))}])()},
+ // ---- 中年級 ----
+ m21:function(h){if(h)return GEN.m21c(h);var b=rnd(2,4),t=rnd(1,Math.floor(9/b)),o=rnd(0,Math.floor(9/b)),a=t*10+o;if(a<11)a=11;return Q(a+' × '+b+' = ?',a*b,a+' × '+b+' = '+(a*b))},
+ m21c:function(){var a=rnd(12,99),b=rnd(2,9);return Q(a+' × '+b+' = ?',a*b,a+' × '+b+' = '+(a*b))},
+ m31:function(h){var a=rnd(101,h?999:399),b=rnd(2,h?9:6);return Q(a+' × '+b+' = ?',a*b,a+' × '+b+' = '+(a*b))},
+ wMul:function(h){var a=rnd(12,h?99:48),b=rnd(2,9);return pick([
+  function(){return W('每箱有{a}瓶果汁，{b}箱一共有幾瓶？',{a:a,b:b},'',a*b,a+' × '+b+' = '+(a*b))},
+  function(){return W('一張門票{a}元，買{b}張要付多少元？',{a:a,b:b},'',a*b,a+' × '+b+' = '+(a*b))}])()},
+ div99:function(){var b=rnd(2,9),q=rnd(2,9),a=b*q;return Q(a+' ÷ '+b+' = ?',q,a+' ÷ '+b+' = '+q)},
+ divRq:function(){var b=rnd(3,9),q=rnd(2,9),r=rnd(1,b-1),a=b*q+r;return Q(a+' ÷ '+b+' = □ … '+r,q,a+' ÷ '+b+' = '+q+' … '+r)},
+ divRr:function(){var b=rnd(3,9),q=rnd(2,9),r=rnd(1,b-1),a=b*q+r;return Q(a+' ÷ '+b+' = '+q+' … □',r,a+' ÷ '+b+' = '+q+' … '+r)},
+ div21:function(){var b=rnd(2,6),q=rnd(11,Math.floor(99/b)),a=b*q;return Q(a+' ÷ '+b+' = ?',q,a+' ÷ '+b+' = '+q)},
+ m22:function(h){var a=rnd(11,h?59:25),b=rnd(11,h?39:19);return Q(a+' × '+b+' = ?',a*b,a+' × '+b+' = '+(a*b))},
+ div31:function(h){var b=rnd(2,h?9:5),q=rnd(21,Math.floor(999/b)),a=b*q;return Q(a+' ÷ '+b+' = ?',q,a+' ÷ '+b+' = '+q)},
+ add4:function(h){if(Math.random()<.5){var a=rnd(1000,6999),b=rnd(1000,9999-a);if(!h){var x=noCarryAdd(4);a=x[0];b=x[1]}return addQ(a,b)}
+  var a2=rnd(3000,9999),b2=rnd(1000,a2-1000);if(!h){var y=noBorrowSub(4);a2=y[0];b2=y[1]}return subQ(a2,b2)},
+ wBig:function(h){var a=rnd(1200,6800),b=rnd(300,Math.min(2900,a-200));return pick([
+  function(){return W('圖書館有{a}本書，又買了{b}本，現在一共有幾本？',{a:a,b:b},'',a+b,a+' + '+b+' = '+(a+b))},
+  function(){return W('工廠做了{a}個玩具，賣掉{b}個，還剩幾個？',{a:a,b:b},'',a-b,a+' − '+b+' = '+(a-b))}])()},
+ mix1:function(){var a=rnd(10,60),b=rnd(2,9),c=rnd(2,9);return pick([
+  function(){return Q(a+' + '+b+' × '+c+' = ?',a+b*c,a+' + '+(b*c)+' = '+(a+b*c))},
+  function(){var A=a+b*c;return Q(A+' − '+b+' × '+c+' = ?',a,A+' − '+(b*c)+' = '+a)},
+  function(){var d=b*c;return Q(a+' + '+d+' ÷ '+c+' = ?',a+b,a+' + '+b+' = '+(a+b))}])()},
+ mix2:function(){var a=rnd(2,15),b=rnd(2,15),c=rnd(2,6);return pick([
+  function(){return Q('('+a+' + '+b+') × '+c+' = ?',(a+b)*c,(a+b)+' × '+c+' = '+((a+b)*c))},
+  function(){var A=a+b+5;return Q('('+A+' − '+b+') × '+c+' = ?',(A-b)*c,(A-b)+' × '+c+' = '+((A-b)*c))},
+  function(){var s=(a+b)*c;return Q(s+' ÷ ('+a+' + '+b+') = ?',c,s+' ÷ '+(a+b)+' = '+c)}])()},
+ wMix:function(){var a=rnd(5,15),b=rnd(2,6),c=Math.ceil((a*b+1)/50)*50;return W('一枝鉛筆{a}元，買{b}枝，付{c}元，可以找回幾元？',{a:a,b:b,c:c},'',c-a*b,c+' − '+a+' × '+b+' = '+(c-a*b))},
+ blankMD:function(){var a=rnd(2,9),b=rnd(2,9),c=a*b;return Math.random()<.5?Q('□ × '+b+' = '+c,a,a+' × '+b+' = '+c):Q(c+' ÷ □ = '+a,b,c+' ÷ '+b+' = '+a)},
+ fracAdd:function(){var d=rnd(5,12),a=rnd(1,d-2),b=rnd(1,d-1-a);return Q(F(a,d)+' + '+F(b,d)+' = '+F('□',d),a+b,F(a,d)+' + '+F(b,d)+' = '+F(a+b,d))},
+ fracSub:function(){var d=rnd(5,12),a=rnd(2,d-1),b=rnd(1,a-1);return Q(F(a,d)+' − '+F(b,d)+' = '+F('□',d),a-b,F(a,d)+' − '+F(b,d)+' = '+F(a-b,d))},
+ dec1Add:function(){var a=rnd(11,99)/10,b=rnd(11,99)/10;return Q(fmt(a)+' + '+fmt(b)+' = ?',+fmt(a+b),fmt(a)+' + '+fmt(b)+' = '+fmt(a+b),{dec:1})},
+ dec1Sub:function(){var a=rnd(31,99)/10,b=rnd(11,Math.round(a*10)-1)/10;return Q(fmt(a)+' − '+fmt(b)+' = ?',+fmt(a-b),fmt(a)+' − '+fmt(b)+' = '+fmt(a-b),{dec:1})},
+ dec2:function(){var a=rnd(101,899)/100,b=rnd(101,Math.round(a*100)-1)/100;return Math.random()<.5?Q(fmt(a)+' + '+fmt(b)+' = ?',+fmt(a+b),fmt(a)+' + '+fmt(b)+' = '+fmt(a+b),{dec:1}):Q(fmt(a)+' − '+fmt(b)+' = ?',+fmt(a-b),fmt(a)+' − '+fmt(b)+' = '+fmt(a-b),{dec:1})},
+ timeConv:function(){var h=rnd(1,3),m=rnd(5,55);return Math.random()<.5?W('{a}時{b}分是幾分？',{a:h,b:m},'',h*60+m,h+' × 60 + '+m+' = '+(h*60+m)):W('{a}分{b}秒是幾秒？',{a:h+1,b:m},'',(h+1)*60+m,(h+1)+' × 60 + '+m+' = '+((h+1)*60+m))},
+ lenConv:function(){var k=rnd(1,9),m=rnd(10,990);return Math.random()<.5?W('{a}公里{b}公尺是幾公尺？',{a:k,b:m},'',k*1000+m,k+' × 1000 + '+m+' = '+(k*1000+m)):W('{a}公尺{b}公分是幾公分？',{a:k,b:m%100||5},'',k*100+(m%100||5),k+' × 100 + '+(m%100||5)+' = '+(k*100+(m%100||5)))},
+ // ---- 高年級 ----
+ gcf:function(){var g=rnd(2,9),P=[[2,3],[3,4],[2,5],[3,5],[4,5],[5,6],[2,7],[3,7]][rnd(0,7)],a=g*P[0],b=g*P[1];return W('{a}和{b}的最大公因數是多少？',{a:a,b:b},'',g,a+'、'+b+' → '+g)},
+ lcmQ:function(){var a=rnd(2,12),b=rnd(2,12);if(a==b)b++;return W('{a}和{b}的最小公倍數是多少？',{a:a,b:b},'',lcm(a,b),a+'、'+b+' → '+lcm(a,b))},
+ fracAddU:function(){var ds=shuffle([2,3,4,5,6,8]),d1=ds[0],d2=ds[1],L=lcm(d1,d2),a=rnd(1,d1-1),b=rnd(1,d2-1),n=a*L/d1+b*L/d2;return Q(F(a,d1)+' + '+F(b,d2)+' = '+F('□',L),n,F(a*L/d1,L)+' + '+F(b*L/d2,L)+' = '+F(n,L))},
+ fracSubU:function(){var ds=shuffle([2,3,4,5,6,8]),d1=ds[0],d2=ds[1],L=lcm(d1,d2),a,b,n,t=0;do{a=rnd(1,d1-1);b=rnd(1,d2-1);n=a*L/d1-b*L/d2;t++}while(n<=0&&t<30);if(n<=0){var x=a;a=d1-1;n=a*L/d1-b*L/d2}if(n<=0)return GEN.fracAddU();return Q(F(a,d1)+' − '+F(b,d2)+' = '+F('□',L),n,F(a*L/d1,L)+' − '+F(b*L/d2,L)+' = '+F(n,L))},
+ fracMulInt:function(){var d=rnd(3,9),a=rnd(1,d-1),n=rnd(2,9);return Q(F(a,d)+' × '+n+' = '+F('□',d),a*n,F(a,d)+' × '+n+' = '+F(a*n,d))},
+ fracMulFrac:function(){var b=rnd(2,7),d=rnd(2,7),a=rnd(1,b-1),c=rnd(1,d-1);return Q(F(a,b)+' × '+F(c,d)+' = '+F('□',b*d),a*c,F(a,b)+' × '+F(c,d)+' = '+F(a*c,b*d))},
+ mixedToImp:function(){var w=rnd(1,4),d=rnd(2,9),a=rnd(1,d-1);return Q('<span class="mixw">'+w+'</span>'+F(a,d)+' = '+F('□',d),w*d+a,'<span class="mixw">'+w+'</span>'+F(a,d)+' = '+F(w*d+a,d))},
+ decMulInt:function(){var a=rnd(11,99)/10,n=rnd(2,9);return Q(fmt(a)+' × '+n+' = ?',+fmt(a*n),fmt(a)+' × '+n+' = '+fmt(a*n),{dec:1})},
+ decMulDec:function(){var a=rnd(11,49)/10,b=rnd(11,39)/10;return Q(fmt(a)+' × '+fmt(b)+' = ?',+fmt(a*b),fmt(a)+' × '+fmt(b)+' = '+fmt(a*b),{dec:1})},
+ decDivInt:function(){var n=rnd(2,9),k=rnd(11,99),a=n*k/10;return Q(fmt(a)+' ÷ '+n+' = ?',k/10,fmt(a)+' ÷ '+n+' = '+fmt(k/10),{dec:1})},
+ wDec:function(){var a=rnd(10,60)+.5,b=rnd(2,8);return W('一瓶牛奶{a}元，買{b}瓶要付多少元？',{a:fmt(a),b:b},'',+fmt(a*b),fmt(a)+' × '+b+' = '+fmt(a*b),{dec:1})},
+ pct:function(){var a=pick([100,200,300,400,500,600,800,1000]),p=pick([10,20,25,50,75]);return W('{a}的{p}%是多少？',{a:a,p:p},'',a*p/100,a+' × '+p+'% = '+(a*p/100))},
+ discount:function(){var a=rnd(2,20)*100,z=rnd(5,9);return W('定價{a}元的玩具打{z}折，要付多少元？',{a:a,z:z},'',a*z/10,a+' × 0.'+z+' = '+(a*z/10))},
+ ratio:function(){var P=[[2,3],[3,4],[2,5],[3,5],[4,5],[5,6],[1,2],[1,3]][rnd(0,7)],k=rnd(2,6);return Q(P[0]+' : '+P[1]+' = '+(P[0]*k)+' : □',P[1]*k,P[0]+' : '+P[1]+' = '+(P[0]*k)+' : '+(P[1]*k))},
+ speed:function(){var v=pick([40,50,60,80,90,100]),t=rnd(2,5);return Math.random()<.5?W('時速{v}公里的汽車，{t}小時可以走幾公里？',{v:v,t:t},'',v*t,v+' × '+t+' = '+(v*t)):W('汽車{t}小時走了{d}公里，時速是多少公里？',{t:t,d:v*t},'',v,(v*t)+' ÷ '+t+' = '+v)},
+ circle:function(){var r=rnd(1,10);return W('半徑{r}公分的圓，面積是多少平方公分？（圓周率用3.14）',{r:r},'',+fmt(3.14*r*r),r+' × '+r+' × 3.14 = '+fmt(3.14*r*r),{dec:1})},
+ volume:function(){var a=rnd(2,12),b=rnd(2,10),c=rnd(2,10);return W('長{a}公分、寬{b}公分、高{c}公分的長方體，體積是多少立方公分？',{a:a,b:b,c:c},'',a*b*c,a+' × '+b+' × '+c+' = '+(a*b*c))},
+ mixDec:function(){var a=rnd(11,99)/10,b=rnd(2,9),c=rnd(2,9);return Q(fmt(a)+' + '+b+' × '+c+' = ?',+fmt(a+b*c),fmt(a)+' + '+(b*c)+' = '+fmt(a+b*c),{dec:1})},
+ avg:function(){var x=rnd(10,90),y=rnd(10,90),z=rnd(10,90);z+=(3-(x+y+z)%3)%3;return W('{a}、{b}、{c}這三個數的平均是多少？',{a:x,b:y,c:z},'',(x+y+z)/3,'('+x+' + '+y+' + '+z+') ÷ 3 = '+((x+y+z)/3))},
+ // ---- 九九乘法森林（新增）----
+ fComm:function(){var a=rnd(2,9),b=rnd(2,9);if(a==b)b=a==9?8:a+1;return Q(a+' × '+b+' = '+b+' × □',a,a+' × '+b+' = '+b+' × '+a,{kj:[a,b]})},
+ fChain:function(){var a=rnd(2,9),n=rnd(2,5),s=[];for(var i=0;i<n;i++)s.push(a);return Q(s.join(' + ')+' = '+a+' × □',n,s.join(' + ')+' = '+a+' × '+n,{kj:[a,n]})},
+ fCmp:function(){var a=rnd(2,9),b=rnd(2,9),c,d;if(Math.random()<.3){c=b;d=a}else{c=rnd(2,9);d=rnd(2,9)}var l=a*b,r=c*d,s=l>r?'>':l<r?'<':'=';return Q(a+' × '+b+' ○ '+c+' × '+d,s,a+'×'+b+' = '+l+'，'+c+'×'+d+' = '+r+' → '+s,{syms:['>','<','=']})},
+ fMore:function(){var a=rnd(2,9),b=rnd(2,8),up=Math.random()<.5||b==2,nb=up?b+1:b-1;return Q(a+' × '+b+' = '+(a*b)+'，'+a+' × '+nb+' = ?',a*nb,a*b+(up?' + ':' − ')+a+' = '+(a*nb),{kj:[a,nb]})}
+};
+function mulQ(L,h,bag){var a=L.nums[rnd(0,L.nums.length-1)],b=rnd(1,9);
+ if(L.nums.length==1){if(!bag.b||!bag.b.length)bag.b=shuffle([1,2,3,4,5,6,7,8,9]);b=bag.b.pop()}else if(L.nums.length>4)b=rnd(2,9);
+ var ks=L.kinds||(h?['eq','eq','blank']:['eq']),k=pick(ks),p=a*b,sol=a+' × '+b+' = '+p,o={kj:[a,b]};
+ if(k=='blank'){var left=Math.random()<.5;return Q(left?'□ × '+b+' = '+p:a+' × □ = '+p,left?a:b,sol,o)}
+ if(k=='word')return W(pick(WORD),{a:a,b:b},a+' × '+b+' = ?',p,sol,o);
+ if(k=='times')return W('{a}的{b}倍是多少？',{a:a,b:b},'',p,sol,o);
+ return Q(a+' × '+b+' = ?',p,sol,o)}
+var WORD=['一盒有{a}顆糖果，{b}盒一共有幾顆？','每個小朋友有{a}張貼紙，{b}個小朋友一共有幾張？','一枝鉛筆{a}元，買{b}枝要付多少元？','每輛車坐{a}個人，{b}輛車可以坐幾個人？','每袋有{a}個蘋果，{b}袋一共有幾個？'];
+
+// ================= 區域與關卡 =================
+function mk(list){return list.map(function(x,i){var m=x[0].split('|');var L={id:i+1,mon:m[0],mname:m[1],title:x[1],mode:x[3]||'opt',time:x[4]||15,hp:x[5]||(x[6]?12:8),boss:!!x[6]};
+ if(typeof x[2]=='string')L.gs=x[2].split(',');else{L.nums=x[2].nums;L.kinds=x[2].kinds;if(x[2].info)L.info=x[2].info}return L})}
+var REGIONS=[
+ {id:'mul',name:'九九乘法森林',grade:'二年級．九九乘法',icon:'🌳',color:'#4cbf6a',
+  zones:[['第七單元：2、5、4、8',1],['第九單元：3、6、7、9',8],['綜合挑戰',15],['森林深處',21]],
+  levels:mk([
+   ['🐣|小雞嘰嘰','小雞跳格子',{nums:[2]}],['🐸|跳跳蛙','青蛙數五五',{nums:[5]}],['🐢|慢慢龜','草原二五大會考',{nums:[2,5]},'opt',12,10],
+   ['🦊|狐狸小火','狐狸翻一倍',{nums:[4]}],['🐙|八爪章魚','章魚八隻腳',{nums:[8]}],['🦁|獅子王','獅子王的考驗',{nums:[4,8]},'opt',12,10],
+   ['🐲|第七單元大魔王','草原大魔王決戰',{nums:[2,5,4,8]},'pad',10,12,1],
+   ['🐝|嗡嗡蜂','蜜蜂三三飛',{nums:[3]}],['🦄|彩虹馬','彩虹六六大順',{nums:[6]}],['🦖|小暴龍','暴龍三六連擊',{nums:[3,6]},'opt',12,10],
+   ['🦈|大白鯊','鯊魚手指魔法',{nums:[9]}],['👻|七七幽靈','幽靈七七四十九',{nums:[7]}],['🦅|老鷹隊長','老鷹高空大戰',{nums:[7,9]},'opt',12,10],
+   ['🐉|第九單元大魔王','海洋大魔王決戰',{nums:[3,6,7,9]},'pad',10,12,1],
+   ['🤖|乘法機器人','機器人總複習',{nums:[2,3,4,5,6,7,8,9],info:'全部混在一起'},'opt',10,12],
+   ['🧩|方塊怪','方塊填空陣',{nums:[2,3,4,5,6,7,8,9],kinds:['blank'],info:'□ 裡填數字'},'pad',12,12],
+   ['🍩|甜甜圈怪','甜甜圈應用題',{nums:[2,3,4,5,6,7,8,9],kinds:['word','times'],info:'應用題和幾倍'},'pad',15,10],
+   ['🌋|火山巨人','火山六七八九',{nums:[6,7,8,9],info:'最難的6、7、8、9'},'pad',9,14],
+   ['⚡|閃電精靈','閃電快打',{nums:[2,3,4,5,6,7,8,9],info:'閃電快打'},'opt',5,15],
+   ['👑|九九魔法王','魔法王決戰',{nums:[2,3,4,5,6,7,8,9],kinds:['eq','eq','blank','times','word'],info:'所有題型大集合'},'pad',8,20,1],
+   ['🐿️|松鼠莉莉','交換律配對','fComm','opt',12],['🦔|刺蝟咚咚','連加變乘法','fChain','opt',15],['🐨|無尾熊','乘法比大小','fCmp','opt',15],
+   ['🦉|貓頭鷹博士','多一份少一份','fMore','opt',15],['🦍|森林大猩猩','森林守護者決戰','fComm,fChain,fCmp,fMore','pad',12,14,1],
+   ['🦝|小浣熊','乘法應用題大挑戰',{nums:[2,3,4,5,6,7,8,9],kinds:['word','word','times']},'opt',15,10],
+   ['🦜|鸚鵡','填空大師',{nums:[2,3,4,5,6,7,8,9],kinds:['blank']},'opt',12,10],['🐊|鱷魚','七八九特訓',{nums:[7,8,9]},'pad',9,12],
+   ['🐆|獵豹','四秒閃電',{nums:[2,3,4,5,6,7,8,9]},'opt',4,15],['🌟|乘法森林之王','森林之王最終決戰','fComm,fMore,fCmp','pad',8,20,1]])},
+ {id:'low',name:'低年級加減法應用',grade:'一～二年級',icon:'🍭',color:'#ff8fb5',
+  zones:[['10以內加減',1],['20以內加減',6],['二位數加減',11],['三位數加減',16],['加減應用題',21],['綜合挑戰',26]],
+  levels:mk([
+   ['🐭|小老鼠吱吱','10以內加法','add10'],['🐰|跳跳兔','10以內減法','sub10'],['🐥|黃小鴨','10以內加減','add10,sub10'],['🐞|瓢蟲點點','湊十高手','make10'],
+   ['🐻|熊熊大王','10以內大魔王','add10,sub10,make10','pad',10,12,1],
+   ['🐷|小豬嚕嚕','20以內進位加法','add20c'],['🐶|小狗汪汪','20以內退位減法','sub20b'],['🐱|貓咪喵喵','20以內加減','add20c,sub20b'],['🐹|倉鼠球球','小小應用題','wSmall','opt',20],
+   ['🦒|長頸鹿大王','20以內大魔王','add20c,sub20b,wSmall','pad',12,12,1],
+   ['🐧|企鵝搖搖','二位數加法','add2d'],['🦆|鴨子呱呱','二位數減法','sub2d'],['🐑|綿羊咩咩','二位數進位加法','add2dc','opt',18],['🐮|乳牛哞哞','二位數退位減法','sub2db','opt',18],
+   ['🦛|河馬大王','二位數大魔王','add2dc,sub2db','pad',15,12,1],
+   ['🐒|猴子吱吱','三位數加法','add3d','opt',20],['🦓|斑馬條條','三位數減法','sub3d','opt',20],['🐘|大象嘟嘟','三位數進位加法','add3dc','opt',25],['🦘|袋鼠跳跳','三位數退位減法','sub3db','opt',25],
+   ['🐊|鱷魚大王','三位數大魔王','add3dc,sub3db','pad',25,12,1],
+   ['🐌|蝸牛慢慢','比多比少','wMore','opt',25],['🐝|蜜蜂嗡嗡','還剩多少','wLeft','opt',25],['🦋|蝴蝶飛飛','兩步驟應用題','wTwo','opt',30],['🐛|毛毛蟲','□ 裡填數字','blankAS','opt',20],
+   ['🦁|獅子大王','應用題大魔王','wMore,wLeft,wTwo,blankAS','pad',30,12,1],
+   ['🐸|青蛙呱呱','二三位數綜合','add2dc,sub2db,add3d,sub3d','opt',20,10],['🦉|貓頭鷹','應用題大挑戰','wMore,wLeft,wTwo','opt',25,10],['🐆|獵豹閃電','閃電快打','add2dc,sub2db','opt',8,14],
+   ['🦅|老鷹','三位數挑戰','add3dc,sub3db','pad',22,12],['🐲|加減法龍王','加減法最終決戰','add2dc,sub2db,add3dc,sub3db,wTwo,blankAS','pad',22,20,1]])},
+ {id:'mid',name:'中年級數學運算應用',grade:'三～四年級',icon:'🚀',color:'#4aa8de',
+  zones:[['乘法',1],['除法',6],['大數運算',11],['四則運算',16],['分數與小數',21],['單位換算與綜合',26]],
+  levels:mk([
+   ['🤖|機器人小鐵','二位數乘一位數','m21'],['👾|太空小怪','進位乘法','m21c','opt',18],['🛸|飛碟小飛','三位數乘一位數','m31','opt',25],['🦾|鋼鐵手臂','乘法應用題','wMul','opt',25],
+   ['🚀|火箭隊長','乘法大魔王','m21c,m31,wMul','pad',22,12,1],
+   ['🐙|章魚博士','九九除法','div99'],['🦑|魷魚墨墨','有餘數的除法（商）','divRq','opt',18],['🦀|螃蟹橫橫','有餘數的除法（餘數）','divRr','opt',18],['🐡|河豚鼓鼓','二位數除以一位數','div21','opt',20],
+   ['🦈|鯊魚艦長','除法大魔王','div99,divRq,divRr,div21','pad',18,12,1],
+   ['🧙|小巫師','二位數乘二位數','m22','opt',30],['🧚|小精靈','三位數除以一位數','div31','opt',30],['🧞|神燈精靈','四位數加減','add4','opt',30],['🧛|吸血鬼','大數應用題','wBig','opt',30],
+   ['🐉|運算巨龍','大數大魔王','m22,div31,add4,wBig','pad',30,12,1],
+   ['🦖|暴龍','先乘除後加減','mix1','opt',25],['🦕|長頸龍','括號先算','mix2','opt',25],['🐢|海龜爺爺','四則應用題','wMix','opt',30],['🦎|蜥蜴','□ 裡填數字','blankMD','opt',15],
+   ['🌋|火山怪','四則運算大魔王','mix1,mix2,wMix,blankMD','pad',25,12,1],
+   ['🍕|披薩怪','同分母分數加法','fracAdd'],['🍰|蛋糕怪','同分母分數減法','fracSub'],['🍩|甜甜圈','一位小數加法','dec1Add','opt',20],['🍭|棒棒糖','一位小數減法','dec1Sub','opt',20],
+   ['🎂|分數蛋糕王','分數小數大魔王','fracAdd,fracSub,dec1Add,dec1Sub','pad',20,12,1],
+   ['🧁|杯子蛋糕','二位小數加減','dec2','opt',25],['⏰|時鐘怪','時間換算','timeConv','opt',25],['📏|尺子怪','長度換算','lenConv','opt',25],['⚡|閃電俠','閃電快打','div99,m21,fracAdd','opt',8,14],
+   ['👑|運算島之王','運算最終決戰','m21c,divRq,mix1,mix2,fracAdd,dec1Add,timeConv,lenConv','pad',25,20,1]])},
+ {id:'high',name:'高年級數學運算應用',grade:'五～六年級',icon:'🔮',color:'#a46be8',
+  zones:[['因數與倍數',1],['分數',6],['小數',11],['百分率與速率',16],['圖形與平均',21],['綜合挑戰',26]],
+  levels:mk([
+   ['🔢|數字精靈','最大公因數','gcf','opt',20],['🧮|算盤老人','最小公倍數','lcmQ','opt',20],['🕵️|數學偵探','因數倍數混合','gcf,lcmQ','opt',20],['🧩|拼圖怪','異分母分數加法','fracAddU','opt',30],
+   ['🏯|因數城主','因數倍數大魔王','gcf,lcmQ,fracAddU','pad',25,12,1],
+   ['🥧|派派','異分母分數減法','fracSubU','opt',30],['🍫|巧克力怪','分數乘整數','fracMulInt','opt',20],['🍉|西瓜怪','分數乘分數','fracMulFrac','opt',20],['🍕|披薩分數怪','帶分數變假分數','mixedToImp','opt',20],
+   ['🎂|分數大魔王','分數大魔王','fracAddU,fracSubU,fracMulInt,fracMulFrac,mixedToImp','pad',25,12,1],
+   ['💰|金幣怪','小數乘整數','decMulInt','opt',25],['💎|鑽石怪','小數乘小數','decMulDec','opt',30],['🏦|銀行家','小數除以整數','decDivInt','opt',30],['🛒|購物車','小數應用題','wDec','opt',30],
+   ['🤑|小數大富翁','小數大魔王','decMulInt,decMulDec,decDivInt,wDec','pad',30,12,1],
+   ['📊|圖表怪','百分率','pct','opt',25],['🏷️|打折怪','折扣計算','discount','opt',25],['⚖️|天平怪','比與比值','ratio','opt',20],['🚄|高鐵怪','速率','speed','opt',25],
+   ['🏎️|速率大魔王','百分率速率大魔王','pct,discount,ratio,speed','pad',25,12,1],
+   ['⭕|圓圓怪','圓面積','circle','opt',35],['📦|箱子怪','長方體體積','volume','opt',30],['🧪|實驗怪','小數四則混合','mixDec','opt',30],['📐|三角板','平均數','avg','opt',30],
+   ['🗿|石像大魔王','圖形平均大魔王','circle,volume,mixDec,avg','pad',30,12,1],
+   ['🌌|星雲怪','分數綜合','fracAddU,fracSubU,fracMulFrac','opt',30,10],['☄️|彗星','小數綜合','decMulInt,decMulDec,decDivInt,mixDec','opt',30,10],['🌩️|雷神','閃電快打','gcf,pct,ratio','opt',10,14],
+   ['🌀|漩渦怪','超級挑戰','fracAddU,decMulDec,discount,speed,volume','pad',30,12],['🧙‍♂️|數學大魔法師','數學魔法城最終決戰','gcf,lcmQ,fracAddU,fracMulFrac,decMulDec,pct,speed,circle,avg','pad',30,20,1]])}
+];
+var MTYPES={memory:{icon:'🃏',name:'翻牌記憶王',info:'把算式和答案配成一對'},mole:{icon:'🔨',name:'打地鼠',info:'敲出拿著正確答案的地鼠'},sum:{icon:'🧮',name:'湊數高手',info:'找出兩張加起來剛好的卡片'},bubble:{icon:'🫧',name:'泡泡大爆炸',info:'只戳破算式正確的泡泡'}};
+REGIONS.forEach(function(R){R.path=[];var seq=['memory','mole','sum','bubble','memory','mole'];
+ R.levels.forEach(function(l){R.path.push({t:'L',L:l});if(l.id%5==0){var k=l.id/5;R.path.push({t:'M',M:{id:'m'+k,type:seq[k-1],after:l.id}})}})});
+function RG(id){return REGIONS.filter(function(r){return r.id==id})[0]}
+// 小遊戲用的題目（短算式）
+function miniPair(rid){
+ if(rid=='mul'){var a=rnd(2,9),b=rnd(2,9);return{e:a+'×'+b,v:a*b}}
+ if(rid=='low'){var a=rnd(15,69),b=rnd(5,29);return Math.random()<.5?{e:a+'+'+b,v:a+b}:{e:(a+b)+'−'+b,v:a}}
+ if(rid=='mid'){if(Math.random()<.5){var a=rnd(11,30),b=rnd(2,5);return{e:a+'×'+b,v:a*b}}var q=rnd(2,9),d=rnd(2,9);return{e:(q*d)+'÷'+d,v:q}}
+ var t=pick([0,1,2]);if(t==0){var x=rnd(1,9)/10,n=rnd(2,9);return{e:fmt(x)+'×'+n,v:+fmt(x*n)}}if(t==1){var a=rnd(11,59)/10,b=rnd(11,39)/10;return{e:fmt(a)+'+'+fmt(b),v:+fmt(a+b)}}var A=pick([100,200,400,500]),p=pick([10,20,25,50]);return{e:A+'×'+p+'%',v:A*p/100}}
+var SUMCFG={mul:{t:function(){return pick([300,400,500,600,700,800])+(Math.random()<.5?0:rnd(1,9)*10)},min:101,div:1},
+ low:{t:function(){return rnd(5,10)*10},min:10,div:1},mid:{t:function(){return pick([1000,1500,2000,2500,3000,5000])},min:120,div:1},high:{t:function(){return pick([50,80,100,120,150])},min:11,div:10}};
+
+var SECRET=[{id:'miss',need:2,mon:'🎯',mname:'錯題特訓',info:'把答錯過的題目打敗'},{id:'endless',need:3,mon:'♾️',mname:'無限挑戰',info:'看你一共能答對幾題'}];
+var SPEED=[['輕鬆',1.5],['標準',1],['挑戰',0.7]];
+var RANKS=[[0,'見習小勇者'],[300,'口訣小達人'],[900,'乘法小騎士'],[1800,'九九勇者'],[3000,'乘法魔法師'],[4500,'九九大師'],[6500,'乘法魔法王'],[9000,'數學小博士'],[13000,'數學大博士'],[18000,'數學星球守護者']];
+var AVATARS=[
+ {id:'boy',e:'🧒',n:'小勇者',p:0},{id:'girl',e:'👧',n:'小女孩',p:0},
+ {id:'cat',e:'🐱',n:'小貓咪',p:150},{id:'bunny',e:'🐰',n:'小兔子',p:150},
+ {id:'panda',e:'🐼',n:'熊貓',p:250},{id:'dino',e:'🦖',n:'恐龍',p:300},
+ {id:'fairy',e:'🧚',n:'小仙子',p:400},{id:'princess',e:'👸',n:'公主',p:500},
+ {id:'mermaid',e:'🧜‍♀️',n:'美人魚',p:600},{id:'unicorn',e:'🦄',n:'獨角獸',p:700},
+ {id:'ninja',e:'🥷',n:'忍者',p:800},{id:'astro',e:'🧑‍🚀',n:'太空人',p:900},
+ {id:'wizard',e:'🧙',n:'魔法師',p:1200},{id:'superhero',e:'🦸‍♀️',n:'超級英雄',p:1500}];
+var PETS={bunny:{n:'棉花兔',c:'#ffc2d6',d:'#f58bb0'},cat:{n:'橘子貓',c:'#ffd29a',d:'#f0a04b'},dragon:{n:'薄荷龍',c:'#a8ecc0',d:'#4fc283'},
+ bear:{n:'布丁熊',c:'#e8c49a',d:'#b88a5a'},penguin:{n:'冰冰企鵝',c:'#8fa6d6',d:'#55689a'},sheep:{n:'雲朵羊',c:'#fff1dc',d:'#c9a87a'}};
+var STAGES=[[0,'蛋'],[3,'寶寶'],[8,'小朋友'],[16,'大朋友'],[28,'傳說']];
+var FURN=[
+ {id:'flower',e:'🌷',n:'小花圃',p:80,need:0},{id:'mush',e:'🍄',n:'蘑菇',p:100,need:0},{id:'sun',e:'🌻',n:'向日葵',p:120,need:1},{id:'tree',e:'🌳',n:'大樹',p:150,need:1},
+ {id:'house',e:'🏠',n:'寵物小屋',p:300,need:1},{id:'teddy',e:'🧸',n:'玩具熊',p:200,need:2},{id:'balloon',e:'🎈',n:'氣球',p:150,need:2},{id:'tent',e:'⛺',n:'帳篷',p:350,need:2},
+ {id:'fountain',e:'⛲',n:'噴水池',p:500,need:3},{id:'carousel',e:'🎠',n:'旋轉木馬',p:800,need:3},{id:'rainbow',e:'🌈',n:'彩虹',p:1000,need:4},{id:'castle',e:'🏰',n:'城堡',p:1200,need:4}];
+var EGG_PRICE=300,MAX_PETS=6;
+var DEF_REWARDS=[{e:'⭐',n:'貼紙一張',c:200},{e:'⏰',n:'多玩10分鐘',c:400},{e:'🍦',n:'選一個點心',c:600},{e:'🎁',n:'週末小禮物',c:1500}];
+var NAME_DEFAULT='糖糖';
+
+// ================= 存檔與舊版轉換 =================
+var S={};
+try{var r=localStorage.getItem('tt99game');if(r)S=JSON.parse(r)}catch(e){}
+function def(k,v){if(S[k]==null)S[k]=v}
+def('xp',0);def('speed',1);def('coins',Math.round((S.xp||0)/2));def('own',['boy','girl']);def('av','boy');
+def('snacks',0);def('rewards',DEF_REWARDS.slice());def('log',[]);def('coinRate',1);def('sfx',true);def('music',true);def('name',NAME_DEFAULT);
+if(!S.R){S.R={};var m={stars:S.stars||{},hstars:S.hstars||{},best:S.best||{},hbest:S.hbest||{},mini:S.mini||{},pi:S.pi||0,endBest:S.endBest||0,miss:{}};
+ Object.keys(S.miss||{}).forEach(function(k){var f=k.split('x');if(f.length==2){var a=+f[0],b=+f[1];m.miss[a+' × '+b+' = ?']={h:a+' × '+b+' = ?',ans:a*b,sol:a+' × '+b+' = '+(a*b),kj:[a,b]}}});
+ S.R.mul=m;['stars','hstars','best','hbest','mini','pi','endBest','miss','pos'].forEach(function(k){delete S[k]})}
+REGIONS.forEach(function(R){if(!S.R[R.id])S.R[R.id]={stars:{},hstars:{},best:{},hbest:{},mini:{},pi:0,endBest:0,miss:{}}});
+if(!S.pets){S.pets=S.pet?[S.pet]:[];delete S.pet}def('ap',0);def('furn',[]);
+function save(){try{localStorage.setItem('tt99game',JSON.stringify(S))}catch(e){}}
+save();
+var CUR=null; // 目前區域
+function RD(){return S.R[CUR.id]}
+function lim(L,hard){var t=L.time*SPEED[S.speed][1]*(hard?0.75:1);return Math.max(3,Math.round(t))}
+function rankOf(xp){var i=0;for(var k=0;k<RANKS.length;k++)if(xp>=RANKS[k][0])i=k;return i}
+function avE(){var a=AVATARS.filter(function(x){return x.id==S.av})[0];return a?a.e:'🧒'}
+function regStars(id){var d=S.R[id],t=0;for(var k in d.stars)t+=d.stars[k];for(var k2 in d.hstars)t+=d.hstars[k2];return t}
+function totalStars(){var t=0;REGIONS.forEach(function(R){t+=regStars(R.id)});return t}
+function cleared(id){return (RD().stars[id]||0)>0}
+function unlockedL(id){return id==1||cleared(id-1)}
+function unlockedP(i){var p=CUR.path[i];return p.t=='L'?unlockedL(p.L.id):cleared(p.M.after)}
+function frontierIdx(){var f=0;CUR.path.forEach(function(p,i){if(unlockedP(i))f=i});return f}
+function idxOfLevel(id){for(var i=0;i<CUR.path.length;i++)if(CUR.path[i].t=='L'&&CUR.path[i].L.id==id)return i;return 0}
+function petStageMax(){var m=-1;S.pets.forEach(function(p){m=Math.max(m,petStage(p.g))});return m}
+function activePet(){return S.pets[S.ap]||S.pets[0]||null}
+function titleText(){var n=S.name||NAME_DEFAULT;return (ZY[n]?T(n):'<b>'+esc(n)+'</b>')+T('的魔法乘法大冒險')}
+function drawBar(){var i=rankOf(S.xp),R=RANKS[i],N=RANKS[i+1];
+ $('lvNum').textContent='Lv.'+(i+1);$('rankName').innerHTML=T(R[1]);$('avatar').textContent=avE();
+ if(N){$('xpBar').style.width=Math.min(100,(S.xp-R[0])/(N[0]-R[0])*100)+'%';$('xpText').innerHTML=T('經驗值{a}，再{b}就升級',{a:S.xp,b:N[0]-S.xp})}
+ else{$('xpBar').style.width='100%';$('xpText').innerHTML=T('經驗值{a}，最高等級！',{a:S.xp})}
+ $('coins').textContent=S.coins;$('totalStars').textContent=totalStars();
+ $('petDot').style.display=(!S.pets.length||S.snacks>0)?'inline-block':'none'}
+
+// ================= 音效與音樂 =================
+var AC=null,PAUSED=false;
+function ac(){try{if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state=='suspended'&&!PAUSED)AC.resume()}catch(e){}return AC}
+function tone(f,t0,d,type,vol,dest){var a=AC,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.015);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(dest||a.destination);o.start(t0);o.stop(t0+d+.02)}
+function sfx(k){if(!S.sfx||PAUSED||SPEAKING)return;if(!ac())return;try{var notes={ok:[660,880],no:[220,160],win:[523,659,784,1046],lose:[392,330,262],boss:[300,450],step:[520],buy:[784,988,1318],eat:[600,500,700],pop:[900],tick:[1200]}[k]||[440];
+ notes.forEach(function(f,i){tone(f,AC.currentTime+i*.11,k=='pop'||k=='tick'?.08:.18,k=='no'||k=='lose'?'sawtooth':'triangle',k=='step'||k=='tick'?.06:.16)})}catch(e){}}
+var SONGS={
+ map:{bpm:112,w:'square',mel:[72,0,76,79,76,0,72,74,76,0,77,76,74,0,71,0,72,0,76,79,81,79,77,76,74,76,72,0,0,0,0,0],bass:[48,55,48,55,53,57,55,50,48,55,48,55,53,55,48,48]},
+ battle:{bpm:150,w:'square',mel:[69,72,76,72,69,72,76,79,77,76,74,72,71,72,74,0,69,72,76,72,81,79,77,76,74,72,71,69,68,69,71,0],bass:[45,45,52,52,41,41,48,48,43,43,50,50,44,44,52,52]},
+ boss:{bpm:168,w:'square',mel:[64,0,64,67,0,64,70,69,64,0,64,67,0,71,70,67,64,0,64,67,0,64,70,69,72,71,70,69,68,67,66,0],bass:[40,40,40,40,43,43,46,45,40,40,40,40,47,46,43,43]},
+ garden:{bpm:84,w:'triangle',mel:[79,0,76,0,72,0,74,76,77,0,76,0,74,0,0,0,76,0,72,0,69,0,71,72,74,0,72,0,67,0,0,0],bass:[48,52,55,52,53,57,60,57,45,48,52,48,43,47,50,47]},
+ planet:{bpm:96,w:'sine',mel:[67,71,74,79,0,78,74,71,69,72,76,81,0,79,76,72,67,71,74,79,0,81,83,86,84,0,79,0,76,0,74,0],bass:[43,50,47,50,45,52,48,52,43,50,47,50,48,52,50,47]}};
+var MU={song:null,step:0,next:0,timer:null,gain:null,want:null};
+function mf(n){return 440*Math.pow(2,(n-69)/12)}
+function musicPlay(name){MU.want=name;if(!S.music||PAUSED){musicStop(true);return}if(!ac())return;if(MU.song==name&&MU.timer)return;musicStop(true);MU.want=name;
+ MU.song=name;MU.step=0;MU.next=AC.currentTime+.1;MU.gain=AC.createGain();MU.gain.gain.value=.5;MU.gain.connect(AC.destination);
+ MU.timer=setInterval(function(){if(PAUSED)return;var s=SONGS[MU.song],dt=60/s.bpm/2;if(MU.next<AC.currentTime)MU.next=AC.currentTime+.05;while(MU.next<AC.currentTime+.3){var m=s.mel[MU.step%s.mel.length],b=s.bass[Math.floor(MU.step/2)%s.bass.length];
+  if(m)tone(mf(m),MU.next,dt*.9,s.w,s.w=='square'?.035:.07,MU.gain);if(MU.step%2==0)tone(mf(b),MU.next,dt*1.8,'triangle',.06,MU.gain);MU.next+=dt;MU.step++}},80)}
+function musicStop(keepWant){if(MU.timer)clearInterval(MU.timer);MU.timer=null;MU.song=null;if(MU.gain){try{MU.gain.disconnect()}catch(e){}MU.gain=null}if(!keepWant)MU.want=null}
+// 畫面看不到時（切換 App、關掉面板、換分頁）自動暫停聲音
+var lastRAF=Date.now();(function raf(){lastRAF=Date.now();requestAnimationFrame(raf)})();
+function setPaused(p){if(p==PAUSED)return;PAUSED=p;try{if(AC){if(p)AC.suspend();else if(!SPEAKING)AC.resume()}}catch(e){}
+ if(p){musicStop(true)}else if(S.music&&MU.want&&!SPEAKING)musicPlay(MU.want)}
+function hiddenNow(){return document.hidden||document.visibilityState=='hidden'||(Date.now()-lastRAF>800)}
+setInterval(function(){setPaused(hiddenNow())},400);
+document.addEventListener('visibilitychange',function(){setPaused(hiddenNow())});
+window.addEventListener('pagehide',function(){setPaused(true)});
+window.addEventListener('blur',function(){setTimeout(function(){if(document.hidden)setPaused(true)},50)});
+document.addEventListener('pointerdown',function(){lastRAF=Date.now();setPaused(false);if(S.music&&MU.want&&!MU.timer)musicPlay(MU.want)},{passive:true});
+function soundBtns(){var s=T('音效：')+T(S.sfx?'開':'關'),m=T('音樂：')+T(S.music?'開':'關');document.querySelectorAll('.sfxBtn').forEach(function(b){b.innerHTML='🔊 '+s});document.querySelectorAll('.musBtn').forEach(function(b){b.innerHTML='🎵 '+m})}
+function toggleSfx(){S.sfx=!S.sfx;save();soundBtns();sfx('ok')}
+function toggleMusic(){S.music=!S.music;save();soundBtns();if(S.music)musicPlay(MU.want||'planet');else musicStop(true)}
+
+// ================= 首頁 =================
+function showTitle(){curPage='title';$('title').style.display='flex';$('main').style.display='none';$('tabs').style.display='none';
+ var P=activePet();$('ttl').innerHTML=titleText();$('ttlAv').textContent=avE();$('ttlPet').innerHTML=P&&petStage(P.g)>0?petSVG(P.type,petStage(P.g),90):'';
+ $('ttlInfo').innerHTML=T('已經拿到{n}顆星星',{n:totalStars()})+'　Lv.'+(rankOf(S.xp)+1);soundBtns();musicPlay('planet')}
+function leaveTitle(){$('title').style.display='none';$('main').style.display='block';show('hub')}
+
+// ================= 分頁 =================
+var curPage='title';
+document.querySelectorAll('#tabs button').forEach(function(b){b.onclick=function(){var p=b.dataset.p;if(p=='hub'&&CUR&&curPage!='map'&&curPage!='hub')p='map';show(p)}});
+function show(p){if(p!='reward')parentOK=false;curPage=p;$('battle').style.display='none';$('miniView').style.display='none';$('tabs').style.display='flex';
+ document.querySelectorAll('#tabs button').forEach(function(x){x.classList.toggle('on',x.dataset.p==p||(p=='map'&&x.dataset.p=='hub'))});
+ document.querySelectorAll('.page').forEach(function(x){x.classList.toggle('on',x.id=='p-'+p)});
+ drawBar();({hub:drawHub,map:drawMap,pet:drawPet,shop:drawShop,ach:drawAch,reward:drawReward})[p]();soundBtns();
+ musicPlay(p=='pet'?'garden':p=='map'?'map':'planet');window.scrollTo(0,p=='map'?Math.max(0,nodePos(RD().pi).y-200):0)}
+function toast(html,btn){$('ovCard').innerHTML='<div class="qtext">'+html+'</div><button class="btn" onclick="closeOv()">'+(btn||T('知道了'))+'</button>';$('ov').classList.add('on')}
+function closeOv(){$('ov').classList.remove('on')}
+var zyOn=true;function toggleZy(){zyOn=!zyOn;document.body.classList.toggle('nozy',!zyOn);document.querySelectorAll('.zyBtn').forEach(function(b){b.innerHTML=zyOn?T('注音：開'):T('注音：關')})}
+function howTo(){$('ovCard').innerHTML='<h2>'+T('怎麼玩？')+'</h2><div class="rule">'+
+ T('在數學星球上選一個區域，沿著地圖一格一格往前走！')+'<br>'+T('每個區域有30關，每過五關有一個小遊戲。')+'<br>'+
+ T('每一關有普通和困難，打贏普通就能挑戰困難。')+'<br>'+T('每一題都有倒數計時，答錯或時間到會少一顆愛心。')+'<br>'+
+ T('金幣可以買頭像、寵物園家具，也能換爸爸媽媽準備的獎勵。')+'</div><button class="btn" onclick="closeOv()">'+T('出發！')+'</button>';$('ov').classList.add('on')}
+
+// ================= 數學星球 =================
+function drawHub(){loginCheck();var h='<h1>'+T('數學星球')+'</h1><p class="sub">'+T('選一個區域，開始你的冒險！')+'</p>'+dailyHTML()+'<div class="planets">';
+ REGIONS.forEach(function(R,i){var d=S.R[R.id],cl=0;R.levels.forEach(function(l){if(d.stars[l.id])cl++});
+  var lk=regionLocked(R);h+='<button class="planet'+(lk?' plock':'')+'" data-r="'+R.id+'" style="--pc:'+R.color+'">'+(recommended(R)?'<span class="rec">⭐ '+T('推薦')+'</span>':'')+'<div class="orb nz">'+(lk?'🔒':R.icon)+'</div><b>'+T(R.name)+'</b><span class="small">'+T(R.grade)+'</span>'+
+   '<div class="pbar"><i style="width:'+(cl/30*100)+'%"></i></div><span class="small nz">'+cl+' / 30　⭐ '+regStars(R.id)+'</span></button>'});
+ h+='</div><div class="under"><button class="pill sfxBtn"></button><button class="pill musBtn"></button><button class="pill zyBtn">'+(zyOn?T('注音：開'):T('注音：關'))+'</button><button class="pill howBtn">'+T('怎麼玩？')+'</button><button class="pill" id="hubHome">🏠 '+T('首頁')+'</button></div>';
+ $('p-hub').innerHTML=h;soundBtns();
+ $('p-hub').querySelectorAll('.planet').forEach(function(b){b.onclick=function(){if(regionLocked(RG(b.dataset.r))){sfx('no');toast(T('這個區域對現在的你來說有點難，請爸爸媽媽在家長設定打開。'));return}CUR=RG(b.dataset.r);S.lastR=CUR.id;save();sfx('step');show('map')}});
+ bindCommon($('p-hub'));bindDaily($('p-hub'));$('hubHome').onclick=showTitle;setTimeout(loginBonus,300)}
+function bindCommon(root){root.querySelectorAll('.sfxBtn').forEach(function(b){b.onclick=toggleSfx});root.querySelectorAll('.musBtn').forEach(function(b){b.onclick=toggleMusic});root.querySelectorAll('.zyBtn').forEach(function(b){b.onclick=toggleZy});root.querySelectorAll('.howBtn').forEach(function(b){b.onclick=howTo})}
+
+// ================= 地圖 =================
+var COLS=4,ROWH=165,TOP=112,ZCOL=['#9be59b','#86d0f0','#c9a5f0','#ffd29a','#ffb3c7','#a8ecc0'];
+function nodePos(i){var r=Math.floor(i/COLS),c=i%COLS;if(r%2)c=COLS-1-c;return{x:14+c*24,y:TOP+r*ROWH}}
+function drawMap(){if(!CUR){show('hub');return}var D=RD();if(D.pi>frontierIdx())D.pi=frontierIdx();
+ var P=CUR.path,rows=Math.ceil(P.length/COLS),H=TOP+(rows-1)*ROWH+110,b=$('board'),h='';
+ var stops=[];CUR.zones.forEach(function(z,zi){var y=(nodePos(idxOfLevel(z[1])).y-ROWH/2)/H*100;stops.push(ZCOL[zi%6]+' '+Math.max(0,y)+'%');stops.push(ZCOL[zi%6]+' '+(zi+1<CUR.zones.length?(nodePos(idxOfLevel(CUR.zones[zi+1][1])).y-ROWH/2)/H*100:100)+'%')});
+ h+='<div class="zone" style="top:0;height:'+H+'px;background:linear-gradient(180deg,'+stops.join(',')+')"></div>';
+ var pts=P.map(function(p,i){return nodePos(i)});
+ var d='M'+pts[0].x+' '+pts[0].y;for(var i=1;i<pts.length;i++){var a=pts[i-1],c=pts[i];if(a.y==c.y)d+=' L'+c.x+' '+c.y;else{var mx=a.x<50?a.x-9:a.x+9;d+=' C'+mx+' '+a.y+' '+mx+' '+c.y+' '+c.x+' '+c.y}}
+ h+='<svg class="path" viewBox="0 0 100 '+H+'" preserveAspectRatio="none"><path d="'+d+'" fill="none" stroke="#fff6d6" vector-effect="non-scaling-stroke" style="stroke-width:26px" stroke-linecap="round" opacity=".9"/><path d="'+d+'" fill="none" stroke="#e8b04a" stroke-dasharray="2 14" stroke-linecap="round" vector-effect="non-scaling-stroke" style="stroke-width:6px"/></svg>';
+ CUR.zones.forEach(function(z){var p=nodePos(idxOfLevel(z[1])),pos=p.x<50?'left:8px':'right:8px;left:auto';h+='<div class="zlabel" style="top:'+(p.y-100)+'px;'+pos+'"><b>'+T(z[0])+'</b></div>'});
+ var fr=frontierIdx();
+ P.forEach(function(p,i){var pos=nodePos(i),un=unlockedP(i),st='left:'+pos.x+'%;top:'+pos.y+'px';
+  if(p.t=='L'){var L=p.L,ns=D.stars[L.id]||0,hs=D.hstars[L.id]||0;
+   h+='<button class="node'+(L.boss?' boss':'')+(un?'':' lock')+(i==fr&&!ns?' cur':'')+'" data-i="'+i+'" style="'+st+'">'+
+    (un?'<span class="mon nz">'+L.mon+'</span>':'')+'<span class="num nz">'+(un?L.id:'🔒')+'</span>'+(un?'<span class="tm nz">⏱'+lim(L)+'s</span>':'')+
+    (hs?'<span class="hard nz">🔥'+hs+'</span>':'')+'<span class="st nz">'+'★'.repeat(ns)+'<span class="e">'+'★'.repeat(3-ns)+'</span></span></button>'}
+  else{var M=p.M,best=D.mini[M.id];
+   h+='<button class="node mgnode'+(un?'':' lock')+(i==fr&&best==null?' cur':'')+'" data-i="'+i+'" style="'+st+'"><span class="num nz">'+(un?MTYPES[M.type].icon:'🔒')+'</span><span class="st nz">'+(best!=null?'🏅'+best:'')+'</span><span class="mtag">'+T('小遊戲')+'</span></button>'}});
+ var tp=nodePos(D.pi);h+='<div class="token nz" id="token" style="left:'+tp.x+'%;top:'+tp.y+'px">'+avE()+'</div>';
+ b.style.height=H+'px';b.innerHTML=h;
+ b.querySelectorAll('.node').forEach(function(n){n.onclick=function(){var i=+n.dataset.i;if(!unlockedP(i)){sfx('no');toast(T('先打贏前一關才能走到這裡喔！'));return}
+  walkTo(i,function(){var p=CUR.path[i];if(p.t=='L')levelInfo(p.L);else miniInfo(p.M)})}});
+ var lv=rankOf(S.xp)+1,sh='';
+ SECRET.forEach(function(s){var un=lv>=s.need;sh+='<button class="sbtn'+(un?'':' lock')+'" data-s="'+s.id+'"><div class="m nz">'+(un?s.mon:'🔒')+'</div><b>'+T(s.mname)+'</b><div class="small">'+(un?T(s.info):T('升到Lv.{n}就打開',{n:s.need}))+'</div>'+
+  (s.id=='endless'&&D.endBest?'<div class="small">'+T('最高紀錄{n}題',{n:D.endBest})+'</div>':'')+(s.id=='miss'&&un?'<div class="small">'+T('錯題有{n}題',{n:Object.keys(D.miss).length})+'</div>':'')+'</button>'});
+ $('secret').innerHTML=sh;
+ $('secret').querySelectorAll('.sbtn').forEach(function(x){x.onclick=function(){var s=SECRET.filter(function(k){return k.id==x.dataset.s})[0];
+  if(lv<s.need){sfx('no');toast(T('升到Lv.{n}就打開',{n:s.need}));return}
+  if(s.id=='miss'&&!Object.keys(D.miss).length){toast(T('現在沒有錯題，太厲害了！'));return}startSecret(s)}});
+ $('speedBtn').innerHTML=T('倒數速度：')+T(SPEED[S.speed][0]);$('mapTitle').innerHTML='<span class="nz">'+CUR.icon+'</span> '+T(CUR.name)+'<div class="small">'+T(CUR.grade)+'</div>';
+}
+var walking=false;
+function walkTo(i,cb){if(walking)return;var D=RD(),from=D.pi;if(from==i){cb&&cb();return}walking=true;var step=from<i?1:-1,cur=from;
+ (function go(){cur+=step;var p=nodePos(cur),t=$('token');if(!t){walking=false;return}t.style.left=p.x+'%';t.style.top=p.y+'px';t.classList.remove('hop');void t.offsetWidth;t.classList.add('hop');sfx('step');
+  if(cur!=i)setTimeout(go,Math.max(120,360-Math.abs(i-from)*15));else setTimeout(function(){walking=false;D.pi=i;save();cb&&cb()},380)})()}
+function levelInfo(L){var D=RD(),ns=D.stars[L.id]||0,hs=D.hstars[L.id]||0,hOK=ns>0,z='';CUR.zones.forEach(function(x){if(L.id>=x[1])z=x[0]});
+ $('ovCard').innerHTML='<div class="small" style="color:#888">'+T(CUR.name)+'．'+T(z)+'</div><h2>'+T('第{n}關',{n:L.id})+' '+T(L.title)+'</h2><div class="bigstar nz">'+L.mon+'</div>'+
+ '<div class="qtext" style="line-height:1.9">'+T(L.mname)+(L.info?'<br>'+T(L.info):L.nums?'<br>'+T('{n}的乘法',{n:L.nums.join('、')}):'')+'</div>'+
+ '<div class="diffs"><button class="diff n" id="goN"><b>'+T('普通')+'</b><span class="nz">'+'★'.repeat(ns)+'<i>'+'★'.repeat(3-ns)+'</i></span><span class="small">'+T('答對{n}題，每題{s}秒',{n:L.hp,s:lim(L)})+'</span></button>'+
+ '<button class="diff h'+(hOK?'':' lock')+'" id="goH"><b>'+(hOK?'🔥 ':'🔒 ')+T('困難')+'</b><span class="nz">'+'★'.repeat(hs)+'<i>'+'★'.repeat(3-hs)+'</i></span><span class="small">'+(hOK?T('答對{n}題，每題{s}秒',{n:L.hp+4,s:lim(L,1)})+'<br>'+T('自己按數字作答'):T('打贏普通才能挑戰'))+'</span></button></div>'+
+ (D.best[L.id]||D.hbest[L.id]?'<div class="small" style="color:#777">'+T('最高分：普通{a}，困難{b}',{a:D.best[L.id]||0,b:D.hbest[L.id]||0})+'</div>':'')+
+ '<button class="btn w" onclick="closeOv()">'+T('等一下')+'</button>';
+ $('ov').classList.add('on');$('goN').onclick=function(){closeOv();start(L,false)};$('goH').onclick=function(){if(!hOK){sfx('no');return}closeOv();start(L,true)}}
+
+// ================= 戰鬥 =================
+var G=null,TM=null;
+function makeQ(L,hard){
+ if(L.missList){var k=pick(L.missList),q=JSON.parse(JSON.stringify(L.cache[k]));q.key=k;return q}
+ if(L.endless){var lv=pick(CUR.levels);return makeQ(lv,hard)}
+ if(L.gs)return GEN[pick(L.gs)](hard);
+ return mulQ(L,hard,G)}
+function qKey(q){return (q.t?q.t+JSON.stringify(q.tv):'')+q.h}
+function distract(q){var ans=q.ans;if(q.syms)return q.syms.slice();var s={},c,out=[ans];s[fmt(ans)]=1;
+ if(q.kj){var a=q.kj[0],b=q.kj[1];c=[a*(b+1),a*(b-1),(a+1)*b,(a-1)*b,ans+1,ans-1,ans+10,ans-10];if(ans>=10&&ans<100)c.push((ans%10)*10+Math.floor(ans/10))}
+ else if(q.dec)c=[ans+.1,ans-.1,ans+1,ans-1,ans*10,ans/10,ans+.2,ans+10].map(function(x){return +fmt(x)});
+ else{c=[ans+1,ans-1,ans+2,ans-2,ans+10,ans-10,ans+5];if(ans>=100)c.push(ans+100,ans-100);if(ans>=1000)c.push(ans+1000,ans-1000)}
+ shuffle(c).forEach(function(x){if(out.length<4&&x>=0&&!s[fmt(x)]){s[fmt(x)]=1;out.push(x)}});var t=2;while(out.length<4){if(!s[fmt(ans+t)]){s[fmt(ans+t)]=1;out.push(ans+t)}t++}return shuffle(out)}
+function startSecret(s){var L={secret:1,id:s.id,mon:s.mon,mname:s.mname,title:s.mname,info:s.info,time:15,mode:s.id=='endless'?'pad':'opt'};
+ if(s.id=='miss'){L.missList=Object.keys(RD().miss);L.cache=JSON.parse(JSON.stringify(RD().miss));L.hp=Math.min(12,Math.max(5,L.missList.length*2));L.time=20}
+ if(s.id=='endless'){L.endless=1;L.hp=999;L.time=12}
+ $('ovCard').innerHTML='<div class="small" style="color:#888">'+T(CUR.name)+'</div><div class="bigstar nz">'+L.mon+'</div><h2>'+T(L.mname)+'</h2><div class="qtext">'+T(L.info)+'<br>'+T('每題{s}秒',{s:lim(L)})+'</div><button class="btn w" onclick="closeOv()">'+T('等一下')+'</button><button class="btn g" id="goBtn">'+T('開始！')+'</button>';
+ $('ov').classList.add('on');$('goBtn').onclick=function(){closeOv();start(L,false)}}
+function start(L,hard){var hp=L.hp+(hard&&!L.secret?4:0);G={L:L,hard:!!hard,hp:hp,maxhp:hp,hearts:3,score:0,combo:0,maxCombo:0,right:0,lock:false,t0:Date.now(),b:null,miss:[],seen:{}};
+ document.querySelectorAll('.page').forEach(function(x){x.classList.remove('on')});$('tabs').style.display='none';$('battle').style.display='block';$('miniView').style.display='none';
+ $('mon').className='monster nz';$('mon').textContent=L.mon;$('monName').innerHTML=T(L.title)+'　'+(hard?'<span class="hardtag">🔥 '+T('困難')+'</span>':'');
+ var P=activePet();$('buddy').innerHTML=P&&petStage(P.g)>0?petSVG(P.type,petStage(P.g),70):'';
+ window.scrollTo(0,0);musicPlay(L.boss||hard?'boss':'battle');if(L.boss)sfx('boss');drawHUD();next()}
+function drawHUD(){$('hearts').textContent='❤️'.repeat(G.hearts)+'🤍'.repeat(3-G.hearts);$('score').textContent=G.score;
+ if(G.L.endless){$('hpBar').style.width='100%';$('hpText').innerHTML=T('已經答對{n}題',{n:G.right})}
+ else{$('hpBar').style.width=(G.hp/G.maxhp*100)+'%';$('hpText').textContent='HP '+G.hp+' / '+G.maxhp}
+ $('combo').innerHTML=G.combo>=2?T('{n}連擊！',{n:G.combo}):''}
+function next(){G.lock=false;$('fb').innerHTML='';$('fb').className='fb';var q=G.q=makeQ2(G.L,G.hard);G.inp='';G.qt=Date.now();
+ var mode=G.hard?'pad':(G.L.mode=='mix'?(Math.random()<.5?'opt':'pad'):G.L.mode);if(q.syms)mode='opt';G.mode=mode;
+ var h=q.h||'',box='<span class="ans" id="ansBox">?</span>',below='';
+ if(mode=='pad'){if(h.indexOf('?')>=0)h=h.replace('?',box);else if(h.indexOf('□')>=0)below='<div class="qeq nz" style="font-size:34px">□ = '+box+'</div>';else below='<div class="qeq nz">'+box+'</div>'}
+ $('qArea').innerHTML='<button class="speak" onclick="speakQ()" title="念題目">🔊</button>'+(q.rev?'<div class="revtag">🔁 '+T('複習題')+'</div>':'')+(q.t?'<div class="qtext">'+T(q.t,q.tv)+'</div>':'')+(h?'<div class="qeq nz'+(h.length>40?' long':'')+'">'+h+'</div>':'')+below;
+ G.maxLen=Math.min(7,Math.max(2,fmt(q.ans).length+1));
+ if(mode=='opt'){$('inputArea').innerHTML='<div class="opts nz">'+distract(q).map(function(x){return '<button data-v="'+(q.syms?x:fmt(x))+'">'+(q.syms?x:fmt(x))+'</button>'}).join('')+'</div>';
+  $('inputArea').querySelectorAll('.opts button').forEach(function(b){b.onclick=function(){answer(b.dataset.v,b)}})}
+ else{var s='';[1,2,3,4,5,6,7,8,9].forEach(function(k){s+='<button data-k="'+k+'">'+k+'</button>'});s+=(q.dec?'<button data-k=".">.</button>':'<button data-k="del">⌫</button>')+'<button data-k="0">0</button>'+(q.dec?'<button data-k="del">⌫</button><button data-k="ok" class="ok wide">':'<button data-k="ok" class="ok">')+T('攻擊！')+'</button>';
+  $('inputArea').innerHTML='<div class="pad nz">'+s+'</div>';$('inputArea').querySelectorAll('.pad button').forEach(function(b){b.onclick=function(){key(b.dataset.k)}})}
+ startTimer()}
+function key(k){if(G.lock)return;if(k=='del')G.inp=G.inp.slice(0,-1);else if(k=='ok'){if(G.inp&&G.inp!='.')answer(G.inp);return}else if(k=='.'){if(G.inp.indexOf('.')<0&&G.inp.length<G.maxLen)G.inp+=(G.inp?'':'0')+'.'}else if(G.inp.length<G.maxLen)G.inp+=k;$('ansBox').textContent=G.inp||'?'}
+document.addEventListener('keydown',function(e){if(!G||G.lock||$('battle').style.display=='none'||$('ov').classList.contains('on'))return;
+ if(G.mode=='pad'){if(/^[0-9]$/.test(e.key))key(e.key);if(e.key=='.'&&G.q.dec)key('.');if(e.key=='Backspace')key('del');if(e.key=='Enter')key('ok')}});
+function curLim(){return lim(G.L,G.hard&&!G.L.secret)}
+function startTimer(){clearInterval(TM);var ms=curLim()*1000;
+ TM=setInterval(function(){if(PAUSED){G.qt+=50;return}var left=ms-(Date.now()-G.qt);$('timer').style.width=Math.max(0,left/ms*100)+'%';$('timer').style.background=left<3000?'#ff6b6b':'#4dd2ff';$('tsec').textContent=Math.ceil(Math.max(0,left)/1000);
+  if(left<=0){clearInterval(TM);answer(null)}},50)}
+function isRight(v,q){if(v===null)return false;if(q.syms)return v===q.ans;return eqv(parseFloat(v),q.ans)}
+function answer(v,btn){if(G.lock)return;G.lock=true;clearInterval(TM);var q=G.q,ok=isRight(v,q),D=RD(),key=q.key||qKey(q);track(ok,q,G.L);
+ if(G.mode=='opt')$('inputArea').querySelectorAll('.opts button').forEach(function(b){if(isRight(b.dataset.v,q))b.classList.add('right');else if(b==btn)b.classList.add('wrong')});
+ var how='<span class="nz sol">'+q.sol+'</span>'+(q.kj?'　'+KJ(q.kj[0],q.kj[1]):'');
+ if(ok){G.combo++;G.maxCombo=Math.max(G.maxCombo,G.combo);G.right++;G.hp--;var sec=(Date.now()-G.qt)/1000,tl=curLim();var pts=100+Math.min(G.combo-1,5)*20+(sec<tl/3?50:sec<tl*2/3?20:0);if(G.hard)pts=Math.round(pts*1.3);G.score+=pts;
+  if(G.L.missList){taskAdd('miss',1)}if((G.L.missList||q.rev)&&D.miss[key]){delete D.miss[key]}save();
+  sfx('ok');$('mon').className='monster nz';void $('mon').offsetWidth;$('mon').className='monster nz hit';
+  var d=document.createElement('div');d.className='dmg nz';d.textContent='+'+pts;$('mon').parentNode.appendChild(d);setTimeout(function(){d.remove()},900);
+  $('fb').className='fb good';$('fb').innerHTML=T(pick(['太棒了！','答對了！','好厲害！','命中！']))+' '+how}
+ else{G.combo=0;G.hearts--;G.miss.push(q.sol);var keep=JSON.parse(JSON.stringify(q));delete keep.key;delete keep.rev;if(!G.L.secret)keep.lv=G.L.id;D.miss[key]=keep;var ks=Object.keys(D.miss);if(ks.length>40)delete D.miss[ks[0]];save();
+  sfx('no');$('mon').className='monster nz';void $('mon').offsetWidth;$('mon').className='monster nz atk';
+  $('fb').className='fb bad';$('fb').innerHTML=(v===null?T('時間到！'):T('差一點！'))+' '+how}
+ drawHUD();
+ setTimeout(function(){if(G.hp<=0)end(true);else if(G.hearts<=0)end(!!G.L.endless);else next()},ok?900:2600)}
+function end(win){clearInterval(TM);var L=G.L,hard=G.hard&&!L.secret,D=RD();
+ var st=(win&&!L.secret)?(G.hearts==3?3:G.hearts==2?2:1):0;var bonus=(win&&!L.endless)?G.hearts*100+(L.boss?300:0):0;var total=G.score+bonus;
+ var mult=hard?1.5:1;var xpGain=Math.round(total/(win?5:10)*mult),coinGain=Math.round(total/(win?10:20)*S.coinRate*mult),snackGain=L.secret?(win?1:0):st;
+ var oldRank=rankOf(S.xp);S.xp+=xpGain;S.coins+=coinGain;S.snacks+=snackGain;var newRank=rankOf(S.xp);
+ var newRec=false;if(L.endless&&G.right>D.endBest){D.endBest=G.right;newRec=true}
+ var newBest=false,unlockedNew=false;
+ if(!L.secret){var SB=hard?D.hbest:D.best,SS=hard?D.hstars:D.stars;newBest=total>(SB[L.id]||0);if(newBest)SB[L.id]=total;
+  if(!hard&&st>0&&!D.stars[L.id])unlockedNew=true;if(st>(SS[L.id]||0))SS[L.id]=st}
+ if(win&&!L.endless){S.wins++;dayRec().wins++;taskAdd('win',1);if(hard)taskAdd('hard',1)}dayRec().sec+=Math.round((Date.now()-G.t0)/1000);
+ save();drawBar();checkAch();
+ if(win){$('mon').className='monster nz dead';sfx('win');celebrate()}else sfx('lose');musicStop(true);
+ var curI=L.secret?-1:idxOfLevel(L.id),nextP=curI>=0&&CUR.path[curI+1];
+ setTimeout(function(){
+ var head=L.endless?'<h2>'+T('無限挑戰結束！')+'</h2><div class="bigstar nz">♾️</div><div class="qtext">'+T('一共答對{n}題',{n:G.right})+(newRec?' 🏆 '+T('新紀錄！'):'')+'</div>':
+  win?'<h2>'+T('破關成功！')+'</h2>'+(hard?'<div class="hardtag big">🔥 '+T('困難')+'</div>':'')+'<div class="bigstar nz">'+(L.secret?'🎉':'⭐'.repeat(st)+'☆'.repeat(3-st))+'</div>':
+  '<h2>'+T('再試一次！')+'</h2><div class="bigstar nz">'+L.mon+'</div><div class="qtext">'+T('怪獸還剩{n}格血，加油！',{n:G.hp})+'</div>';
+ $('ovCard').innerHTML=head+
+ '<div class="row"><span>'+T('總分')+'</span><b class="nz">'+total+(newBest?' 🏆':'')+'</b></div>'+
+ '<div class="row"><span>'+T('最多連擊')+'</span><b class="nz">'+G.maxCombo+'</b></div>'+
+ '<div class="row"><span>'+T('經驗值')+'</span><b class="nz">+'+xpGain+'</b></div>'+
+ '<div class="row"><span>'+T('金幣')+'</span><b class="nz">🪙 +'+coinGain+'</b></div>'+
+ (snackGain?'<div class="row"><span>'+T('寵物點心')+'</span><b class="nz">🍪 +'+snackGain+'</b></div>':'')+
+ (unlockedNew?'<div class="lvup" style="background:#e9fbe9;color:#1a7a43">'+T('困難模式打開了！')+'</div>':'')+
+ (newRank>oldRank?'<div class="lvup">'+T('升級了！')+' <span class="nz">Lv.'+(newRank+1)+'</span> '+T(RANKS[newRank][1])+(SECRET.some(function(s){return s.need==newRank+1})?'<br>'+T('打開了新的祕密關卡！'):'')+'</div>':'')+
+ (G.miss.length?'<div class="small" style="color:#c03b3b;margin-top:6px">'+T('要再練習：')+' <span class="nz">'+G.miss.slice(0,4).join('　')+'</span></div>':'')+
+ '<div style="margin-top:8px"><button class="btn w" id="bHome">'+T('回地圖')+'</button><button class="btn" id="bAgain">'+T('再玩一次')+'</button>'+
+ (win&&nextP&&!L.secret?'<button class="btn g" id="bNext">'+(nextP.t=='M'?T('去小遊戲'):T('下一關'))+'</button>':'')+'</div>';
+ $('ov').classList.add('on');
+ function back(walk,cb){closeOv();show('map');if(walk&&nextP){setTimeout(function(){walkTo(curI+1,cb)},400)}else cb&&cb()}
+ $('bHome').onclick=function(){back(unlockedNew)};
+ $('bAgain').onclick=function(){closeOv();if(L.missList){L.missList=Object.keys(RD().miss);L.cache=JSON.parse(JSON.stringify(RD().miss));if(!L.missList.length){show('map');toast(T('現在沒有錯題，太厲害了！'));return}}start(L,G.hard)};
+ if($('bNext'))$('bNext').onclick=function(){back(true,function(){if(nextP.t=='M')miniInfo(nextP.M);else levelInfo(nextP.L)})};
+ if(newRank>oldRank)celebrate()},win?900:600)}
+$('quitBtn').onclick=function(){clearInterval(TM);$('ovCard').innerHTML='<div class="qtext">'+T('要離開這一關嗎？分數不會保留喔。')+'</div><button class="btn w" id="qStay">'+T('繼續打')+'</button><button class="btn" id="qGo">'+T('離開')+'</button>';$('ov').classList.add('on');
+ $('qStay').onclick=function(){closeOv();if(!G.lock){G.qt=Date.now();startTimer()}};$('qGo').onclick=function(){closeOv();show('map')}};
+
+// ================= 小遊戲 =================
+var MG=null;
+function miniInfo(M){var best=RD().mini[M.id],MT=MTYPES[M.type];
+ $('ovCard').innerHTML='<div class="small" style="color:#888">'+T(CUR.name)+'．'+T('小遊戲')+'</div><div class="bigstar nz">'+MT.icon+'</div><h2>'+T(MT.name)+'</h2><div class="qtext">'+T(MT.info)+'</div>'+
+  (best!=null?'<div class="small" style="color:#777">'+T('最高{n}分',{n:best})+'</div>':'<div class="small" style="color:#c08a00">'+T('第一次玩完送100金幣！')+'</div>')+
+  '<button class="btn w" onclick="closeOv()">'+T('等一下')+'</button><button class="btn g" id="mgGo">'+T('開始！')+'</button>';
+ $('ov').classList.add('on');$('mgGo').onclick=function(){closeOv();startMini(M)}}
+function startMini(M){MG={M:M,score:0,t0:Date.now(),timers:[],done:false};var MT=MTYPES[M.type];
+ document.querySelectorAll('.page').forEach(function(x){x.classList.remove('on')});$('tabs').style.display='none';$('miniView').style.display='block';$('battle').style.display='none';
+ $('mgTitle').innerHTML=MT.icon+' '+T(MT.name);$('mgScore').textContent='0';$('mgBody').innerHTML='';$('mgTime').style.display='none';window.scrollTo(0,0);musicPlay('battle');
+ ({memory:mgMemory,mole:mgMole,sum:mgSum,bubble:mgBubble})[M.type]()}
+function mgAdd(n){MG.score=Math.max(0,MG.score+n);$('mgScore').textContent=MG.score}
+function mgTimer(sec,onEnd){var t0=Date.now(),pausedMs=0,lastT=Date.now();$('mgTime').style.display='block';
+ var id=setInterval(function(){var now=Date.now();if(PAUSED){pausedMs+=now-lastT;lastT=now;return}lastT=now;var left=sec*1000-(now-t0-pausedMs);$('mgTimeBar').style.width=Math.max(0,left/(sec*10))+'%';$('mgSec').textContent=Math.ceil(Math.max(0,left)/1000);if(left<=0){clearInterval(id);onEnd()}},100);MG.timers.push(id)}
+function mgClear(){if(!MG)return;MG.timers.forEach(function(t){clearInterval(t);clearTimeout(t)});MG.timers=[]}
+function mgEnd(){if(!MG||MG.done)return;MG.done=true;mgClear();var M=MG.M,D=RD(),score=MG.score,first=D.mini[M.id]==null,best=score>(D.mini[M.id]==null?-1:D.mini[M.id]);
+ if(best)D.mini[M.id]=score;var coin=Math.round(score/10*S.coinRate)+(first?100:0);S.coins+=coin;S.snacks+=2;S.xp+=Math.round(score/8);dayRec().mini++;taskAdd('mini',1);save();drawBar();checkAch();sfx('win');celebrate();musicStop(true);
+ var idx=-1;CUR.path.forEach(function(p,i){if(p.t=='M'&&p.M.id==M.id)idx=i});var nextP=CUR.path[idx+1];
+ $('ovCard').innerHTML='<h2>'+T('小遊戲結束！')+'</h2><div class="bigstar nz">'+MTYPES[M.type].icon+'</div><div class="row"><span>'+T('分數')+'</span><b class="nz">'+score+(best?' 🏆':'')+'</b></div>'+
+  '<div class="row"><span>'+T('金幣')+'</span><b class="nz">🪙 +'+coin+'</b></div><div class="row"><span>'+T('寵物點心')+'</span><b class="nz">🍪 +2</b></div>'+
+  '<div style="margin-top:8px"><button class="btn w" id="mgHome">'+T('回地圖')+'</button><button class="btn" id="mgAgain">'+T('再玩一次')+'</button>'+(nextP&&unlockedP(idx+1)?'<button class="btn g" id="mgNext">'+T('下一關')+'</button>':'')+'</div>';
+ $('ov').classList.add('on');
+ $('mgHome').onclick=function(){closeOv();show('map')};$('mgAgain').onclick=function(){closeOv();startMini(M)};
+ if($('mgNext'))$('mgNext').onclick=function(){closeOv();show('map');setTimeout(function(){walkTo(idx+1,function(){levelInfo(nextP.L)})},400)}}
+$('mgQuit').onclick=function(){mgClear();if(MG)MG.done=true;show('map')};
+function mgMemory(){var pairs=[],used={},t=0;while(pairs.length<6&&t<200){t++;var p=miniPair(CUR.id),k=fmt(p.v);if(!used[k]){used[k]=1;pairs.push(p)}}
+ var cards=[];pairs.forEach(function(f,i){cards.push({k:i,t:f.e});cards.push({k:i,t:fmt(f.v)})});shuffle(cards);
+ var open=[],got=0,moves=0,t0=Date.now();
+ $('mgHint').innerHTML=T('翻開兩張，算式和答案一樣就配對成功！');
+ $('mgBody').innerHTML='<div class="memo nz">'+cards.map(function(c,i){return '<button class="mc" data-i="'+i+'"><span>'+c.t+'</span></button>'}).join('')+'</div><div class="small nz" style="text-align:center" id="mgMoves"></div>';
+ $('mgBody').querySelectorAll('.mc').forEach(function(btn){btn.onclick=function(){var i=+btn.dataset.i;if(open.length>=2||btn.classList.contains('up'))return;btn.classList.add('up');sfx('tick');open.push(i);
+  if(open.length==2){moves++;$('mgMoves').innerHTML=T('翻了{n}次',{n:moves});var A=cards[open[0]],B=cards[open[1]],bs=$('mgBody').querySelectorAll('.mc');
+   if(A.k==B.k){got++;mgAdd(150);sfx('ok');bs[open[0]].classList.add('ok');bs[open[1]].classList.add('ok');open=[];if(got==pairs.length){mgAdd(Math.max(0,600-Math.round((Date.now()-t0)/1000)*8));setTimeout(mgEnd,700)}}
+   else{sfx('no');var o=open.slice();MG.timers.push(setTimeout(function(){o.forEach(function(k){bs[k].classList.remove('up')});open=[]},850))}}}})}
+function mgMole(){var q;
+ function newQ(){q=miniPair(CUR.id);q.d=distract({ans:q.v,dec:String(q.v).indexOf('.')>=0}).filter(function(x){return !eqv(x,q.v)});$('mgHint').innerHTML='<span class="qeq nz" style="font-size:38px;color:#fff">'+q.e+' = ?</span>'}
+ $('mgBody').innerHTML='<div class="holes nz">'+[0,1,2,3,4,5,6,7,8].map(function(i){return '<div class="hole"><button class="mole" data-h="'+i+'"><span class="mf">🐹</span><b></b></button></div>'}).join('')+'</div>';
+ var holes=$('mgBody').querySelectorAll('.mole');newQ();
+ function pop(){if(PAUSED)return;var free=[];holes.forEach(function(h,i){if(!h.classList.contains('up'))free.push(i)});if(!free.length)return;
+  var hasRight=[].some.call(holes,function(h){return h.classList.contains('up')&&eqv(+h.dataset.v,q.v)});
+  var i=pick(free),h=holes[i],v=!hasRight&&Math.random()<.55?q.v:pick(q.d);
+  h.dataset.v=v;h.querySelector('b').textContent=fmt(v);h.classList.add('up');MG.timers.push(setTimeout(function(){h.classList.remove('up')},1900))}
+ holes.forEach(function(h){h.onclick=function(){if(!h.classList.contains('up'))return;h.classList.remove('up');
+  if(eqv(+h.dataset.v,q.v)){mgAdd(100);sfx('pop');holes.forEach(function(x){x.classList.remove('up')});newQ()}else{mgAdd(-30);sfx('no')}}});
+ MG.timers.push(setInterval(pop,650));pop();pop();mgTimer(40,mgEnd)}
+function mgSum(){var round=0,sel=[],target,cards,C=SUMCFG[CUR.id],dv=C.div;
+ function show(v){return fmt(v/dv)}
+ function newRound(){round++;if(round>6){mgEnd();return}sel=[];target=C.t();
+  var a=rnd(C.min,target-C.min),c=[a,target-a],t=0;
+  while(c.length<8&&t<500){t++;var x=rnd(C.min,target-1);if(c.indexOf(x)>=0)continue;if(!c.some(function(y){return x+y==target}))c.push(x)}
+  cards=shuffle(c);MG.rt=Date.now();
+  $('mgHint').innerHTML=T('找出兩張加起來是')+' <span class="nz" style="font-size:38px;color:#ffd84d">'+show(target)+'</span>　<span class="small nz">('+round+'/6)</span>';
+  $('mgBody').innerHTML='<div class="sumgrid nz">'+cards.map(function(v,i){return '<button class="sc" data-i="'+i+'">'+show(v)+'</button>'}).join('')+'</div><div class="qeq nz" id="sumShow" style="text-align:center;font-size:30px;min-height:46px"></div>';
+  $('mgBody').querySelectorAll('.sc').forEach(function(b){b.onclick=function(){var i=+b.dataset.i;if(b.classList.contains('sel')){b.classList.remove('sel');sel=sel.filter(function(k){return k!=i})}else if(sel.length<2){b.classList.add('sel');sel.push(i);sfx('tick')}
+   $('sumShow').textContent=sel.map(function(k){return show(cards[k])}).join(' + ')+(sel.length==2?' = '+show(cards[sel[0]]+cards[sel[1]]):'');
+   if(sel.length==2){var ok=cards[sel[0]]+cards[sel[1]]==target;var bs=$('mgBody').querySelectorAll('.sc');
+    if(ok){sfx('ok');sel.forEach(function(k){bs[k].classList.add('ok')});mgAdd(150+Math.max(0,100-Math.round((Date.now()-MG.rt)/200)));MG.timers.push(setTimeout(newRound,900))}
+    else{sfx('no');mgAdd(-20);sel.forEach(function(k){bs[k].classList.add('bad')});var o=sel.slice();sel=[];MG.timers.push(setTimeout(function(){o.forEach(function(k){bs[k].classList.remove('bad','sel')});$('sumShow').textContent=''},700))}}}})}
+ newRound()}
+function mgBubble(){$('mgHint').innerHTML=T('只戳破算式正確的泡泡！');
+ $('mgBody').innerHTML='<div class="sky" id="sky"></div>';
+ function spawn(){if(PAUSED)return;var sky=$('sky');if(!sky)return;var p=miniPair(CUR.id),right=Math.random()<.5,shown=p.v;
+  if(!right){var d=distract({ans:p.v,dec:String(p.v).indexOf('.')>=0}).filter(function(x){return !eqv(x,p.v)});shown=pick(d)}
+  var b=document.createElement('button');b.className='bub nz';b.innerHTML=p.e+'<br>= '+fmt(shown);b.dataset.r=right?1:0;
+  b.style.left=rnd(2,76)+'%';b.style.animationDuration=(5.5+Math.random()*2.5)+'s';b.onanimationend=function(){b.remove()};
+  b.onclick=function(){if(b.dataset.done)return;b.dataset.done=1;if(b.dataset.r=='1'){mgAdd(100);sfx('pop');b.classList.add('popped');setTimeout(function(){b.remove()},250)}else{mgAdd(-40);sfx('no');b.classList.add('wrongb')}};sky.appendChild(b)}
+ MG.timers.push(setInterval(spawn,800));spawn();mgTimer(45,mgEnd)}
+
+// ================= 寵物園 =================
+function drawPet(){var p=$('p-pet');
+ if(!S.pets.length){p.innerHTML='<h2 class="sec">'+T('選一顆寵物蛋')+'</h2><div class="panel"><div class="petpick">'+
+  Object.keys(PETS).map(function(k){return '<button data-k="'+k+'">'+petSVG(k,2,100)+'<div><b>'+T(PETS[k].n)+'</b></div></button>'}).join('')+
+  '</div><p class="small" style="color:#666">'+T('選好以後，牠會先變成一顆蛋。打贏關卡得到點心，餵牠吃就會長大！')+'</p></div>';
+  p.querySelectorAll('.petpick button').forEach(function(b){b.onclick=function(){S.pets.push({type:b.dataset.k,g:0,name:''});S.ap=0;save();sfx('buy');drawPet();drawBar()}});return}
+ if(S.ap>=S.pets.length)S.ap=0;var P=S.pets[S.ap],st=petStage(P.g),nx=STAGES[st+1],mx=petStageMax();
+ var h='<h2 class="sec">'+T('我的寵物園')+'</h2><div class="garden" id="garden"><div class="sun nz">☀️</div><div class="cloud c1"></div><div class="cloud c2"></div>';
+ S.furn.forEach(function(f,i){var F_=FURN.filter(function(x){return x.id==f.id})[0];if(F_)h+='<div class="furn nz" data-f="'+i+'" style="left:'+f.x+'%;top:'+f.y+'%">'+F_.e+'</div>'});
+ S.pets.forEach(function(pp,i){var s=petStage(pp.g);h+='<div class="gpet'+(i==S.ap?' act':'')+'" data-p="'+i+'" style="left:'+(10+i*14)+'%;animation-duration:'+(8+i*2)+'s;animation-delay:-'+(i*1.7)+'s">'+petSVG(pp.type,s,s==0?66:80+s*18)+(i==S.ap?'<span class="ptag nz">⭐</span>':'')+'</div>'});
+ h+='</div><p class="small" style="text-align:center">'+T('點寵物可以切換；家具可以拖曳到喜歡的位置。')+'</p>';
+ h+='<div class="panel" style="text-align:center"><div style="display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap"><div id="stage" class="petmini">'+petSVG(P.type,st,st==0?110:140)+'</div><div style="text-align:left;min-width:200px;flex:1">'+
+  '<h3 style="margin:0">'+(P.name?esc(P.name):T(PETS[P.type].n))+'　<span class="small">'+T(STAGES[st][1])+'</span></h3>'+
+  '<div class="grow"><i style="width:'+(nx?((P.g-STAGES[st][0])/(nx[0]-STAGES[st][0])*100):100)+'%"></i></div>'+
+  '<div class="small" style="color:#666">'+(nx?T('再吃{n}個點心就會長大',{n:nx[0]-P.g}):T('已經是傳說寵物了！'))+'</div>'+
+  '<p style="margin:6px 0"><span class="nz" style="font-size:22px">🍪 × <b>'+S.snacks+'</b></span></p></div></div>'+
+  '<button class="btn g" id="feed">'+T('餵點心')+'</button><button class="btn w" id="pat">'+T('摸摸頭')+'</button><button class="btn" id="play">'+T('一起玩')+'</button>'+
+  '<div style="margin-top:6px"><input class="txt" id="pname" maxlength="8" placeholder="'+esc('幫牠取名字')+'" value="'+esc(P.name||'')+'"> <button class="mini" id="pnameBtn">'+T('取名')+'</button></div>'+
+  '<p class="small" style="color:#666">'+T('點心哪裡來？打贏關卡，每顆星星送一個點心；小遊戲也會送點心。')+'</p></div>';
+ h+='<div class="panel"><h3>'+T('領養新寵物')+'</h3>';
+ if(S.pets.length>=MAX_PETS)h+='<p class="small" style="color:#666">'+T('寵物園已經住滿了！')+'</p>';
+ else if(mx<2)h+='<p class="small" style="color:#666">'+T('有一隻寵物長到「小朋友」，就可以領養新的寵物蛋。')+'</p>';
+ else h+='<div class="petpick">'+Object.keys(PETS).map(function(k){return '<button data-adopt="'+k+'"'+(S.coins<EGG_PRICE?' disabled':'')+'>'+petSVG(k,0,70)+'<div><b>'+T(PETS[k].n)+'</b></div><div class="small nz">🪙 '+EGG_PRICE+'</div></button>'}).join('')+'</div>';
+ h+='</div><div class="panel"><h3>'+T('家具商店')+'</h3><div class="grid">'+FURN.map(function(f){var ok=mx>=f.need,n=S.furn.filter(function(x){return x.id==f.id}).length;
+  return '<div class="item'+(n?' own':'')+'"><div class="m nz">'+(ok?f.e:'🔒')+'</div><div class="nm">'+T(f.n)+'</div>'+(ok?'<button class="mini" data-buyf="'+f.id+'"'+(S.coins<f.p?' disabled':'')+'>🪙 '+f.p+'</button>'+(n?'<div class="small" style="color:#23995a">'+T('已有{n}個',{n:n})+'</div>':''):'<div class="small" style="color:#999">'+T('需要寵物長到')+T(STAGES[f.need][1])+'</div>')+'</div>'}).join('')+'</div>'+
+  (S.furn.length?'<p style="text-align:center"><button class="mini w" id="furnReset">'+T('收起全部家具重新擺')+'</button></p>':'')+'</div>';
+ p.innerHTML=h;
+ $('feed').onclick=function(){if(S.snacks<=0){sfx('no');toast(T('點心吃完了，去打關卡或玩小遊戲吧！'));return}
+  var before=petStage(P.g);S.snacks--;P.g++;taskAdd('feed',1);save();checkAch();sfx('eat');var after=petStage(P.g);
+  heartFx();if(after>before){setTimeout(function(){drawPet();celebrate();sfx('win');toast((after==1?T('蛋孵出來了！'):T('寵物長大了！'))+'<br>'+petSVG(P.type,after,150)+(FURN.some(function(f){return f.need==after})?'<br>'+T('有新的家具可以買了！'):''))},500)}else setTimeout(drawPet,450);drawBar()};
+ $('pat').onclick=function(){heartFx();sfx('ok')};
+ $('play').onclick=function(){var g=document.querySelector('.gpet.act');if(g){g.classList.remove('jump');void g.offsetWidth;g.classList.add('jump')}sfx('pop');heartFx()};
+ $('pnameBtn').onclick=function(){P.name=$('pname').value.trim().slice(0,8);save();drawPet()};
+ p.querySelectorAll('.gpet').forEach(function(g){g.onclick=function(){S.ap=+g.dataset.p;save();sfx('tick');drawPet()}});
+ p.querySelectorAll('[data-adopt]').forEach(function(b){b.onclick=function(){if(S.coins<EGG_PRICE)return;var k=b.dataset.adopt;
+  $('ovCard').innerHTML=petSVG(k,0,120)+'<div class="qtext">'+T('要用{n}金幣領養這顆蛋嗎？',{n:EGG_PRICE})+'<br>'+T(PETS[k].n)+'</div><button class="btn w" onclick="closeOv()">'+T('不要')+'</button><button class="btn g" id="okAd">'+T('領養！')+'</button>';$('ov').classList.add('on');
+  $('okAd').onclick=function(){S.coins-=EGG_PRICE;S.pets.push({type:k,g:0,name:''});S.ap=S.pets.length-1;save();checkAch();sfx('buy');celebrate();closeOv();drawPet();drawBar()}}});
+ p.querySelectorAll('[data-buyf]').forEach(function(b){b.onclick=function(){var f=FURN.filter(function(x){return x.id==b.dataset.buyf})[0];if(S.coins<f.p)return;S.coins-=f.p;S.furn.push({id:f.id,x:rnd(5,85),y:rnd(35,70)});save();checkAch();sfx('buy');drawPet();drawBar();toast(T('家具放進寵物園了！可以拖曳換位置。'))}});
+ if($('furnReset'))$('furnReset').onclick=function(){S.furn.forEach(function(f,i){f.x=5+(i%6)*15;f.y=40+Math.floor(i/6)*20});save();drawPet()};
+ // 拖曳家具
+ var gd=$('garden');gd.querySelectorAll('.furn').forEach(function(el){el.onpointerdown=function(e){e.preventDefault();el.setPointerCapture(e.pointerId);el.classList.add('drag');var r=gd.getBoundingClientRect();
+  el.onpointermove=function(ev){var x=Math.max(0,Math.min(92,(ev.clientX-r.left)/r.width*100-4)),y=Math.max(20,Math.min(85,(ev.clientY-r.top)/r.height*100-8));el.style.left=x+'%';el.style.top=y+'%';el.dataset.x=x;el.dataset.y=y};
+  el.onpointerup=function(){el.onpointermove=null;el.classList.remove('drag');var f=S.furn[+el.dataset.f];if(el.dataset.x){f.x=Math.round(+el.dataset.x);f.y=Math.round(+el.dataset.y);save()}}}})}
+function heartFx(){var s=$('stage');if(!s)return;var svg=s.querySelector('svg');svg.classList.remove('bounce');void svg.offsetWidth;svg.classList.add('bounce');
+ for(var i=0;i<3;i++){var h=document.createElement('div');h.className='heart nz';h.textContent='💖';h.style.left=(25+Math.random()*50)+'%';h.style.bottom=(40+Math.random()*50)+'px';h.style.animationDelay=(i*.15)+'s';s.appendChild(h);setTimeout(function(x){return function(){x.remove()}}(h),1500)}}
+
+// ================= 商店 =================
+function drawShop(){var p=$('p-shop');
+ var h='<h2 class="sec">'+T('商店')+'</h2><div class="panel"><h3>'+T('頭像')+'</h3><div class="grid">';
+ AVATARS.forEach(function(a){var own=S.own.indexOf(a.id)>=0,use=S.av==a.id;
+  h+='<div class="item'+(use?' use':own?' own':'')+'"><div class="m nz">'+a.e+'</div><div class="nm">'+T(a.n)+'</div>'+
+  (use?'<div class="small" style="color:#c08a00;font-weight:900">'+T('使用中')+'</div>':own?'<button class="mini g" data-use="'+a.id+'">'+T('換上')+'</button>':'<button class="mini" data-buy="'+a.id+'"'+(S.coins<a.p?' disabled':'')+'>🪙 '+a.p+'</button>')+'</div>'});
+ h+='</div></div><div class="panel"><h3>'+T('寵物點心')+'</h3><div class="grid"><div class="item"><div class="m nz">🍪</div><div class="nm">'+T('一個點心')+'</div><button class="mini" id="buySnack"'+(S.coins<30?' disabled':'')+'>🪙 30</button></div>'+
+  '<div class="item"><div class="m nz">🧁</div><div class="nm">'+T('五個點心')+'</div><button class="mini" id="buySnack5"'+(S.coins<120?' disabled':'')+'>🪙 120</button></div></div>'+
+  '<p class="small" style="color:#666">'+T('寵物園的家具和新寵物蛋，在「寵物」頁面購買。')+'</p></div>'+
+  '<p class="small" style="text-align:center">'+T('金幣哪裡來？打關卡就會得到，分數越高金幣越多！')+'</p>';
+ p.innerHTML=h;
+ p.querySelectorAll('[data-buy]').forEach(function(b){b.onclick=function(){var a=AVATARS.filter(function(x){return x.id==b.dataset.buy})[0];if(S.coins<a.p)return;
+  $('ovCard').innerHTML='<div class="bigstar nz">'+a.e+'</div><div class="qtext">'+T('要用{n}金幣買這個頭像嗎？',{n:a.p})+'<br>'+T(a.n)+'</div><button class="btn w" onclick="closeOv()">'+T('不要')+'</button><button class="btn g" id="okBuy">'+T('買！')+'</button>';$('ov').classList.add('on');
+  $('okBuy').onclick=function(){S.coins-=a.p;S.own.push(a.id);S.av=a.id;save();sfx('buy');celebrate();closeOv();drawShop();drawBar()}}});
+ p.querySelectorAll('[data-use]').forEach(function(b){b.onclick=function(){S.av=b.dataset.use;save();sfx('ok');drawShop();drawBar()}});
+ $('buySnack').onclick=function(){if(S.coins<30)return;S.coins-=30;S.snacks++;save();sfx('buy');drawShop();drawBar()};
+ $('buySnack5').onclick=function(){if(S.coins<120)return;S.coins-=120;S.snacks+=5;save();sfx('buy');drawShop();drawBar()}}
+
+function celebrate(){var c=document.createElement('canvas');c.className='confetti';c.width=innerWidth;c.height=innerHeight;document.body.appendChild(c);var x=c.getContext('2d'),ps=[],cols=['#ffd84d','#ff8a3d','#4cd18a','#4dd2ff','#e86fb0','#9b51e0'];
+ for(var i=0;i<140;i++)ps.push({x:Math.random()*c.width,y:-20-Math.random()*300,v:2+Math.random()*4,r:5+Math.random()*5,c:cols[i%6],s:Math.random()*6});
+ var t=0;(function f(){x.clearRect(0,0,c.width,c.height);ps.forEach(function(p){p.y+=p.v;p.x+=Math.sin((t+p.s)/10)*2;x.fillStyle=p.c;x.fillRect(p.x,p.y,p.r,p.r*1.6)});t++;if(t<180)requestAnimationFrame(f);else c.remove()})()}
+
+function petStage(g){var s=0;STAGES.forEach(function(x,i){if(g>=x[0])s=i});return s}
+function petSVG(type,stage,size){var P=PETS[type],c=P.c,d=P.d,s=size||200;
+ var o='<svg viewBox="0 0 200 200" width="'+s+'" height="'+s+'" xmlns="http://www.w3.org/2000/svg">';
+ o+='<ellipse cx="100" cy="188" rx="'+(stage==0?40:30+stage*8)+'" ry="8" fill="rgba(0,0,0,.15)"/>';
+ if(stage==0){ // 蛋
+  o+='<path d="M100 40 C140 40 158 100 158 130 C158 165 132 185 100 185 C68 185 42 165 42 130 C42 100 60 40 100 40Z" fill="#fffaf0" stroke="'+d+'" stroke-width="4"/>';
+  var ec=type=='sheep'?d:c;o+='<circle cx="78" cy="110" r="12" fill="'+ec+'"/><circle cx="120" cy="90" r="9" fill="'+ec+'"/><circle cx="118" cy="145" r="14" fill="'+ec+'"/><circle cx="80" cy="155" r="7" fill="'+ec+'"/>';
+  return o+'</svg>'}
+ var k=[0,.5,.6,.7,.78][stage],cx=100,by=186,r=78*k,cy=by-r;
+ o+='<g>';
+ if(stage==4)o+='<circle cx="100" cy="'+cy+'" r="'+(r+20)+'" fill="#fff6b0" opacity=".7"/>';
+ // 耳朵/角
+ if(type=='bunny'){o+='<ellipse cx="'+(cx-r*.42)+'" cy="'+(cy-r*1.05)+'" rx="'+(r*.2)+'" ry="'+(r*.55)+'" fill="'+c+'" stroke="'+d+'" stroke-width="3" transform="rotate(-12 '+(cx-r*.42)+' '+(cy-r*1.05)+')"/><ellipse cx="'+(cx+r*.42)+'" cy="'+(cy-r*1.05)+'" rx="'+(r*.2)+'" ry="'+(r*.55)+'" fill="'+c+'" stroke="'+d+'" stroke-width="3" transform="rotate(12 '+(cx+r*.42)+' '+(cy-r*1.05)+')"/>'+
+  '<ellipse cx="'+(cx-r*.42)+'" cy="'+(cy-r*1.02)+'" rx="'+(r*.09)+'" ry="'+(r*.38)+'" fill="#fff" opacity=".7" transform="rotate(-12 '+(cx-r*.42)+' '+(cy-r*1.02)+')"/><ellipse cx="'+(cx+r*.42)+'" cy="'+(cy-r*1.02)+'" rx="'+(r*.09)+'" ry="'+(r*.38)+'" fill="#fff" opacity=".7" transform="rotate(12 '+(cx+r*.42)+' '+(cy-r*1.02)+')"/>'}
+ if(type=='cat'){o+='<path d="M'+(cx-r*.85)+' '+(cy-r*.35)+' L'+(cx-r*.6)+' '+(cy-r*1.1)+' L'+(cx-r*.15)+' '+(cy-r*.8)+'Z" fill="'+c+'" stroke="'+d+'" stroke-width="3" stroke-linejoin="round"/><path d="M'+(cx+r*.85)+' '+(cy-r*.35)+' L'+(cx+r*.6)+' '+(cy-r*1.1)+' L'+(cx+r*.15)+' '+(cy-r*.8)+'Z" fill="'+c+'" stroke="'+d+'" stroke-width="3" stroke-linejoin="round"/>'}
+ if(type=='dragon'){o+='<path d="M'+(cx-r*.45)+' '+(cy-r*.8)+' Q'+(cx-r*.55)+' '+(cy-r*1.35)+' '+(cx-r*.2)+' '+(cy-r*1.25)+' Q'+(cx-r*.3)+' '+(cy-r*1.05)+' '+(cx-r*.22)+' '+(cy-r*.88)+'Z" fill="#fff3b0" stroke="#d8b13c" stroke-width="3"/><path d="M'+(cx+r*.45)+' '+(cy-r*.8)+' Q'+(cx+r*.55)+' '+(cy-r*1.35)+' '+(cx+r*.2)+' '+(cy-r*1.25)+' Q'+(cx+r*.3)+' '+(cy-r*1.05)+' '+(cx+r*.22)+' '+(cy-r*.88)+'Z" fill="#fff3b0" stroke="#d8b13c" stroke-width="3"/>';
+  if(stage>=3)o+='<path d="M'+(cx-r*.9)+' '+(cy-r*.1)+' Q'+(cx-r*1.7)+' '+(cy-r*.9)+' '+(cx-r*1.5)+' '+(cy+r*.2)+' Q'+(cx-r*1.2)+' '+(cy+r*.05)+' '+(cx-r*.9)+' '+(cy+r*.25)+'Z" fill="'+d+'" opacity=".85"/><path d="M'+(cx+r*.9)+' '+(cy-r*.1)+' Q'+(cx+r*1.7)+' '+(cy-r*.9)+' '+(cx+r*1.5)+' '+(cy+r*.2)+' Q'+(cx+r*1.2)+' '+(cy+r*.05)+' '+(cx+r*.9)+' '+(cy+r*.25)+'Z" fill="'+d+'" opacity=".85"/>'}
+ if(type=='bear'){o+='<circle cx="'+(cx-r*.62)+'" cy="'+(cy-r*.72)+'" r="'+(r*.28)+'" fill="'+c+'" stroke="'+d+'" stroke-width="3"/><circle cx="'+(cx+r*.62)+'" cy="'+(cy-r*.72)+'" r="'+(r*.28)+'" fill="'+c+'" stroke="'+d+'" stroke-width="3"/><circle cx="'+(cx-r*.62)+'" cy="'+(cy-r*.72)+'" r="'+(r*.14)+'" fill="#fff" opacity=".6"/><circle cx="'+(cx+r*.62)+'" cy="'+(cy-r*.72)+'" r="'+(r*.14)+'" fill="#fff" opacity=".6"/>'}
+ if(type=='penguin'){o+='<ellipse cx="'+(cx-r*.95)+'" cy="'+(cy+r*.2)+'" rx="'+(r*.2)+'" ry="'+(r*.45)+'" fill="'+d+'" transform="rotate(20 '+(cx-r*.95)+' '+(cy+r*.2)+')"/><ellipse cx="'+(cx+r*.95)+'" cy="'+(cy+r*.2)+'" rx="'+(r*.2)+'" ry="'+(r*.45)+'" fill="'+d+'" transform="rotate(-20 '+(cx+r*.95)+' '+(cy+r*.2)+')"/>'}
+ if(type=='sheep'){for(var w=0;w<10;w++){var an=Math.PI*(w/9)*1.2-Math.PI*1.1;o+='<circle cx="'+(cx+Math.cos(an)*r*.92)+'" cy="'+(cy+Math.sin(an)*r*.88)+'" r="'+(r*.3)+'" fill="#fff" stroke="#e2dccf" stroke-width="3"/>'}o+='<ellipse cx="'+(cx-r*1.0)+'" cy="'+(cy-r*.05)+'" rx="'+(r*.26)+'" ry="'+(r*.12)+'" fill="'+d+'"/><ellipse cx="'+(cx+r*1.0)+'" cy="'+(cy-r*.05)+'" rx="'+(r*.26)+'" ry="'+(r*.12)+'" fill="'+d+'"/>'}
+ // 尾巴
+ if(stage>=2){if(type=='cat')o+='<path d="M'+(cx+r*.8)+' '+(by-r*.3)+' Q'+(cx+r*1.5)+' '+(by-r*.5)+' '+(cx+r*1.25)+' '+(by-r*1.1)+'" fill="none" stroke="'+d+'" stroke-width="'+(r*.18)+'" stroke-linecap="round"/>';
+  if(type=='bunny')o+='<circle cx="'+(cx+r*.9)+'" cy="'+(by-r*.35)+'" r="'+(r*.2)+'" fill="#fff" stroke="'+d+'" stroke-width="3"/>';
+  if(type=='dragon')o+='<path d="M'+(cx+r*.7)+' '+(by-r*.25)+' Q'+(cx+r*1.5)+' '+(by-r*.1)+' '+(cx+r*1.45)+' '+(by-r*.7)+' L'+(cx+r*1.25)+' '+(by-r*.45)+'Z" fill="'+c+'" stroke="'+d+'" stroke-width="3"/>'}
+ // 身體
+ o+='<ellipse cx="'+cx+'" cy="'+cy+'" rx="'+r+'" ry="'+(r*.95)+'" fill="'+c+'" stroke="'+d+'" stroke-width="4"/>';
+ o+='<ellipse cx="'+cx+'" cy="'+(cy+r*.38)+'" rx="'+(r*.55)+'" ry="'+(r*.42)+'" fill="#fff" opacity=".55"/>';
+ if(type=='penguin')o+='<ellipse cx="'+cx+'" cy="'+(cy+r*.12)+'" rx="'+(r*.68)+'" ry="'+(r*.74)+'" fill="#fff"/>';
+ if(type=='sheep')for(var w2=0;w2<5;w2++)o+='<circle cx="'+(cx-r*.5+w2*r*.25)+'" cy="'+(cy-r*.82)+'" r="'+(r*.2)+'" fill="#fff" stroke="#e2dccf" stroke-width="2"/>';
+ if(type=='dragon')o+='<path d="M'+(cx-r*.15)+' '+(cy-r*.93)+' l'+(r*.15)+' '+(-r*.2)+' l'+(r*.15)+' '+(r*.2)+'Z" fill="'+d+'"/>';
+ if(type=='cat'&&stage>=2)o+='<path d="M'+(cx-r*.2)+' '+(cy-r*.85)+' q'+(r*.05)+' '+(r*.15)+' 0 '+(r*.25)+' M'+cx+' '+(cy-r*.9)+' q'+(r*.05)+' '+(r*.15)+' 0 '+(r*.25)+' M'+(cx+r*.2)+' '+(cy-r*.85)+' q'+(r*.05)+' '+(r*.15)+' 0 '+(r*.25)+'" stroke="'+d+'" stroke-width="3" fill="none" stroke-linecap="round"/>';
+ // 臉
+ var ey=cy-r*.12,ex=r*.33,er=r*.12;
+ o+='<circle cx="'+(cx-ex)+'" cy="'+ey+'" r="'+er+'" fill="#3a2a2a"/><circle cx="'+(cx+ex)+'" cy="'+ey+'" r="'+er+'" fill="#3a2a2a"/>';
+ o+='<circle cx="'+(cx-ex+er*.35)+'" cy="'+(ey-er*.35)+'" r="'+(er*.4)+'" fill="#fff"/><circle cx="'+(cx+ex+er*.35)+'" cy="'+(ey-er*.35)+'" r="'+(er*.4)+'" fill="#fff"/>';
+ o+='<ellipse cx="'+(cx-r*.55)+'" cy="'+(cy+r*.1)+'" rx="'+(r*.13)+'" ry="'+(r*.08)+'" fill="#ff8fab" opacity=".7"/><ellipse cx="'+(cx+r*.55)+'" cy="'+(cy+r*.1)+'" rx="'+(r*.13)+'" ry="'+(r*.08)+'" fill="#ff8fab" opacity=".7"/>';
+ if(type=='penguin')o+='<path d="M'+(cx-r*.12)+' '+(cy+r*.02)+' L'+(cx+r*.12)+' '+(cy+r*.02)+' L'+cx+' '+(cy+r*.2)+'Z" fill="#ffa53d" stroke="#e08a1e" stroke-width="2" stroke-linejoin="round"/>';
+ else o+='<path d="M'+(cx-r*.12)+' '+(cy+r*.08)+' q'+(r*.06)+' '+(r*.1)+' '+(r*.12)+' 0 q'+(r*.06)+' '+(r*.1)+' '+(r*.12)+' 0" fill="none" stroke="#3a2a2a" stroke-width="3" stroke-linecap="round"/>';
+ // 腳
+ o+='<ellipse cx="'+(cx-r*.4)+'" cy="'+(by-2)+'" rx="'+(r*.22)+'" ry="'+(r*.1)+'" fill="'+d+'"/><ellipse cx="'+(cx+r*.4)+'" cy="'+(by-2)+'" rx="'+(r*.22)+'" ry="'+(r*.1)+'" fill="'+d+'"/>';
+ // 配件
+ if(stage>=3)o+='<path d="M'+(cx-r*.5)+' '+(cy+r*.62)+' Q'+cx+' '+(cy+r*.85)+' '+(cx+r*.5)+' '+(cy+r*.62)+'" fill="none" stroke="#ff6b6b" stroke-width="'+(r*.12)+'" stroke-linecap="round"/><circle cx="'+(cx+r*.15)+'" cy="'+(cy+r*.76)+'" r="'+(r*.08)+'" fill="#ffd84d"/>';
+ if(stage==4)o+='<path d="M'+(cx-r*.35)+' '+(cy-r*.95)+' L'+(cx-r*.35)+' '+(cy-r*1.3)+' L'+(cx-r*.17)+' '+(cy-r*1.12)+' L'+cx+' '+(cy-r*1.4)+' L'+(cx+r*.17)+' '+(cy-r*1.12)+' L'+(cx+r*.35)+' '+(cy-r*1.3)+' L'+(cx+r*.35)+' '+(cy-r*.95)+'Z" fill="#ffd84d" stroke="#d8a400" stroke-width="3" stroke-linejoin="round"/><circle cx="'+cx+'" cy="'+(cy-r*1.1)+'" r="'+(r*.06)+'" fill="#ff6b6b"/>'+
+  '<text x="30" y="60" font-size="22">✨</text><text x="150" y="80" font-size="18">✨</text>';
+ return o+'</g></svg>'}
+
+// ================= 獎勵 =================
+var parentOK=false;
+function drawReward(){var p=$('p-reward');
+ var h='<div style="display:flex;justify-content:space-between;align-items:center"><h2 class="sec" style="margin:6px 0">'+T('獎勵卡')+'</h2><span><button class="btn nz" id="vkBtn" style="font-size:18px;padding:8px 14px">🔊 語音</button><button class="btn" id="parentBtn" style="font-size:18px;padding:8px 14px">🔒 '+T('家長設定')+'</button></span></div><div id="parentArea"></div><div class="panel"><p class="small" style="color:#666;margin-top:0">'+T('用金幣換爸爸媽媽準備的獎勵。換好以後，拿給爸爸媽媽看！')+'</p>';
+ S.rewards.forEach(function(r,i){h+='<div class="rw"><div class="m nz">'+r.e+'</div><div class="tx">'+TT(r.n)+'</div><div class="cost nz">🪙 '+r.c+'</div><button class="mini'+(S.coins>=r.c?' g':'')+'" data-rd="'+i+'"'+(S.coins<r.c?' disabled':'')+'>'+T('兌換')+'</button></div>'});
+ h+='</div>';
+ if(S.log.length)h+='<div class="panel"><h3>'+T('兌換紀錄')+'</h3><div class="log">'+S.log.slice(-10).reverse().map(function(l){return esc(l.d)+'　'+TT(l.n)+'　<span class="nz">🪙'+l.c+'</span>'+(l.done?'　<b style="color:#23995a">'+T('已兌現')+'</b>':'')}).join('<br>')+'</div></div>';
+ 
+ p.innerHTML=h;
+ p.querySelectorAll('[data-rd]').forEach(function(b){b.onclick=function(){var r=S.rewards[+b.dataset.rd];if(S.coins<r.c)return;
+  $('ovCard').innerHTML='<div class="bigstar nz">'+r.e+'</div><div class="qtext">'+T('要用{n}金幣兌換嗎？',{n:r.c})+'<br>'+TT(r.n)+'</div><button class="btn w" onclick="closeOv()">'+T('先不要')+'</button><button class="btn g" id="okRd">'+T('兌換！')+'</button>';$('ov').classList.add('on');
+  $('okRd').onclick=function(){S.coins-=r.c;var d=new Date();S.log.push({n:r.n,c:r.c,d:(d.getMonth()+1)+'/'+d.getDate(),done:false});save();sfx('buy');celebrate();
+   $('ovCard').innerHTML='<div class="bigstar nz">🎉</div><h2>'+T('兌換成功！')+'</h2><div class="qtext">'+TT(r.n)+'<br>'+T('快去找爸爸媽媽領獎勵吧！')+'</div><button class="btn" onclick="closeOv();drawReward();drawBar()">'+T('好！')+'</button>'}}});
+ $('parentBtn').onclick=function(){if(parentOK){drawParent();return}parentGate()};$('vkBtn').onclick=function(){VK.open()}}
+function pinInput(id){return '<input class="txt" id="'+id+'" type="password" inputmode="numeric" maxlength="6" autocomplete="off" style="text-align:center;letter-spacing:6px;max-width:200px">'}
+function parentGate(){
+ if(!S.pin){ // 第一次：設定密碼
+  $('ovCard').innerHTML='<h2>🔒 '+T('設定家長密碼')+'</h2><div class="small" style="color:#666">'+T('請家長設定4到6位數字的密碼，以後打開家長設定都要輸入。')+'</div>'+
+   '<p>'+T('輸入密碼')+'<br>'+pinInput('pin1')+'</p><p>'+T('再輸入一次')+'<br>'+pinInput('pin2')+'</p><div class="fb bad" id="pinMsg"></div>'+
+   '<button class="btn w" onclick="closeOv()">'+T('取消')+'</button><button class="btn" id="pinSet">'+T('設定')+'</button>';
+  $('ov').classList.add('on');$('pin1').focus();
+  $('pinSet').onclick=function(){var a=$('pin1').value,b=$('pin2').value;
+   if(!/^\d{4,6}$/.test(a)){$('pinMsg').innerHTML=T('密碼要是4到6位數字');return}
+   if(a!==b){$('pinMsg').innerHTML=T('兩次輸入的密碼不一樣');$('pin2').value='';return}
+   S.pin=a;save();parentOK=true;closeOv();sfx('ok');drawParent();toast(T('密碼設定好了！請記住它。'))};return}
+ $('ovCard').innerHTML='<h2>🔒 '+T('家長設定')+'</h2><p>'+T('請輸入家長密碼')+'<br>'+pinInput('pinIn')+'</p><div class="fb bad" id="pinMsg"></div>'+
+  '<button class="btn w" onclick="closeOv()">'+T('取消')+'</button><button class="btn" id="pinGo">'+T('確定')+'</button><br><button class="mini w" id="pinForgot">'+T('忘記密碼？')+'</button>';
+ $('ov').classList.add('on');$('pinIn').focus();
+ $('pinIn').onkeydown=function(e){if(e.key=='Enter')$('pinGo').click()};
+ $('pinGo').onclick=function(){if($('pinIn').value===S.pin){parentOK=true;closeOv();drawParent()}else{sfx('no');$('pinIn').value='';$('pinMsg').innerHTML=T('密碼不對')}};
+ $('pinForgot').onclick=function(){var a=rnd(213,879),b=rnd(23,89);
+  $('ovCard').innerHTML='<h2>'+T('忘記密碼')+'</h2><div class="small" style="color:#666">'+T('請家長算出答案，答對就可以重新設定密碼。')+'</div><div class="qeq nz" style="font-size:36px">'+a+' × '+b+' = ?</div>'+
+   '<input class="txt" id="fgAns" inputmode="numeric" style="text-align:center"><div class="fb bad" id="pinMsg"></div><button class="btn w" onclick="closeOv()">'+T('取消')+'</button><button class="btn" id="fgGo">'+T('確定')+'</button>';
+  $('fgGo').onclick=function(){if(+$('fgAns').value===a*b){delete S.pin;save();parentGate()}else{sfx('no');$('pinMsg').innerHTML=T('答案不對')}}}}
+function drawParent(){var h='<div class="panel" style="border:4px solid #6a3fd1"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">'+T('家長設定')+'</h3><button class="mini w" id="pClose">'+T('關閉')+'</button></div>'+
+ '<h3 style="margin-top:12px">'+T('獎勵和需要的金幣')+'</h3><p class="small" style="color:#666;margin:0">'+T('可以改圖示、名字和需要的金幣，改好以後按「儲存」。')+'</p>';
+ S.rewards.forEach(function(r,i){h+='<div class="rw" style="flex-wrap:wrap"><input class="txt" style="width:56px;max-width:56px;text-align:center" data-e="'+i+'" value="'+esc(r.e)+'"><input class="txt" style="flex:1;min-width:120px" data-n="'+i+'" value="'+esc(r.n)+'">'+
+  '<span style="display:flex;align-items:center;gap:4px;justify-content:center"><span class="nz" style="font-size:15px;color:#888;font-weight:800">🪙</span><button class="mini w" data-minus="'+i+'">−50</button><input class="txt" style="width:76px;text-align:center" data-c="'+i+'" inputmode="numeric" value="'+r.c+'"><button class="mini w" data-plus="'+i+'">+50</button></span>'+
+  '<button class="mini w" data-del="'+i+'">'+T('刪除')+'</button></div>'});
+ h+='<button class="mini" id="rAdd">'+T('新增一個')+'</button> <button class="mini g" id="rSave">'+T('儲存')+'</button>';
+ h+='<h3 style="margin-top:14px">'+T('每一關給的金幣')+'</h3><p class="small" style="color:#666;margin:0">'+T('覺得金幣來得太快或太慢，可以調整。')+'</p><div>'+
+  [[0.5,'少一點'],[1,'標準'],[2,'多一點']].map(function(x){return '<button class="mini'+(S.coinRate==x[0]?'':' w')+'" data-rate="'+x[0]+'">'+T(x[1])+' <span class="nz">×'+x[0]+'</span></button> '}).join('')+'</div>'+
+  '<p class="small" style="color:#666">'+T('標準大約是：打贏一關得到{a}到{b}金幣',{a:Math.round(120*S.coinRate),b:Math.round(300*S.coinRate)})+'</p>';
+ if(S.log.some(function(l){return !l.done}))h+='<h3 style="margin-top:12px">'+T('還沒兌現的')+'</h3>'+S.log.map(function(l,i){return l.done?'':'<div class="rw"><div class="tx">'+esc(l.d)+' '+TT(l.n)+'</div><button class="mini g" data-done="'+i+'">'+T('已兌現')+'</button></div>'}).join('');
+ h+='<h3 style="margin-top:14px">'+T('孩子的名字')+'</h3><input class="txt" id="pName" maxlength="6" value="'+esc(S.name)+'"> <button class="mini" id="pNameSave">'+T('儲存名字')+'</button><p class="small" style="color:#666">'+T('首頁會顯示「名字＋的魔法乘法大冒險」。')+'</p>'+
+ '';
+ h+=reportHTML()+gradeHTML()+backupHTML();
+ h+='<h3 style="margin-top:12px">'+T('家長小工具')+'</h3><button class="mini w" id="rCoin">'+T('送100金幣')+'</button> <button class="mini w" id="rPin">'+T('更改密碼')+'</button> <button class="mini w" id="rReset">'+T('遊戲全部重來')+'</button></div>';
+ $('parentArea').innerHTML=h;
+ function collect(){S.rewards=S.rewards.map(function(r,i){return{e:document.querySelector('[data-e="'+i+'"]').value||'🎁',n:document.querySelector('[data-n="'+i+'"]').value||'獎勵',c:Math.max(1,parseInt(document.querySelector('[data-c="'+i+'"]').value)||100)}})}
+ function redraw(){drawReward();drawParent();$('parentArea').scrollIntoView({behavior:'smooth'})}
+ $('pClose').onclick=function(){$('parentArea').innerHTML=''};
+ $('rSave').onclick=function(){collect();save();sfx('ok');redraw();toast(T('儲存好了！'))};
+ $('rAdd').onclick=function(){collect();S.rewards.push({e:'🎁',n:'新的獎勵',c:300});save();redraw()};
+ document.querySelectorAll('[data-minus],[data-plus]').forEach(function(b){b.onclick=function(){var neg=b.dataset.minus!=null,i=neg?b.dataset.minus:b.dataset.plus,inp=document.querySelector('[data-c="'+i+'"]');inp.value=Math.max(10,(parseInt(inp.value)||0)+(neg?-50:50))}});
+ document.querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){collect();S.rewards.splice(+b.dataset.del,1);save();redraw()}});
+ document.querySelectorAll('[data-done]').forEach(function(b){b.onclick=function(){S.log[+b.dataset.done].done=true;save();redraw()}});
+ document.querySelectorAll('[data-rate]').forEach(function(b){b.onclick=function(){collect();S.coinRate=+b.dataset.rate;save();redraw()}});
+ $('pNameSave').onclick=function(){S.name=($('pName').value.trim()||NAME_DEFAULT).slice(0,6);save();sfx('ok');toast(T('名字改好了！'))};
+ document.querySelectorAll('[data-grade]').forEach(function(b){b.onclick=function(){S.grade=+b.dataset.grade;save();redraw()}});
+ document.querySelectorAll('[data-lock]').forEach(function(b){b.onclick=function(){S.lockHard=b.dataset.lock=='1';save();redraw()}});
+ bindBackup();
+ $('rPin').onclick=function(){delete S.pin;save();parentOK=false;$('parentArea').innerHTML='';parentGate()};
+ $('rCoin').onclick=function(){S.coins+=100;save();drawBar();redraw()};
+ var arm=false;$('rReset').onclick=function(){if(!arm){arm=true;$('rReset').innerHTML=T('真的要清除嗎？再按一次');return}try{localStorage.removeItem('tt99game')}catch(e){}location.reload()}}
+
+
+// ================= 出題：不重複＋複習題 =================
+function makeQ2(L,hard){
+ if(!L.secret&&L.id){var D=RD(),rv=Object.keys(D.miss).filter(function(k){return D.miss[k].lv==L.id&&!G.seen['R'+k]});
+  if(rv.length&&Math.random()<.15){var k=pick(rv),q=JSON.parse(JSON.stringify(D.miss[k]));q.key=k;q.rev=1;G.seen['R'+k]=1;return q}}
+ var q2;for(var i=0;i<15;i++){q2=makeQ(L,hard);var kk=qKey(q2);if(!G.seen[kk]){G.seen[kk]=1;break}}
+ if(Object.keys(G.seen).length>300)G.seen={};return q2}
+
+// ================= 統計 =================
+function today(off){var d=new Date();if(off)d.setDate(d.getDate()+off);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+def('stats',{days:{},topic:{},missCnt:{}});def('daily',{});def('streak',{last:'',n:0});def('ach',{});def('grade',0);def('lockHard',false);def('wins',0);def('totalOk',0);def('bestCombo',0);
+function dayRec(){var t=today(),d=S.stats.days[t];if(!d)d=S.stats.days[t]={q:0,ok:0,wins:0,mini:0,sec:0};
+ var ks=Object.keys(S.stats.days);if(ks.length>60)delete S.stats.days[ks[0]];return d}
+function track(ok,q,L){var d=dayRec();d.q++;if(ok){d.ok++;S.totalOk++}
+ var lv=L.secret?q.lv:L.id;if(lv){var tk=CUR.id+':'+lv,t=S.stats.topic[tk]||(S.stats.topic[tk]={q:0,ok:0});t.q++;if(ok)t.ok++}
+ if(!ok){var k=String(q.sol).replace(/<span class="fr"><i>(.*?)<\/i><i>(.*?)<\/i><\/span>/g,'$1/$2').replace(/<[^>]+>/g,'');S.stats.missCnt[k]=(S.stats.missCnt[k]||0)+1;
+  var mk=Object.keys(S.stats.missCnt);if(mk.length>150){mk.sort(function(a,b){return S.stats.missCnt[a]-S.stats.missCnt[b]});delete S.stats.missCnt[mk[0]]}}
+ if(ok)taskAdd('ok',1);taskMax('combo',G.combo);if(G.combo>S.bestCombo)S.bestCombo=G.combo}
+function topicName(tk){var p=tk.split(':'),R=RG(p[0]);if(!R)return '';var L=R.levels[+p[1]-1];return T(R.name)+'．'+T('第{n}關',{n:p[1]})+(L?' '+T(L.title):'')}
+
+// ================= 每日任務與連續登入 =================
+var TASKPOOL=[{id:'ok',n:30,txt:'答對{n}題',c:80},{id:'ok',n:50,txt:'答對{n}題',c:120},{id:'win',n:2,txt:'打贏{n}關',c:100},{id:'win',n:3,txt:'打贏{n}關',c:150},
+ {id:'mini',n:1,txt:'玩{n}個小遊戲',c:80},{id:'feed',n:2,txt:'餵寵物{n}次',c:60},{id:'hard',n:1,txt:'打贏{n}次困難模式',c:150},{id:'combo',n:10,txt:'打出{n}連擊',c:100},{id:'miss',n:5,txt:'在錯題特訓答對{n}題',c:120}];
+function seeded(str){var h=0;for(var i=0;i<str.length;i++)h=(h*31+str.charCodeAt(i))>>>0;return function(){h=(h*1103515245+12345)>>>0;return h/4294967296}}
+function ensureDaily(){var t=today();if(S.daily.date==t)return;var r=seeded(t),pool=TASKPOOL.slice(),ts=[],used={};
+ while(ts.length<3){var x=pool[Math.floor(r()*pool.length)];if(used[x.id])continue;used[x.id]=1;ts.push({id:x.id,n:x.n,txt:x.txt,c:x.c,p:0,claimed:false})}
+ S.daily={date:t,tasks:ts};save()}
+function taskAdd(id,n){ensureDaily();S.daily.tasks.forEach(function(t){if(t.id==id&&!t.claimed)t.p=Math.min(t.n,t.p+n)})}
+function taskMax(id,v){ensureDaily();S.daily.tasks.forEach(function(t){if(t.id==id&&!t.claimed)t.p=Math.min(t.n,Math.max(t.p,v))})}
+function dailyHTML(){ensureDaily();var all=S.daily.tasks.every(function(t){return t.claimed});
+ return '<div class="panel daily"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📋 '+T('今日任務')+'</h3><span class="small nz" style="color:#c08a00">🔥 '+T('連續{n}天',{n:S.streak.n})+'</span></div>'+
+  S.daily.tasks.map(function(t,i){var done=t.p>=t.n;return '<div class="task"><div style="flex:1"><b>'+T(t.txt,{n:t.n})+'</b><div class="grow"><i style="width:'+(t.p/t.n*100)+'%"></i></div><span class="small nz">'+t.p+' / '+t.n+'</span></div>'+
+   (t.claimed?'<span class="small" style="color:#23995a;font-weight:900">✔ '+T('已領取')+'</span>':'<button class="mini'+(done?' g':'')+'" data-claim="'+i+'"'+(done?'':' disabled')+'>🪙 '+t.c+'</button>')+'</div>'}).join('')+
+  (all?'<div class="small" style="text-align:center;color:#23995a">'+T('今天的任務全部完成了，明天見！')+'</div>':'')+'</div>'}
+function bindDaily(root){root.querySelectorAll('[data-claim]').forEach(function(b){b.onclick=function(){var t=S.daily.tasks[+b.dataset.claim];if(t.claimed||t.p<t.n)return;t.claimed=true;S.coins+=t.c;
+  if(S.daily.tasks.every(function(x){return x.claimed})){S.snacks+=3;toast(T('三個任務都完成了！再送你3個點心')+' 🍪')}save();sfx('buy');drawBar();checkAch();drawHub()}})}
+var pendingBonus=null;
+function loginCheck(){var t=today();if(S.streak.last==t)return;S.streak.n=S.streak.last==today(-1)?S.streak.n+1:1;S.streak.last=t;
+ var d=((S.streak.n-1)%7)+1,coin=d==7?300:30+d*20,snack=d==7?5:1;S.coins+=coin;S.snacks+=snack;save();pendingBonus={d:d,coin:coin,snack:snack}}
+function loginBonus(){if(!pendingBonus)return;var B=pendingBonus;pendingBonus=null;drawBar();checkAch();
+ var row='';for(var i=1;i<=7;i++)row+='<span class="lday'+(i<B.d?' got':i==B.d?' now':'')+'"><b class="nz">'+i+'</b>'+(i==7?'🎁':'🪙')+'</span>';
+ $('ovCard').innerHTML='<h2>'+T('每日登入獎勵')+'</h2><div class="qtext">'+T('連續第{n}天來玩！',{n:S.streak.n})+'</div><div class="ldays nz">'+row+'</div>'+
+  '<div class="qtext nz">🪙 +'+B.coin+'　🍪 +'+B.snack+'</div><div class="small" style="color:#888">'+T('連續7天有大禮物喔！')+'</div><button class="btn g" onclick="closeOv()">'+T('收下！')+'</button>';
+ $('ov').classList.add('on');sfx('buy')}
+
+// ================= 成就 =================
+function regionClear(id){var d=S.R[id];return RG(id).levels.every(function(l){return d.stars[l.id]})}
+function hard3(){var n=0;REGIONS.forEach(function(R){var h=S.R[R.id].hstars;for(var k in h)if(h[k]>=3)n++});return n}
+var ACH=[
+ {id:'win1',e:'🎉',n:'第一次破關',d:'打贏第一關',f:function(){return S.wins>=1}},
+ {id:'win20',e:'🏆',n:'破關小達人',d:'打贏20關',f:function(){return S.wins>=20}},
+ {id:'win100',e:'👑',n:'破關大王',d:'打贏100關',f:function(){return S.wins>=100}},
+ {id:'ok100',e:'💯',n:'答對100題',d:'累積答對100題',f:function(){return S.totalOk>=100}},
+ {id:'ok1000',e:'🧠',n:'答對1000題',d:'累積答對1000題',f:function(){return S.totalOk>=1000}},
+ {id:'combo10',e:'🔥',n:'10連擊',d:'一場戰鬥連續答對10題',f:function(){return S.bestCombo>=10}},
+ {id:'combo30',e:'⚡',n:'30連擊',d:'一場戰鬥連續答對30題',f:function(){return S.bestCombo>=30}},
+ {id:'rmul',e:'🌳',n:'九九乘法森林全破',d:'打贏九九乘法森林30關',f:function(){return regionClear('mul')}},
+ {id:'rlow',e:'🍭',n:'加減法全破',d:'打贏低年級30關',f:function(){return regionClear('low')}},
+ {id:'rmid',e:'🚀',n:'中年級全破',d:'打贏中年級30關',f:function(){return regionClear('mid')}},
+ {id:'rhigh',e:'🔮',n:'高年級全破',d:'打贏高年級30關',f:function(){return regionClear('high')}},
+ {id:'hard10',e:'🌶️',n:'困難高手',d:'困難模式拿到三顆星10次',f:function(){return hard3()>=10}},
+ {id:'mini6',e:'🎪',n:'小遊戲收集家',d:'在一個區域玩過全部6個小遊戲',f:function(){return REGIONS.some(function(R){return Object.keys(S.R[R.id].mini).length>=6})}},
+ {id:'endless30',e:'♾️',n:'無限挑戰30題',d:'無限挑戰答對30題',f:function(){return REGIONS.some(function(R){return S.R[R.id].endBest>=30})}},
+ {id:'hatch',e:'🐣',n:'寵物孵化了',d:'把寵物蛋孵出來',f:function(){return petStageMax()>=1}},
+ {id:'legend',e:'🌟',n:'傳說寵物',d:'把寵物養到傳說',f:function(){return petStageMax()>=4}},
+ {id:'pets6',e:'🏡',n:'寵物大家庭',d:'養滿6隻寵物',f:function(){return S.pets.length>=6}},
+ {id:'furn5',e:'🎨',n:'佈置高手',d:'寵物園擺5個家具',f:function(){return S.furn.length>=5}},
+ {id:'streak7',e:'📅',n:'連續7天',d:'連續7天來玩',f:function(){return S.streak.n>=7}},
+ {id:'lv5',e:'🎖️',n:'升到Lv.5',d:'等級升到Lv.5',f:function(){return rankOf(S.xp)>=4}},
+ {id:'lv10',e:'🛡️',n:'數學星球守護者',d:'等級升到Lv.10',f:function(){return rankOf(S.xp)>=9}}];
+var achQ=[];
+function checkAch(){var got=[];ACH.forEach(function(a){if(!S.ach[a.id]&&a.f()){S.ach[a.id]=today();S.coins+=100;got.push(a)}});if(got.length){save();drawBar();got.forEach(function(a){achQ.push(a)});showAchToast()}return got}
+function showAchToast(){if(!achQ.length||$('achToast').classList.contains('on'))return;var a=achQ.shift();
+ $('achToast').innerHTML='<span class="nz" style="font-size:34px">'+a.e+'</span><div><div class="small">'+T('獲得新成就！')+' <span class="nz">🪙+100</span></div><b>'+T(a.n)+'</b></div>';
+ $('achToast').classList.add('on');sfx('buy');setTimeout(function(){$('achToast').classList.remove('on');setTimeout(showAchToast,400)},2600)}
+function drawAch(){var n=Object.keys(S.ach).length;
+ $('p-ach').innerHTML='<h2 class="sec">🏅 '+T('成就徽章牆')+'</h2><p class="sub nz">'+n+' / '+ACH.length+'</p><div class="badges">'+ACH.map(function(a){var g=S.ach[a.id];
+  return '<div class="badge'+(g?' got':'')+'"><div class="be nz">'+(g?a.e:'🔒')+'</div><b>'+T(a.n)+'</b><div class="small">'+T(a.d)+'</div>'+(g?'<div class="small nz" style="color:#c08a00">'+g+'</div>':'')+'</div>'}).join('')+'</div>'+
+  '<div class="panel"><h3>'+T('我的紀錄')+'</h3><div class="row"><span>'+T('打贏的關卡')+'</span><b class="nz">'+S.wins+'</b></div><div class="row"><span>'+T('答對的題目')+'</span><b class="nz">'+S.totalOk+'</b></div><div class="row"><span>'+T('最多連擊')+'</span><b class="nz">'+S.bestCombo+'</b></div><div class="row"><span>'+T('連續登入')+'</span><b class="nz">'+S.streak.n+'</b></div></div>'}
+
+// ================= 念題目 =================
+function speakText(q){var s='';if(q.t){s=q.t.replace(/\{(\w+)\}/g,function(m,k){return q.tv[k]}).replace(/[？?]/g,'')}
+ s=s.replace(/是多少$/,'，答案是什麼').replace(/多少(?=[\u4e00-\u9fff])/g,'幾').replace(/多少$/,'，答案是什麼');
+ var h=String(q.h||'').replace(/<span class="mixw">(.*?)<\/span>/g,'$1又').replace(/<span class="fr"><i>(.*?)<\/i><i>(.*?)<\/i><\/span>/g,'$2分之$1').replace(/<[^>]+>/g,'');
+ var blank=h.indexOf('□')>=0,ask=h.indexOf('?')>=0;
+ h=h.replace(/×/g,'成').replace(/÷/g,'除以').replace(/\+/g,'加').replace(/−/g,'減').replace(/○/g,'圈圈').replace(/…/g,'餘').replace(/%/g,'趴').replace(/:/g,'比').replace(/[()]/g,'');
+ h=h.replace(/=\s*\?/,'').replace(/=/g,'等於').replace(/□/g,'空格').replace(/\s+/g,'');
+ if(h){if(ask)h+='，答案是什麼';else if(blank)h+='，空格是什麼';else if(h.indexOf('圈圈')>=0)h+='，圈圈裡要填大於、小於，還是等於'}
+ return (s+(s&&h?'，':'')+h).trim()}
+// ================= 語音設定（各頁共用，存在 ttVoice，同一個網站的頁面互通） =================
+var VK=(function(){
+ var K='ttVoice',st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')||{}}catch(e){st={}}
+ function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+ function all(){try{return (window.speechSynthesis&&speechSynthesis.getVoices())||[]}catch(e){return[]}}
+ try{if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',function(){if(document.getElementById('vkBox'))fill()})}}catch(e){}
+ function isTW(v){return /(zh|cmn)[-_](hant[-_])?tw/i.test(v.lang)||/(臺灣|台灣|taiwan|國語)/i.test(v.name)}
+ function isHK(v){return /(zh|yue)[-_](hant[-_])?hk|yue/i.test(v.lang)||/(香港|粵|cantonese|hong kong)/i.test(v.name)}
+ function score(v){if(!(/^(zh|cmn|yue)/i.test(v.lang)||/(國語|中文|普通話|chinese)/i.test(v.name)))return -1;
+  var sc=isTW(v)?100:isHK(v)?2:20;
+  if(/natural|online|neural/i.test(v.name))sc+=30;
+  if(/加強|enhanced|premium|進階|高品質|優化/i.test(v.name))sc+=25;
+  if(/hsiaochen|hsiaoyu|曉臻|曉雨|美佳|mei-?jia/i.test(v.name))sc+=10;
+  if(/google/i.test(v.name))sc+=3;return sc}
+ function tag(v){return isTW(v)?'臺灣':isHK(v)?'香港／粵語':'大陸口音'}
+ function list(){return all().filter(function(v){return score(v)>=0}).sort(function(a,b){return score(b)-score(a)})}
+ function pick(){var vs=all();if(st.voice){for(var i=0;i<vs.length;i++)if(vs[i].name===st.voice)return vs[i]}
+  var best=null,bs=-1;vs.forEach(function(v){var s=score(v);if(s>bs){bs=s;best=v}});return bs>=0?best:null}
+ function apply(u,rate){var v=pick();if(v){u.voice=v;u.lang=v.lang}else u.lang='zh-TW';u.rate=rate||st.rate||0.9;u.pitch=st.pitch||1.1;return u}
+ function test(){try{var u=new SpeechSynthesisUtterance('你好！二成八等於十六。我們一起來練習九九乘法吧！');apply(u);speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+ function fill(){var sel=document.getElementById('vkSel'),box=document.getElementById('vkInfo');if(!sel)return;var vs=list(),cur=pick(),top=vs[0];
+  sel.innerHTML='<option value="">自動選擇（臺灣口音、品質最好的優先）</option>'+vs.map(function(v){return '<option value="'+esc(v.name)+'"'+(st.voice===v.name?' selected':'')+'>'+(v===top&&isTW(v)?'⭐ ':'')+esc(v.name)+'【'+tag(v)+'】</option>'}).join('');
+  var ua=navigator.userAgent,edge=/Edg\//.test(ua),win=/Windows/.test(ua),and=/Android/.test(ua),ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&'ontouchend' in document);
+  var tip='';
+  if(win&&!edge)tip='💡 Windows 請改用 <b>Edge 瀏覽器</b>打開，會有很自然的臺灣口音（HsiaoChen、HsiaoYu）。';
+  else if(and&&!vs.some(isTW))tip='💡 這台 Android 沒有臺灣口音的語音，請照下面說明下載「中文（臺灣）」。';
+  else if(ios&&!vs.some(function(v){return isTW(v)&&/加強|enhanced|premium/i.test(v.name)}))tip='💡 iPhone 可以下載「美佳（加強版）」，聲音會柔和很多。';
+  box.innerHTML=(cur?'目前使用：<b>'+esc(cur.name)+'</b>【'+tag(cur)+'】':'這台裝置找不到中文語音。')+(cur&&!isTW(cur)?'<br>⚠️ 這是大陸或香港口音，建議換成標「臺灣」的聲音。':'')+(tip?'<br>'+tip:'');
+  document.getElementById('vkRateV').textContent=(st.rate||0.9).toFixed(2)+'×';document.getElementById('vkPitchV').textContent=(st.pitch||1.1).toFixed(2)}
+ function open(){if(document.getElementById('vkBox'))return;
+  var d=document.createElement('div');d.id='vkBox';d.className='nz';
+  d.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,40,60,.5);display:flex;align-items:center;justify-content:center;padding:14px;font-family:inherit');
+  d.innerHTML='<div style="background:#fffdf7;border-radius:22px;padding:18px 18px 14px;max-width:460px;width:100%;max-height:92vh;overflow:auto;color:#1f3347;font-size:16px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.3)">'+
+   '<div style="font-size:22px;font-weight:900;margin-bottom:6px">🔊 語音設定</div>'+
+   '<div id="vkInfo" style="background:#f3f8ff;border-radius:12px;padding:8px 12px;font-size:14px"></div>'+
+   '<div style="margin:10px 0 6px;font-weight:700">選聲音</div><select id="vkSel" style="width:100%;font-size:15px;padding:8px;border-radius:10px;border:2px solid #cfe0ef"></select>'+
+   '<div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-weight:700">🐢 語速 <input type="range" id="vkRate" min="0.6" max="1.2" step="0.05" value="'+(st.rate||0.9)+'" style="flex:1"> <b id="vkRateV" style="min-width:52px"></b></div>'+
+   '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-weight:700">🎵 音調 <input type="range" id="vkPitch" min="0.8" max="1.5" step="0.05" value="'+(st.pitch||1.1)+'" style="flex:1"> <b id="vkPitchV" style="min-width:52px"></b></div>'+
+   '<div style="font-size:13px;color:#667">念慢一點、音調高一點，聽起來會比較柔和。這裡的設定，島嶼探險隊、魔法數學大冒險、九九乘法遊樂園會一起用（同一台裝置、同一個瀏覽器）。</div>'+
+   '<details style="margin-top:8px;font-size:14px"><summary style="font-weight:700;cursor:pointer">怎麼換成自然的臺灣口音？</summary><ul style="padding-left:20px;margin:6px 0">'+
+   '<li><b>Windows</b>：用 <b>Edge</b> 打開這個網頁，選「Microsoft HsiaoChen／HsiaoYu Online (Natural)」。</li>'+
+   '<li><b>Android</b>：設定 → 系統 → 語言 → 文字轉語音 → 引擎選 Google → 齒輪 → 安裝語音資料 → 下載「中文（臺灣）」，再把 Chrome 關掉重開。</li>'+
+   '<li><b>iPhone</b>：設定 → 輔助使用 → 朗讀內容 → 聲音 → 中文（臺灣）→ 下載「美佳（加強版）」，再重開這個網頁。</li>'+
+   '<li>標「大陸口音」的聲音盡量不要選。</li></ul></details>'+
+   '<div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px">'+
+   '<button id="vkReset" style="border:0;border-radius:12px;padding:8px 12px;background:#eee;font:inherit;font-weight:700;cursor:pointer">恢復建議值</button>'+
+   '<button id="vkTest" style="border:0;border-radius:12px;padding:8px 14px;background:#4cd18a;color:#fff;font:inherit;font-weight:800;cursor:pointer">▶ 試聽</button>'+
+   '<button id="vkClose" style="border:0;border-radius:12px;padding:8px 14px;background:#2d9cdb;color:#fff;font:inherit;font-weight:800;cursor:pointer">好了</button></div></div>';
+  document.body.appendChild(d);fill();setTimeout(fill,700);
+  d.onclick=function(e){if(e.target===d)d.remove()};
+  document.getElementById('vkClose').onclick=function(){d.remove()};
+  document.getElementById('vkTest').onclick=test;
+  document.getElementById('vkSel').onchange=function(e){st.voice=e.target.value;save();fill();test()};
+  document.getElementById('vkRate').oninput=function(e){st.rate=+e.target.value;save();fill()};
+  document.getElementById('vkPitch').oninput=function(e){st.pitch=+e.target.value;save();fill()};
+  document.getElementById('vkReset').onclick=function(){st.rate=0.9;st.pitch=1.1;save();document.getElementById('vkRate').value=0.9;document.getElementById('vkPitch').value=1.1;fill();test()}}
+ return {apply:apply,open:open,pick:pick,st:st};
+})();
+
+var SPEAKING=false;
+function duck(on){SPEAKING=on;try{if(!AC)return;if(on){musicStop(true);AC.suspend()}else if(!PAUSED){AC.resume().then(function(){if(S.music&&MU.want)musicPlay(MU.want)})}}catch(e){}}
+function speakQ(){if(!G||!G.q)return;try{var u=new SpeechSynthesisUtterance(speakText(G.q));VK.apply(u);duck(true);var done=function(){setTimeout(function(){duck(false)},700)};u.onend=done;u.onerror=done;setTimeout(function(){if(SPEAKING&&!speechSynthesis.speaking)duck(false)},12000);speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+
+// ================= 年級推薦 =================
+var RGRADE={mul:[2,3],low:[1,2],mid:[3,4],high:[5,6]};
+function recommended(R){return S.grade>0&&RGRADE[R.id][0]<=S.grade&&S.grade<=RGRADE[R.id][1]}
+function regionLocked(R){return S.lockHard&&S.grade>0&&RGRADE[R.id][0]>S.grade}
+
+// ================= 家長週報與備份 =================
+function reportHTML(){var rows='',tq=0,tok=0,days=0,tw=0;
+ for(var i=6;i>=0;i--){var k=today(-i),d=S.stats.days[k]||{q:0,ok:0,wins:0,mini:0};if(d.q)days++;tq+=d.q;tok+=d.ok;tw+=d.wins||0;
+  rows+='<tr><td class="nz">'+k.slice(5)+'</td><td class="nz">'+d.q+'</td><td class="nz">'+(d.q?Math.round(d.ok/d.q*100)+'%':'-')+'</td><td class="nz">'+(d.wins||0)+'</td></tr>'}
+ var tp=Object.keys(S.stats.topic).filter(function(k){return S.stats.topic[k].q>=5}).sort(function(a,b){var A=S.stats.topic[a],B=S.stats.topic[b];return A.ok/A.q-B.ok/B.q}).slice(0,5);
+ var mc=Object.keys(S.stats.missCnt).sort(function(a,b){return S.stats.missCnt[b]-S.stats.missCnt[a]}).slice(0,6);
+ return '<h3 style="margin-top:14px">📊 '+T('最近7天週報')+'</h3><div class="small" style="color:#666">'+T('玩了{a}天，答了{b}題，正確率{c}，打贏{d}關',{a:days,b:tq,c:tq?Math.round(tok/tq*100)+'%':'-',d:tw})+'</div>'+
+  '<table class="rep"><tr><th>'+T('日期')+'</th><th>'+T('題數')+'</th><th>'+T('正確率')+'</th><th>'+T('破關')+'</th></tr>'+rows+'</table>'+
+  '<h3 style="margin-top:10px">'+T('最需要加強的關卡')+'</h3>'+(tp.length?tp.map(function(k){var t=S.stats.topic[k];return '<div class="rw"><div class="tx" style="font-size:15px">'+topicName(k)+'</div><b class="nz" style="color:'+(t.ok/t.q<.7?'#c03b3b':'#c08a00')+'">'+Math.round(t.ok/t.q*100)+'%</b><span class="small nz">'+t.q+'</span></div>'}).join(''):'<p class="small" style="color:#888">'+T('每關答滿5題後才會列出來。')+'</p>')+
+  '<h3 style="margin-top:10px">'+T('最常答錯的題目')+'</h3>'+(mc.length?'<div class="wrongs nz">'+mc.map(function(k){return '<span>'+esc(k)+' <b>×'+S.stats.missCnt[k]+'</b></span>'}).join('')+'</div>':'<p class="small" style="color:#888">'+T('還沒有答錯的紀錄。')+'</p>')}
+function backupHTML(){return '<h3 style="margin-top:14px">💾 '+T('進度備份碼')+'</h3><p class="small" style="color:#666">'+T('換手機或換網址時，把備份碼貼到新的地方，就能接著玩。')+'</p>'+
+ '<button class="mini" id="bkMake">'+T('產生備份碼')+'</button> <button class="mini w" id="bkCopy" style="display:none">'+T('複製')+'</button><textarea class="txt bk" id="bkOut" readonly style="display:none"></textarea>'+
+ '<p class="small" style="color:#666;margin-top:10px">'+T('還原：把備份碼貼在下面，按「還原進度」。')+'</p><textarea class="txt bk" id="bkIn"></textarea><button class="mini w" id="bkLoad">'+T('還原進度')+'</button>'}
+function bindBackup(){$('bkMake').onclick=function(){var code='TT99:'+btoa(unescape(encodeURIComponent(JSON.stringify(S))));$('bkOut').value=code;$('bkOut').style.display='block';$('bkCopy').style.display='inline-block';$('bkOut').select()};
+ $('bkCopy').onclick=function(){$('bkOut').select();try{navigator.clipboard.writeText($('bkOut').value).then(function(){toast(T('已經複製好了！'))},function(){toast(T('請長按文字框手動複製。'))})}catch(e){toast(T('請長按文字框手動複製。'))}};
+ $('bkLoad').onclick=function(){var v=$('bkIn').value.trim();try{if(v.indexOf('TT99:')!=0)throw 0;var o=JSON.parse(decodeURIComponent(escape(atob(v.slice(5)))));if(!o||typeof o.xp!='number')throw 0;
+   $('ovCard').innerHTML='<div class="qtext">'+T('確定要用備份碼取代現在的進度嗎？')+'<br><span class="small nz">Lv.'+(rankOf(o.xp)+1)+'　🪙'+o.coins+'</span></div><button class="btn w" onclick="closeOv()">'+T('取消')+'</button><button class="btn" id="bkOk">'+T('確定')+'</button>';$('ov').classList.add('on');
+   $('bkOk').onclick=function(){try{localStorage.setItem('tt99game',JSON.stringify(o))}catch(e){}location.reload()}}catch(e){sfx('no');toast(T('備份碼不正確，請再檢查一次。'))}}}
+function gradeHTML(){return '<h3 style="margin-top:14px">🎓 '+T('孩子的年級')+'</h3><div>'+[0,1,2,3,4,5,6].map(function(g){return '<button class="mini'+(S.grade==g?'':' w')+'" data-grade="'+g+'">'+(g?'<span class="nz">'+g+'</span>'+T('年級'):T('不設定'))+'</button> '}).join('')+'</div>'+
+ '<p class="small" style="color:#666">'+T('數學星球會把適合的區域標成「推薦」。')+'</p><div>'+T('太難的區域先鎖起來：')+' <button class="mini'+(S.lockHard?'':' w')+'" data-lock="1">'+T('開')+'</button> <button class="mini'+(S.lockHard?' w':'')+'" data-lock="0">'+T('關')+'</button></div>'}
+
+// ================= 啟動 =================
+$('startBtn').onclick=function(){ac();setPaused(false);sfx('buy');leaveTitle()};
+$('toHub').onclick=function(){show('hub')};
+bindCommon(document);
+$('mapParent').onclick=function(){show('reward');$('parentBtn').click()};
+$('speedBtn').onclick=function(){S.speed=(S.speed+1)%3;save();drawMap()};
+if(S.lastR)CUR=RG(S.lastR);
+showTitle();
+</script>
+</body>
+</html>

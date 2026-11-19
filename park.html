@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8"/>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>九九乘法遊樂園</title>
+<style>
+
+.z{display:inline-flex;align-items:center;vertical-align:middle;line-height:1;margin:0 .2em 0 .03em}
+.z .h{display:inline-block}
+.z .b{display:inline-flex;flex-direction:column;justify-content:center;font-size:.4em;line-height:1.02;
+  margin-left:.12em;min-width:1em;font-weight:400;position:relative;letter-spacing:0}
+.z .b span{display:block;text-align:center;position:relative}
+.z .b .l{line-height:.6}
+.z .b .zt{position:absolute;left:100%;top:-.45em;font-style:normal;margin-left:-.05em}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC","Noto Sans CJK TC",sans-serif;background:#fff8ec;color:#2b2b2b;font-size:20px}
+.nozy .z .b{display:none}.nozy .z{margin:0}
+header{background:linear-gradient(120deg,#f2994a,#e86fb0);color:#fff;padding:12px 16px 0;position:sticky;top:0;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:980px;margin:0 auto}
+h1{font-size:26px;margin:0}
+.toggles{display:flex;gap:6px;align-items:center}
+.pill{white-space:nowrap;background:rgba(255,255,255,.25);border:2px solid #fff;color:#fff;border-radius:99px;padding:4px 12px;font-size:16px;cursor:pointer;font-weight:700;font-family:inherit}
+.stars{font-weight:800;font-size:20px;white-space:nowrap}
+nav{display:flex;gap:4px;max-width:980px;margin:10px auto 0;overflow-x:auto}
+nav button{flex:1;min-width:110px;white-space:nowrap;border:0;border-radius:14px 14px 0 0;padding:8px 6px;font-size:18px;font-weight:800;background:rgba(255,255,255,.3);color:#fff;cursor:pointer;font-family:inherit}
+nav button.on{background:#fff8ec;color:#c0392b}
+main{max-width:980px;margin:0 auto;padding:16px}
+.view{display:none}.view.on{display:block}
+.panel{background:#fff;border-radius:20px;padding:16px;box-shadow:0 2px 0 #f0dfc0;margin-bottom:14px}
+h2{margin:0 0 8px;color:#c0392b;font-size:24px}
+.muted{color:#777;font-size:17px}
+.btn{border:0;border-radius:16px;padding:10px 18px;font-size:20px;font-weight:800;cursor:pointer;font-family:inherit;background:#2d9cdb;color:#fff;box-shadow:0 4px 0 #1a6fa3;margin:4px}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #1a6fa3}
+.btn.g{background:#27ae60;box-shadow:0 4px 0 #1a7a43}.btn.o{background:#f2994a;box-shadow:0 4px 0 #b35c10}
+.btn.r{background:#eb5757;box-shadow:0 4px 0 #b33434}.btn.w{background:#fff;color:#2b2b2b;border:2px solid #ddd;box-shadow:0 4px 0 #ddd}
+.btn.sel{outline:4px solid #f2c94c}
+/* map */
+.mapwrap{display:flex;gap:16px;flex-wrap:wrap}
+table.map{border-collapse:separate;border-spacing:3px;font-weight:800}
+table.map th,table.map td{width:44px;height:40px;text-align:center;border-radius:8px;font-size:18px}
+table.map th{color:#fff}
+table.map td{background:#fff;border:2px solid #eadfca;cursor:pointer;transition:.15s}
+table.map td:hover{transform:scale(1.12)}
+table.map td.hl{background:#fff2b3;border-color:#f2c94c}
+table.map td.cur{background:#eb5757;color:#fff;border-color:#b33434}
+table.map td.m1{background:#d9f2e3}table.map td.m2{background:#8fd6aa}
+.detail{flex:1;min-width:260px}
+.eqbig{font-size:44px;font-weight:900;text-align:center;font-family:ui-monospace,Menlo,monospace}
+.kjbig{font-size:34px;font-weight:900;text-align:center;color:#c0392b;margin:6px 0}
+.dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+.grp{background:#fff8e6;border:2px solid #e0c58a;border-radius:14px;padding:6px;display:grid;gap:4px}
+.dot{width:16px;height:16px;border-radius:50%}
+.hint{background:#fff6d6;border:3px solid #f2c94c;border-radius:16px;padding:8px 12px;margin-top:8px;font-size:18px}
+/* number pick */
+.picks{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.pick{width:56px;height:56px;border-radius:50%;border:0;color:#fff;font-size:26px;font-weight:900;cursor:pointer;opacity:.45;font-family:inherit}
+.pick.on{opacity:1;outline:4px solid #2b2b2b}
+/* flash card */
+.card{width:min(420px,100%);height:250px;margin:10px auto;perspective:900px;cursor:pointer}
+.inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.card.flip .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;box-shadow:0 6px 0 rgba(0,0,0,.12)}
+.front{background:#fff;border:5px solid #2d9cdb}
+.back{background:#fff6d6;border:5px solid #f2c94c;transform:rotateY(180deg)}
+.face .eqbig{font-size:56px}
+/* quiz */
+.qbox{text-align:center}
+.qtext{font-size:26px;font-weight:800;margin:8px 0;line-height:2.1}
+.qeq{text-align:center;font-size:52px;font-weight:900;font-family:ui-monospace,Menlo,monospace;margin:8px 0}
+.ansshow{display:inline-block;min-width:110px;border-bottom:5px solid #2d9cdb;color:#2d9cdb}
+.pad{display:grid;grid-template-columns:repeat(3,84px);gap:8px;justify-content:center;margin:10px 0}
+.pad button{height:64px;font-size:30px;font-weight:900;border-radius:16px;border:0;background:#eef6fc;box-shadow:0 4px 0 #b7d3e8;cursor:pointer;font-family:inherit}
+.pad button.ok{background:#27ae60;color:#fff;box-shadow:0 4px 0 #1a7a43;font-size:20px;white-space:nowrap}
+.pad button:active{transform:translateY(3px);box-shadow:none}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:10px 0}
+.opts button{font-size:26px;font-weight:900;padding:14px 8px;border-radius:18px;border:3px solid #ddd;background:#fff;cursor:pointer;font-family:inherit}
+.opts button.right{background:#d9f2e3;border-color:#27ae60}.opts button.wrong{background:#ffe3e3;border-color:#eb5757}
+.fb{min-height:52px;font-size:21px;font-weight:800;margin:6px 0;line-height:2}
+.fb.good{color:#1a7a43}.fb.bad{color:#b33434}
+.prog{height:14px;background:#eee;border-radius:99px;overflow:hidden;margin:6px 0}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#f2c94c,#f2994a);transition:.3s}
+.plates{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.result{text-align:center;font-size:24px}
+.bigstar{font-size:60px;letter-spacing:6px}
+.fingers{display:flex;gap:4px;justify-content:center;align-items:flex-end;height:90px;margin:6px 0}
+.fingers span{width:30px;height:80px;background:#ffd9b8;border:2px solid #d79b6b;border-radius:14px 14px 6px 6px;display:flex;justify-content:center;font-size:14px;cursor:pointer;font-weight:800}
+.fingers span.down{height:32px;background:#e86fb0;border-color:#b03b7c;color:#fff}
+.fingers .gap{width:16px;background:none;border:0}
+.wrongs{display:flex;flex-wrap:wrap;gap:8px}
+.wrongs span{background:#ffe3e3;border-radius:12px;padding:4px 10px;font-weight:800;font-family:ui-monospace,Menlo,monospace}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.toggles{flex-wrap:wrap;justify-content:flex-end;gap:4px}
+.top h1{white-space:nowrap;font-size:22px}
+.toggles .pill{font-size:14px;padding:3px 9px}
+.tank{position:fixed;inset:0;z-index:40;background:#0d5f8f;display:flex;flex-direction:column}
+.tank[hidden]{display:none}
+.tkBar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:linear-gradient(120deg,#2d9cdb,#27ae60);color:#fff}
+.tkSt{font-weight:900;font-size:20px}
+.tkBar{flex-wrap:wrap}.tkBtns{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.tkBtns .pill{font-size:15px;padding:3px 10px}
+.fsel.on{background:#fff;color:#1a6fa3}.pill.on{background:#fff;color:#1a7a43}
+.movePanel{position:absolute;left:50%;bottom:40px;transform:translateX(-50%);background:#fffdf7;border-radius:18px;padding:8px 14px;display:flex;gap:8px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.3);font-weight:800;font-size:17px;max-width:94vw;flex-wrap:wrap;justify-content:center}
+.movePanel[hidden]{display:none}.movePanel .btn{font-size:16px;padding:5px 12px;margin:0}
+.tank.moving .tkHint{display:none}
+.shG{font-weight:900;color:#c0392b;margin:10px 0 2px;font-size:18px}
+#tankView{flex:1;position:relative;overflow:hidden}
+#tankView canvas{display:block;touch-action:none}
+.tkload{color:#fff;text-align:center;margin-top:30vh;font-size:22px;font-weight:800}
+.tkHint{position:absolute;left:0;right:0;bottom:8px;text-align:center;color:#fff;font-size:15px;text-shadow:0 1px 3px rgba(0,0,0,.6);pointer-events:none;padding:0 10px}
+.tkMsg{position:absolute;left:50%;top:70px;transform:translate(-50%,-20px);background:#fff;border-radius:16px;padding:8px 16px;font-weight:800;opacity:0;transition:.3s;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:90vw;text-align:center}
+.tkMsg.on{opacity:1;transform:translate(-50%,0)}
+.fishInfo{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);background:#fffdf7;border-radius:20px;padding:12px 16px;width:min(420px,94vw);box-shadow:0 8px 24px rgba(0,0,0,.3);text-align:center;font-size:18px}
+.fishInfo[hidden],.shop[hidden]{display:none}
+.fiN{font-size:24px;font-weight:900;color:#c0392b}
+.fiRow{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:6px}
+.fiRow input{font-size:18px;padding:6px 10px;border-radius:12px;border:2px solid #ddd;width:150px;font-family:inherit}
+.fiRow .btn{font-size:17px;padding:6px 12px}
+.shop{position:absolute;inset:0;background:rgba(0,30,60,.45);display:flex;align-items:center;justify-content:center;padding:12px}
+.shBox{background:#fffdf7;border-radius:22px;width:min(520px,100%);max-height:90%;display:flex;flex-direction:column;overflow:hidden}
+.shHead{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;font-size:22px;gap:8px}
+.shHead .btn{font-size:16px;padding:4px 12px;margin:0}
+.shTabs{display:flex;gap:6px;padding:0 12px}
+.shTabs button{flex:1;border:0;border-radius:12px 12px 0 0;padding:8px;font:inherit;font-weight:800;background:#e8eef5;cursor:pointer}
+.shTabs button.on{background:#ffe9a8}
+.shBody{overflow:auto;padding:10px 14px;background:#fff8e6}
+.shItem{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px dashed #e0d2b0}
+.shItem .sw{width:34px;height:34px;border-radius:50%;flex:none;box-shadow:inset -4px -4px 0 rgba(0,0,0,.15)}
+.shN{flex:1;font-weight:800}.shP{font-weight:900;color:#c07a00;min-width:56px}
+.shItem .btn{font-size:17px;padding:6px 14px;margin:0}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.hist{width:100%;border-collapse:collapse;font-size:16px}
+.hist th,.hist td{padding:6px 4px;border-bottom:1px solid #eee;text-align:center}
+.hist tr.r{cursor:pointer}.hist tr.r:hover{background:#fff6d6}
+.hdet{background:#fffaf0;text-align:left!important;font-size:15px;line-height:1.9}
+.hdet .w{color:#b33434;font-weight:800}
+.lvtabs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.lvtabs .btn{opacity:.55}.lvtabs .btn.sel{opacity:1;outline:4px solid #f2c94c}
+.lvList{font-size:17px;line-height:2;margin:4px 0 8px}
+.btn.locked{filter:grayscale(.8);opacity:.6}
+.shImg{width:80px;height:60px;border-radius:12px;background:linear-gradient(180deg,#d9eeec,#9cc9c9);flex:none;object-fit:contain}
+@media(max-width:760px){.top{flex-wrap:wrap}.top h1{font-size:19px}.toggles{width:100%;justify-content:flex-start}.toggles .pill{font-size:13px;padding:3px 8px}.hist{font-size:13px}}
+@media(max-width:560px){h1{font-size:18px}nav button{min-width:96px;font-size:16px}table.map th,table.map td{width:31px;height:32px;font-size:14px}.qeq{font-size:40px}.pad{grid-template-columns:repeat(3,74px)}}
+</style>
+</head>
+<body>
+<!-- ===== 帳號登入（Firebase）：只用在 GitHub Pages 分享版 ===== -->
+<style>
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#9fd8f0,#4aa8d8);font-family:"Noto Sans TC",system-ui,sans-serif}
+#gate .gbox{background:#fffdf8;border-radius:24px;padding:28px 26px;width:min(92vw,380px);box-shadow:0 10px 30px #0003;text-align:center}
+#gate h1{margin:0 0 4px;font-size:28px}#gate p{margin:4px 0 16px;color:#666;font-size:15px}
+#gate input{width:100%;box-sizing:border-box;font:inherit;font-size:18px;padding:12px 14px;border:2px solid #e6e0d4;border-radius:14px;margin:6px 0}
+#gate button{width:100%;font:inherit;font-size:19px;font-weight:700;border:0;border-radius:14px;padding:13px;margin-top:10px;background:#f2a51f;color:#fff;cursor:pointer}
+#gate button:disabled{opacity:.6}
+#gate .gerr{color:#e0443c;min-height:22px;font-size:15px;margin-top:8px}
+#gate .gtip{font-size:12.5px;color:#888;margin-top:12px;line-height:1.6}
+#acct{position:fixed;left:50%;transform:translateX(-50%);bottom:6px;z-index:60;opacity:.85;display:flex;gap:6px;align-items:center;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:13px}
+#acct span,#acct button{background:#fffdf8e8;border:1px solid #e6e0d4;border-radius:999px;padding:4px 10px;cursor:pointer;color:#333}
+#acct span{cursor:default}
+#allacct{position:fixed;inset:0;z-index:9998;background:#0006;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:30px 10px;font-family:"Noto Sans TC",system-ui,sans-serif}
+#allacct .abox{background:#fffdf8;border-radius:20px;padding:20px;width:min(96vw,760px)}
+#allacct table{width:100%;border-collapse:collapse;font-size:14px}#allacct th,#allacct td{border-bottom:1px solid #e6e0d4;padding:6px;text-align:left}
+#allacct .x{float:right;border:0;background:#eee;border-radius:999px;padding:6px 12px;cursor:pointer}
+</style>
+<div id="gate"><div class="gbox">
+  <h1>🎡 九九乘法遊樂園</h1><p>請登入你的帳號</p>
+  <form id="gform" autocomplete="on">
+    <input id="guser" placeholder="帳號" autocomplete="username" autocapitalize="off" required>
+    <input id="gpass" type="password" placeholder="密碼" autocomplete="current-password" required>
+    <button id="gbtn" type="submit">登入</button>
+  </form>
+  <div class="gerr" id="gerr"></div>
+  <div class="gtip">帳號由家長在後台建立。忘記密碼請找家長幫忙重設。</div>
+</div></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut,setPersistence,browserLocalPersistence} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,collection,getDocs,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig={"apiKey": "AIzaSyBhpd4pDiVT9suLCvP4ys35qReI8OlaJQ4", "authDomain": "tangba-123.firebaseapp.com", "projectId": "tangba-123", "storageBucket": "tangba-123.firebasestorage.app", "messagingSenderId": "256828390653", "appId": "1:256828390653:web:fc76cddb05db53f4ccd294"};
+const PARENT_UIDS=["9EQCZLh8l2eISIrzAP1C7cViqXi2"];      // 家長帳號（可以看全部人的紀錄）
+const DOMAIN="@family.app";              // 帳號沒打 @ 時自動補上
+const STORES=[["tt99", "data_tt99", "tt99.owner"]];   // [這頁的瀏覽器資料名稱, 雲端欄位, 主人標記]
+const WATCH=new Set(STORES.map(s=>s[0]));
+
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+setPersistence(auth,browserLocalPersistence).catch(()=>{});
+const $=id=>document.getElementById(id);
+const rawSet=localStorage.setItem.bind(localStorage);
+let user=null, started=false, upT=null, dirty=false;
+
+const ERR={"auth/invalid-credential":"帳號或密碼不對，再試一次","auth/wrong-password":"帳號或密碼不對，再試一次","auth/user-not-found":"沒有這個帳號","auth/invalid-email":"帳號格式不對","auth/user-disabled":"這個帳號已經停用，請找家長","auth/too-many-requests":"試太多次了，請等一下再試","auth/network-request-failed":"網路連不上，請檢查網路"};
+$("gform").addEventListener("submit",async e=>{
+  e.preventDefault(); $("gerr").textContent=""; $("gbtn").disabled=true;
+  let u=$("guser").value.trim().toLowerCase(); if(!u.includes("@")) u+=DOMAIN;
+  try{ await signInWithEmailAndPassword(auth,u,$("gpass").value); }
+  catch(err){ $("gerr").textContent=ERR[err.code]||("登入失敗："+(err.code||err.message)); $("gbtn").disabled=false; }
+});
+
+async function upload(){
+  if(!user||!dirty) return; dirty=false;
+  const o={email:user.email,updatedAt:serverTimestamp()}; STORES.forEach(([k,f])=>{o[f]=localStorage.getItem(k)||""});
+  try{ await setDoc(doc(db,"users",user.uid),o,{merge:true}); setStat("☁️ 已同步"); }
+  catch(e){ dirty=true; setStat("⚠️ 尚未同步"); }
+}
+function queue(){ dirty=true; setStat("☁️ 同步中…"); clearTimeout(upT); upT=setTimeout(upload,2500); }
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"){clearTimeout(upT);upload();} });
+window.addEventListener("pagehide",()=>{clearTimeout(upT);upload();});
+function setStat(s){const el=$("acstat");if(el)el.textContent=s;}
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){ if(started){ location.reload(); } $("gate").style.display="flex"; $("gbtn").disabled=false; return; }
+  user=u; $("gate").querySelector("p").textContent="載入你的紀錄中…";
+  let d={}, ok=true;
+  try{ const snap=await getDoc(doc(db,"users",u.uid)); d=snap.exists()?snap.data():{}; }catch(e){ ok=false; }
+  STORES.forEach(([k,f,ow])=>{
+    const owner=localStorage.getItem(ow), remote=d[f]||"";
+    if(!ok){ if(owner!==u.uid) localStorage.removeItem(k); }        // 離線時只用自己的紀錄
+    else if(remote){ rawSet(k,remote); }
+    else if(owner&&owner!==u.uid){ localStorage.removeItem(k); }    // 別人的紀錄不要帶過來
+    else if(!owner&&localStorage.getItem(k)){ dirty=true; }         // 第一次登入：把這台裝置原本的紀錄搬上去
+    rawSet(ow,u.uid);
+  });
+  start(u);
+  if(dirty) upload();
+});
+
+function start(u){
+  if(started) return; started=true;
+  localStorage.setItem=function(k,v){ rawSet(k,v); if(WATCH.has(k)) queue(); };
+  const rawRm=localStorage.removeItem.bind(localStorage); localStorage.removeItem=function(k){ rawRm(k); if(WATCH.has(k)) queue(); };
+  $("gate").style.display="none";
+  const name=(u.email||"").replace(DOMAIN,"");
+  const bar=document.createElement("div"); bar.id="acct";
+  bar.innerHTML=`<span>👤 ${name.replace(/[<>&]/g,"")}</span><span id="acstat">☁️ 已同步</span>${PARENT_UIDS.includes(u.uid)?'<button id="acall">👨‍👩‍👧 全部帳號</button>':""}<button id="acout">登出</button>`;
+  document.body.appendChild(bar);
+  $("acout").onclick=async()=>{ clearTimeout(upT); await upload(); [["islandExplorer.v1","","islandExplorer.owner"],["tt99game","","tt99game.owner"],["tt99","","tt99.owner"],["tt99g10","","tt99g10.owner"]].forEach(([k,,ow])=>{localStorage.removeItem(k);localStorage.removeItem(ow)}); await signOut(auth); };
+  if($("acall")) $("acall").onclick=showAll;
+  // 依序執行遊戲程式
+  document.querySelectorAll('script[type="text/x-deferred"]').forEach(old=>{ const s=document.createElement("script"); s.textContent=old.textContent; old.replaceWith(s); });
+}
+
+async function showAll(){
+  const box=document.createElement("div"); box.id="allacct"; box.innerHTML='<div class="abox"><button class="x">✕ 關閉</button><h2>👨‍👩‍👧 全部帳號的紀錄</h2><p style="font-size:13px;color:#888">隊員、貝殼等欄位是島嶼探險隊的紀錄。</p><p id="aload">讀取中…</p></div>';
+  document.body.appendChild(box); box.querySelector(".x").onclick=()=>box.remove();
+  try{
+    const qs=await getDocs(collection(db,"users")); const rows=[];
+    qs.forEach(d=>{ const v=d.data(); let m={}; try{m=JSON.parse(v.data||"{}")}catch(e){}
+      const other=[["data_tt99game","數學大冒險"],["data_tt99","乘法遊樂園"],["data_tt99g10","乘法遊戲島"]].filter(([f])=>v[f]).map(([,n])=>n).join("、")||"—";
+      const profs=Object.values(m.profiles||{});
+      const when=v.updatedAt&&v.updatedAt.toDate?v.updatedAt.toDate().toLocaleString("zh-TW"):"—";
+      if(!profs.length) rows.push(`<tr><td>${(v.email||"").replace(DOMAIN,"")}</td><td>—</td><td></td><td></td><td></td><td></td><td>${other}</td><td>${when}</td></tr>`);
+      profs.forEach(p=>{ const lv=Object.keys(p.levels||{}).length, wr=Object.keys(p.wrong||{}).length, e=p.eng||{};
+        const ed=Object.keys((e.stats||{}).days||{}).length, el=Object.values(e.learned||{}).reduce((s,x)=>s+Object.keys(x).length,0);
+        rows.push(`<tr><td>${(v.email||"").replace(DOMAIN,"")}</td><td>${String(p.name||"").replace(/[<>&]/g,"")}</td><td>🐚 ${p.shells||0}</td><td>${lv} 關</td><td>${wr} 題</td><td>英文 ${ed} 天・${el} 課</td><td>${other}</td><td>${when}</td></tr>`); });
+    });
+    box.querySelector("#aload").outerHTML=`<table><tr><th>帳號</th><th>隊員</th><th>貝殼</th><th>闖過</th><th>錯題</th><th>英文島</th><th>其他遊戲</th><th>最後同步</th></tr>${rows.join("")}</table><p style="font-size:13px;color:#888">新增、停用帳號或重設密碼，請到 Firebase 主控台 → Authentication → 使用者。</p>`;
+  }catch(e){ box.querySelector("#aload").textContent="讀不到（請確認資料庫規則裡有你的家長 UID）："+(e.code||e.message); }
+}
+</script>
+
+<header>
+<div class="top">
+<h1><span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">乘</span><span class="b"><span>ㄔ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">遊</span><span class="b"><span>ㄧ</span><span>ㄡ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">樂</span><span class="b"><span>ㄌ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">園</span><span class="b"><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span></h1>
+<div class="toggles">
+<span class="stars nz">⭐ <b id="starCount">0</b></span>
+<button class="pill musBtn" id="musBtn">🎵 <span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span><span class="z"><span class="h">樂</span><span class="b"><span>ㄌ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span>：<span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button>
+<button class="pill sfxBtn" id="sfxBtn">🔊 <span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span><span class="z"><span class="h">效</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄠ<i class="zt">ˋ</i></span></span></span>：<span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button>
+<button class="pill nz" id="vkBtn" title="語音設定">🗣️ 語音</button>
+<button class="pill" id="zyBtn"><span class="z"><span class="h">注</span><span class="b"><span>ㄓ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span>：<span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button>
+</div>
+</div>
+<nav>
+<button class="on" data-v="map"><span class="z"><span class="h">乘</span><span class="b"><span>ㄔ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">地</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">圖</span><span class="b"><span>ㄊ</span><span>ㄨ<i class="zt">ˊ</i></span></span></span></button>
+<button data-v="cards"><span class="z"><span class="h">口</span><span class="b"><span>ㄎ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">訣</span><span class="b"><span>ㄐ</span><span>ㄩ</span><span>ㄝ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">卡</span><span class="b"><span>ㄎ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span></button>
+<button data-v="tricks"><span class="z"><span class="h">記</span><span class="b"><span>ㄐ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">憶</span><span class="b"><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">魔</span><span class="b"><span>ㄇ</span><span>ㄛ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span></button>
+<button data-v="quick"><span class="z"><span class="h">快</span><span class="b"><span>ㄎ</span><span>ㄨ</span><span>ㄞ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">問</span><span class="b"><span>ㄨ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">快</span><span class="b"><span>ㄎ</span><span>ㄨ</span><span>ㄞ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">答</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˊ</i></span></span></span></button>
+<button data-v="exam"><span class="z"><span class="h">考</span><span class="b"><span>ㄎ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">試</span><span class="b"><span>ㄕ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">練</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">習</span><span class="b"><span>ㄒ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span></button>
+<button data-v="me"><span class="z"><span class="h">我</span><span class="b"><span>ㄨ</span><span>ㄛ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">星</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">星</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ</span></span></span></button>
+</nav>
+</header>
+<main>
+<!-- 地圖 -->
+<section class="view on" id="v-map">
+<div class="panel">
+<h2><span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">乘</span><span class="b"><span>ㄔ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">地</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">圖</span><span class="b"><span>ㄊ</span><span>ㄨ<i class="zt">ˊ</i></span></span></span></h2>
+<p class="muted"><span class="z"><span class="h">點</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">個</span><span class="b"><span>ㄍ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">格</span><span class="b"><span>ㄍ</span><span>ㄜ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">子</span><span class="b"><span class="l">˙</span><span>ㄗ</span></span></span>，<span class="z"><span class="h">會</span><span class="b"><span>ㄏ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">念</span><span class="b"><span>ㄋ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">給</span><span class="b"><span>ㄍ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">你</span><span class="b"><span>ㄋ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">聽</span><span class="b"><span>ㄊ</span><span>ㄧ</span><span>ㄥ</span></span></span>，<span class="z"><span class="h">也</span><span class="b"><span>ㄧ</span><span>ㄝ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">看</span><span class="b"><span>ㄎ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">看</span><span class="b"><span class="l">˙</span><span>ㄎ</span><span>ㄢ</span></span></span><span class="z"><span class="h">它</span><span class="b"><span>ㄊ</span><span>ㄚ</span></span></span><span class="z"><span class="h">是</span><span class="b"><span>ㄕ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">怎</span><span class="b"><span>ㄗ</span><span>ㄣ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">麼</span><span class="b"><span class="l">˙</span><span>ㄇ</span><span>ㄜ</span></span></span><span class="z"><span class="h">來</span><span class="b"><span>ㄌ</span><span>ㄞ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span>。<span class="z"><span class="h">綠</span><span class="b"><span>ㄌ</span><span>ㄩ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">色</span><span class="b"><span>ㄙ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">格</span><span class="b"><span>ㄍ</span><span>ㄜ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">子</span><span class="b"><span class="l">˙</span><span>ㄗ</span></span></span><span class="z"><span class="h">是</span><span class="b"><span>ㄕ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">你</span><span class="b"><span>ㄋ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">已</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">經</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">很</span><span class="b"><span>ㄏ</span><span>ㄣ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">熟</span><span class="b"><span>ㄕ</span><span>ㄡ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span>！</p>
+<div class="mapwrap">
+<table class="map nz" id="map"></table>
+<div class="detail" id="detail"></div>
+</div>
+</div>
+</section>
+<!-- 口訣卡 -->
+<section class="view" id="v-cards">
+<div class="panel">
+<h2><span class="z"><span class="h">口</span><span class="b"><span>ㄎ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">訣</span><span class="b"><span>ㄐ</span><span>ㄩ</span><span>ㄝ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">翻</span><span class="b"><span>ㄈ</span><span>ㄢ</span></span></span><span class="z"><span class="h">翻</span><span class="b"><span>ㄈ</span><span>ㄢ</span></span></span><span class="z"><span class="h">卡</span><span class="b"><span>ㄎ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span></h2>
+<p class="muted"><span class="z"><span class="h">選</span><span class="b"><span>ㄒ</span><span>ㄩ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">個</span><span class="b"><span>ㄍ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">數</span><span class="b"><span>ㄕ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">字</span><span class="b"><span>ㄗ<i class="zt">ˋ</i></span></span></span>，<span class="z"><span class="h">先</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄢ</span></span></span><span class="z"><span class="h">自</span><span class="b"><span>ㄗ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">己</span><span class="b"><span>ㄐ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">念</span><span class="b"><span>ㄋ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">念</span><span class="b"><span class="l">˙</span><span>ㄋ</span><span>ㄧ</span><span>ㄢ</span></span></span><span class="z"><span class="h">看</span><span class="b"><span>ㄎ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span>，<span class="z"><span class="h">再</span><span class="b"><span>ㄗ</span><span>ㄞ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">點</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">卡</span><span class="b"><span>ㄎ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">片</span><span class="b"><span>ㄆ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">翻</span><span class="b"><span>ㄈ</span><span>ㄢ</span></span></span><span class="z"><span class="h">過</span><span class="b"><span>ㄍ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">來</span><span class="b"><span>ㄌ</span><span>ㄞ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">對</span><span class="b"><span>ㄉ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">答</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">案</span><span class="b"><span>ㄢ<i class="zt">ˋ</i></span></span></span>。</p>
+<div class="picks nz" id="cardPicks"></div>
+<div class="card" id="card"><div class="inner">
+<div class="face front"><div class="eqbig nz" id="cardFront"></div><div class="muted" id="cardTip"></div></div>
+<div class="face back"><div class="eqbig nz" id="cardBackEq"></div><div class="kjbig" id="cardBackKj"></div></div>
+</div></div>
+<div style="text-align:center">
+<button class="btn w" id="cardSay"><span class="z"><span class="h">念</span><span class="b"><span>ㄋ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">給</span><span class="b"><span>ㄍ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">我</span><span class="b"><span>ㄨ</span><span>ㄛ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">聽</span><span class="b"><span>ㄊ</span><span>ㄧ</span><span>ㄥ</span></span></span></button>
+<button class="btn r" id="cardNo"><span class="z"><span class="h">還</span><span class="b"><span>ㄏ</span><span>ㄞ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">不</span><span class="b"><span>ㄅ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">熟</span><span class="b"><span>ㄕ</span><span>ㄡ<i class="zt">ˊ</i></span></span></span></button>
+<button class="btn g" id="cardYes"><span class="z"><span class="h">我</span><span class="b"><span>ㄨ</span><span>ㄛ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">會</span><span class="b"><span>ㄏ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">了</span><span class="b"><span class="l">˙</span><span>ㄌ</span><span>ㄜ</span></span></span></button>
+</div>
+<div class="muted" id="cardInfo" style="text-align:center"></div>
+</div>
+</section>
+<!-- 記憶魔法 -->
+<section class="view" id="v-tricks">
+<div class="panel">
+<h2><span class="z"><span class="h">記</span><span class="b"><span>ㄐ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">憶</span><span class="b"><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">魔</span><span class="b"><span>ㄇ</span><span>ㄛ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span></h2>
+<div class="picks nz" id="trickPicks"></div>
+<div id="trickBody"></div>
+</div>
+</section>
+<!-- 快問快答 -->
+<section class="view" id="v-quick">
+<div class="panel" id="quickSetup">
+<h2><span class="z"><span class="h">快</span><span class="b"><span>ㄎ</span><span>ㄨ</span><span>ㄞ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">問</span><span class="b"><span>ㄨ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">快</span><span class="b"><span>ㄎ</span><span>ㄨ</span><span>ㄞ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">答</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˊ</i></span></span></span></h2>
+<p class="muted"><span class="z"><span class="h">先</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄢ</span></span></span><span class="z"><span class="h">玩</span><span class="b"><span>ㄨ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">初</span><span class="b"><span>ㄔ</span><span>ㄨ</span></span></span><span class="z"><span class="h">階</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄝ</span></span></span>（10 <span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span>）。<span class="z"><span class="h">初</span><span class="b"><span>ㄔ</span><span>ㄨ</span></span></span><span class="z"><span class="h">階</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄝ</span></span></span><span class="z"><span class="h">答</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">對</span><span class="b"><span>ㄉ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span> 9 <span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">以</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">上</span><span class="b"><span>ㄕ</span><span>ㄤ<i class="zt">ˋ</i></span></span></span>、<span class="z"><span class="h">而</span><span class="b"><span>ㄦ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">且</span><span class="b"><span>ㄑ</span><span>ㄧ</span><span>ㄝ<i class="zt">ˇ</i></span></span></span> 60 <span class="z"><span class="h">秒</span><span class="b"><span>ㄇ</span><span>ㄧ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">內</span><span class="b"><span>ㄋ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">完</span><span class="b"><span>ㄨ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">成</span><span class="b"><span>ㄔ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span>，<span class="z"><span class="h">就</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">能</span><span class="b"><span>ㄋ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">打</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span><span class="z"><span class="h">那</span><span class="b"><span>ㄋ</span><span>ㄚ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">個</span><span class="b"><span>ㄍ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">範</span><span class="b"><span>ㄈ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">圍</span><span class="b"><span>ㄨ</span><span>ㄟ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">進</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">階</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄝ</span></span></span>（20 <span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span>）！<span class="z"><span class="h">每</span><span class="b"><span>ㄇ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">次</span><span class="b"><span>ㄘ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">目</span><span class="b"><span>ㄇ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">都</span><span class="b"><span>ㄉ</span><span>ㄡ</span></span></span><span class="z"><span class="h">不</span><span class="b"><span>ㄅ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">樣</span><span class="b"><span>ㄧ</span><span>ㄤ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">喔</span><span class="b"><span>ㄛ</span></span></span>。</p>
+<div class="lvtabs"><button class="btn g" id="lvB">🌱 <span class="z"><span class="h">初</span><span class="b"><span>ㄔ</span><span>ㄨ</span></span></span><span class="z"><span class="h">階</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄝ</span></span></span>（10 <span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span>）</button><button class="btn o" id="lvA">🔥 <span class="z"><span class="h">進</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">階</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄝ</span></span></span>（20 <span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span>）</button></div>
+<div id="lvInfo"></div>
+<div>
+<button class="btn o" data-set="2,5,4,8"><span class="z"><span class="h">第</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span> 7 <span class="z"><span class="h">單</span><span class="b"><span>ㄉ</span><span>ㄢ</span></span></span><span class="z"><span class="h">元</span><span class="b"><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span>（2、5、4、8）</button>
+<button class="btn g" data-set="3,6,7,9"><span class="z"><span class="h">第</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span> 9 <span class="z"><span class="h">單</span><span class="b"><span>ㄉ</span><span>ㄢ</span></span></span><span class="z"><span class="h">元</span><span class="b"><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span>（3、6、7、9）</button>
+<button class="btn" data-set="2,3,4,5,6,7,8,9"><span class="z"><span class="h">全</span><span class="b"><span>ㄑ</span><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">部</span><span class="b"><span>ㄅ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">起</span><span class="b"><span>ㄑ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">來</span><span class="b"><span>ㄌ</span><span>ㄞ<i class="zt">ˊ</i></span></span></span></button>
+<button class="btn r" data-set="wrong"><span class="z"><span class="h">練</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">習</span><span class="b"><span>ㄒ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">錯</span><span class="b"><span>ㄘ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span></button>
+</div>
+</div>
+<div class="panel qbox" id="quickPlay" style="display:none">
+<div class="prog"><i id="qProg"></i></div>
+<div class="muted" id="qCount"></div>
+<div class="qeq nz"><span id="qA"></span> × <span id="qB"></span> = <span class="ansshow" id="qIn"> </span></div>
+<div class="fb" id="qFb"></div>
+<div class="pad nz" id="qPad"></div>
+</div>
+<div class="panel result" id="quickEnd" style="display:none"></div>
+</section>
+<!-- 考試練習 -->
+<section class="view" id="v-exam">
+<div class="panel" id="examSetup">
+<h2><span class="z"><span class="h">考</span><span class="b"><span>ㄎ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">試</span><span class="b"><span>ㄕ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">練</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">習</span><span class="b"><span>ㄒ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span></h2>
+<p class="muted"><span class="z"><span class="h">跟</span><span class="b"><span>ㄍ</span><span>ㄣ</span></span></span><span class="z"><span class="h">南</span><span class="b"><span>ㄋ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">版</span><span class="b"><span>ㄅ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">考</span><span class="b"><span>ㄎ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">卷</span><span class="b"><span>ㄐ</span><span>ㄩ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">樣</span><span class="b"><span>ㄧ</span><span>ㄤ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">型</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span>：<span class="z"><span class="h">看</span><span class="b"><span>ㄎ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">圖</span><span class="b"><span>ㄊ</span><span>ㄨ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">寫</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄝ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">算</span><span class="b"><span>ㄙ</span><span>ㄨ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">式</span><span class="b"><span>ㄕ<i class="zt">ˋ</i></span></span></span>、<span class="z"><span class="h">幾</span><span class="b"><span>ㄐ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">幾</span><span class="b"><span>ㄐ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">倍</span><span class="b"><span>ㄅ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span>、□ <span class="z"><span class="h">裡</span><span class="b"><span>ㄌ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">填</span><span class="b"><span>ㄊ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">數</span><span class="b"><span>ㄕ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span>、<span class="z"><span class="h">比</span><span class="b"><span>ㄅ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">大</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">小</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span>、<span class="z"><span class="h">找</span><span class="b"><span>ㄓ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">規</span><span class="b"><span>ㄍ</span><span>ㄨ</span><span>ㄟ</span></span></span><span class="z"><span class="h">律</span><span class="b"><span>ㄌ</span><span>ㄩ<i class="zt">ˋ</i></span></span></span>、<span class="z"><span class="h">應</span><span class="b"><span>ㄧ</span><span>ㄥ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">用</span><span class="b"><span>ㄩ</span><span>ㄥ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span>。<span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">次</span><span class="b"><span>ㄘ<i class="zt">ˋ</i></span></span></span> 8 <span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span>。</p>
+<button class="btn o" data-eset="2,5,4,8"><span class="z"><span class="h">第</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span> 7 <span class="z"><span class="h">單</span><span class="b"><span>ㄉ</span><span>ㄢ</span></span></span><span class="z"><span class="h">元</span><span class="b"><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span></button>
+<button class="btn g" data-eset="3,6,7,9"><span class="z"><span class="h">第</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span> 9 <span class="z"><span class="h">單</span><span class="b"><span>ㄉ</span><span>ㄢ</span></span></span><span class="z"><span class="h">元</span><span class="b"><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span></button>
+<button class="btn" data-eset="2,3,4,5,6,7,8,9"><span class="z"><span class="h">全</span><span class="b"><span>ㄑ</span><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">部</span><span class="b"><span>ㄅ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">起</span><span class="b"><span>ㄑ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">來</span><span class="b"><span>ㄌ</span><span>ㄞ<i class="zt">ˊ</i></span></span></span></button>
+</div>
+<div class="panel qbox" id="examPlay" style="display:none">
+<div class="prog"><i id="eProg"></i></div>
+<div class="muted" id="eCount"></div>
+<div id="eQ"></div>
+<div class="fb" id="eFb"></div>
+<div id="eNext" style="display:none"><button class="btn g" id="eNextBtn"><span class="z"><span class="h">下</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄚ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span></button></div>
+</div>
+<div class="panel result" id="examEnd" style="display:none"></div>
+</section>
+<!-- 我的星星 -->
+<section class="view" id="v-me">
+<div class="panel">
+<h2><span class="z"><span class="h">我</span><span class="b"><span>ㄨ</span><span>ㄛ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">星</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">星</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ</span></span></span></h2>
+<div id="meSum"></div>
+<div style="text-align:center"><button class="btn o" id="tankGo" style="font-size:24px">🐠 <span class="z"><span class="h">我</span><span class="b"><span>ㄨ</span><span>ㄛ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">魚</span><span class="b"><span>ㄩ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">缸</span><span class="b"><span>ㄍ</span><span>ㄤ</span></span></span></button></div>
+<p class="muted" style="text-align:center"><span class="z"><span class="h">用</span><span class="b"><span>ㄩ</span><span>ㄥ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">星</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">星</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">買</span><span class="b"><span>ㄇ</span><span>ㄞ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">魚</span><span class="b"><span>ㄩ<i class="zt">ˊ</i></span></span></span>、<span class="z"><span class="h">海</span><span class="b"><span>ㄏ</span><span>ㄞ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">龜</span><span class="b"><span>ㄍ</span><span>ㄨ</span><span>ㄟ</span></span></span>、<span class="z"><span class="h">裝</span><span class="b"><span>ㄓ</span><span>ㄨ</span><span>ㄤ</span></span></span><span class="z"><span class="h">飾</span><span class="b"><span>ㄕ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">和</span><span class="b"><span>ㄏ</span><span>ㄜ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">飼</span><span class="b"><span>ㄙ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">料</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄠ<i class="zt">ˋ</i></span></span></span>，<span class="z"><span class="h">點</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">水</span><span class="b"><span>ㄕ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">面</span><span class="b"><span>ㄇ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">就</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">可</span><span class="b"><span>ㄎ</span><span>ㄜ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">以</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">餵</span><span class="b"><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">魚</span><span class="b"><span>ㄩ<i class="zt">ˊ</i></span></span></span>！</p>
+</div>
+<div class="panel">
+<h2><span class="z"><span class="h">熟</span><span class="b"><span>ㄕ</span><span>ㄡ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">練</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">地</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">圖</span><span class="b"><span>ㄊ</span><span>ㄨ<i class="zt">ˊ</i></span></span></span></h2>
+<p class="muted"><span class="z"><span class="h">淺</span><span class="b"><span>ㄑ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">綠</span><span class="b"><span>ㄌ</span><span>ㄩ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">色</span><span class="b"><span>ㄙ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span>：<span class="z"><span class="h">答</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">對</span><span class="b"><span>ㄉ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">過</span><span class="b"><span>ㄍ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span> 1 <span class="z"><span class="h">次</span><span class="b"><span>ㄘ<i class="zt">ˋ</i></span></span></span>。<span class="z"><span class="h">深</span><span class="b"><span>ㄕ</span><span>ㄣ</span></span></span><span class="z"><span class="h">綠</span><span class="b"><span>ㄌ</span><span>ㄩ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">色</span><span class="b"><span>ㄙ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span>：<span class="z"><span class="h">答</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">對</span><span class="b"><span>ㄉ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span> 3 <span class="z"><span class="h">次</span><span class="b"><span>ㄘ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">以</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">上</span><span class="b"><span>ㄕ</span><span>ㄤ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">而</span><span class="b"><span>ㄦ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">且</span><span class="b"><span>ㄑ</span><span>ㄧ</span><span>ㄝ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">最</span><span class="b"><span>ㄗ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">近</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">沒</span><span class="b"><span>ㄇ</span><span>ㄟ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">有</span><span class="b"><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">錯</span><span class="b"><span>ㄘ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span>。</p>
+<table class="map nz" id="meMap"></table>
+</div>
+<div class="panel">
+<h2><span class="z"><span class="h">錯</span><span class="b"><span>ㄘ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">本</span><span class="b"><span>ㄅ</span><span>ㄣ<i class="zt">ˇ</i></span></span></span></h2>
+<div class="wrongs" id="meWrong"></div>
+<p><button class="btn r" id="meWrongGo"><span class="z"><span class="h">練</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">習</span><span class="b"><span>ㄒ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">錯</span><span class="b"><span>ㄘ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span></button> <button class="btn w" id="meReset"><span class="z"><span class="h">全</span><span class="b"><span>ㄑ</span><span>ㄩ</span><span>ㄢ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">部</span><span class="b"><span>ㄅ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">清</span><span class="b"><span>ㄑ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">除</span><span class="b"><span>ㄔ</span><span>ㄨ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">重</span><span class="b"><span>ㄔ</span><span>ㄨ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">來</span><span class="b"><span>ㄌ</span><span>ㄞ<i class="zt">ˊ</i></span></span></span></button> <button class="btn w" id="tankReset"><span class="z"><span class="h">清</span><span class="b"><span>ㄑ</span><span>ㄧ</span><span>ㄥ</span></span></span><span class="z"><span class="h">空</span><span class="b"><span>ㄎ</span><span>ㄨ</span><span>ㄥ</span></span></span><span class="z"><span class="h">魚</span><span class="b"><span>ㄩ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">缸</span><span class="b"><span>ㄍ</span><span>ㄤ</span></span></span></button></p>
+</div>
+<div class="panel">
+<h2>📋 <span class="z"><span class="h">快</span><span class="b"><span>ㄎ</span><span>ㄨ</span><span>ㄞ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">問</span><span class="b"><span>ㄨ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">快</span><span class="b"><span>ㄎ</span><span>ㄨ</span><span>ㄞ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">答</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">紀</span><span class="b"><span>ㄐ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">錄</span><span class="b"><span>ㄌ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span>（<span class="z"><span class="h">給</span><span class="b"><span>ㄍ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">爸</span><span class="b"><span>ㄅ</span><span>ㄚ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">爸</span><span class="b"><span class="l">˙</span><span>ㄅ</span><span>ㄚ</span></span></span><span class="z"><span class="h">媽</span><span class="b"><span>ㄇ</span><span>ㄚ</span></span></span><span class="z"><span class="h">媽</span><span class="b"><span class="l">˙</span><span>ㄇ</span><span>ㄚ</span></span></span><span class="z"><span class="h">看</span><span class="b"><span>ㄎ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span>）</h2>
+<p class="muted"><span class="z"><span class="h">最</span><span class="b"><span>ㄗ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">近</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄣ<i class="zt">ˋ</i></span></span></span> 50 <span class="z"><span class="h">次</span><span class="b"><span>ㄘ<i class="zt">ˋ</i></span></span></span>。<span class="z"><span class="h">點</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">列</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄝ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">可</span><span class="b"><span>ㄎ</span><span>ㄜ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">以</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">看</span><span class="b"><span>ㄎ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">那</span><span class="b"><span>ㄋ</span><span>ㄚ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">次</span><span class="b"><span>ㄘ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">錯</span><span class="b"><span>ㄘ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">了</span><span class="b"><span class="l">˙</span><span>ㄌ</span><span>ㄜ</span></span></span><span class="z"><span class="h">哪</span><span class="b"><span>ㄋ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">些</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄝ</span></span></span>、<span class="z"><span class="h">每</span><span class="b"><span>ㄇ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">用</span><span class="b"><span>ㄩ</span><span>ㄥ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">了</span><span class="b"><span class="l">˙</span><span>ㄌ</span><span>ㄜ</span></span></span><span class="z"><span class="h">幾</span><span class="b"><span>ㄐ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">秒</span><span class="b"><span>ㄇ</span><span>ㄧ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span>。</p>
+<div id="meHist"></div>
+</div>
+</section>
+</main>
+<!-- 魚缸 -->
+<div class="tank" hidden="" id="tank">
+<div class="tkBar">
+<button class="pill" id="tkBack">← <span class="z"><span class="h">回</span><span class="b"><span>ㄏ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">去</span><span class="b"><span>ㄑ</span><span>ㄩ<i class="zt">ˋ</i></span></span></span></button>
+<span class="nz tkSt">⭐ <b id="tkStars">0</b>　🐟 <b id="tkCount">0</b></span>
+<span class="tkBtns"><button class="pill fsel nz on" id="tkF1" title="一般飼料">🍤 <b id="tkFood">0</b></button><button class="pill fsel nz" id="tkF2" title="沉底飼料">🦐 <b id="tkFood2">0</b></button><button class="pill nz" hidden="" id="tkLamp" title="換燈色">💡</button><button class="pill" id="tkMove">✋ <span class="z"><span class="h">擺</span><span class="b"><span>ㄅ</span><span>ㄞ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">放</span><span class="b"><span>ㄈ</span><span>ㄤ<i class="zt">ˋ</i></span></span></span></button><button class="pill" id="tkShop">🛒 <span class="z"><span class="h">商</span><span class="b"><span>ㄕ</span><span>ㄤ</span></span></span><span class="z"><span class="h">店</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span></button></span>
+</div>
+<div id="tankView"></div>
+<div class="tkHint"><span class="z"><span class="h">點</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">水</span><span class="b"><span>ㄕ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">裡</span><span class="b"><span>ㄌ</span><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">就</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">可</span><span class="b"><span>ㄎ</span><span>ㄜ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">以</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">撒</span><span class="b"><span>ㄙ</span><span>ㄚ</span></span></span><span class="z"><span class="h">飼</span><span class="b"><span>ㄙ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">料</span><span class="b"><span>ㄌ</span><span>ㄧ</span><span>ㄠ<i class="zt">ˋ</i></span></span></span>，<span class="z"><span class="h">點</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">魚</span><span class="b"><span>ㄩ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">可</span><span class="b"><span>ㄎ</span><span>ㄜ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">以</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">看</span><span class="b"><span>ㄎ</span><span>ㄢ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">牠</span><span class="b"><span>ㄊ</span><span>ㄚ</span></span></span><span class="z"><span class="h">的</span><span class="b"><span class="l">˙</span><span>ㄉ</span><span>ㄜ</span></span></span><span class="z"><span class="h">心</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄣ</span></span></span><span class="z"><span class="h">情</span><span class="b"><span>ㄑ</span><span>ㄧ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span>、<span class="z"><span class="h">幫</span><span class="b"><span>ㄅ</span><span>ㄤ</span></span></span><span class="z"><span class="h">牠</span><span class="b"><span>ㄊ</span><span>ㄚ</span></span></span><span class="z"><span class="h">取</span><span class="b"><span>ㄑ</span><span>ㄩ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">名</span><span class="b"><span>ㄇ</span><span>ㄧ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">字</span><span class="b"><span>ㄗ<i class="zt">ˋ</i></span></span></span>。<span class="z"><span class="h">手</span><span class="b"><span>ㄕ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">指</span><span class="b"><span>ㄓ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">左</span><span class="b"><span>ㄗ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">右</span><span class="b"><span>ㄧ</span><span>ㄡ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">拖</span><span class="b"><span>ㄊ</span><span>ㄨ</span><span>ㄛ</span></span></span><span class="z"><span class="h">曳</span><span class="b"><span>ㄧ</span><span>ㄝ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">可</span><span class="b"><span>ㄎ</span><span>ㄜ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">以</span><span class="b"><span>ㄧ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">轉</span><span class="b"><span>ㄓ</span><span>ㄨ</span><span>ㄢ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">動</span><span class="b"><span>ㄉ</span><span>ㄨ</span><span>ㄥ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">魚</span><span class="b"><span>ㄩ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">缸</span><span class="b"><span>ㄍ</span><span>ㄤ</span></span></span>。</div>
+<div class="tkMsg" id="tkMsg"></div>
+<div class="movePanel" hidden="" id="movePanel"></div>
+<div class="fishInfo" hidden="" id="fishInfo"></div>
+<div class="shop" hidden="" id="shop"></div>
+</div><script type="text/x-deferred">
+var ZY={"1顆星星可以換5份飼料。點一次水面用1份。": [null, "ㄎㄜ", "ㄒㄧㄥ", "ㄒㄧㄥ", "ㄎㄜˇ", "ㄧˇ", "ㄏㄨㄢˋ", null, "ㄈㄣˋ", "ㄙˋ", "ㄌㄧㄠˋ", null, "ㄉㄧㄢˇ", "ㄧ", "ㄘˋ", "ㄕㄨㄟˇ", "ㄇㄧㄢˋ", "ㄩㄥˋ", null, "ㄈㄣˋ", null], "7的乘法你早就會一大半了！交換一下就是學過的句子，只有7×7=49是新的。": [null, "ㄉㄜ˙", "ㄔㄥˊ", "ㄈㄚˇ", "ㄋㄧˇ", "ㄗㄠˇ", "ㄐㄧㄡˋ", "ㄏㄨㄟˋ", "ㄧ", "ㄉㄚˋ", "ㄅㄢˋ", "ㄌㄜ˙", null, "ㄐㄧㄠ", "ㄏㄨㄢˋ", "ㄧ", "ㄒㄧㄚˋ", "ㄐㄧㄡˋ", "ㄕˋ", "ㄒㄩㄝˊ", "ㄍㄨㄛˋ", "ㄉㄜ˙", "ㄐㄩˋ", "ㄗ˙", null, "ㄓˇ", "ㄧㄡˇ", null, null, null, null, null, null, "ㄕˋ", "ㄒㄧㄣ", "ㄉㄜ˙", null], "8題答對{ok}題": [null, "ㄊㄧˊ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, null, "ㄊㄧˊ"], "{a}的{b}倍就是{x}": [null, null, null, "ㄉㄜ˙", null, null, null, "ㄅㄟˋ", "ㄐㄧㄡˋ", "ㄕˋ", null, null, null], "{a}的{b}倍是{p}": [null, null, null, "ㄉㄜ˙", null, null, null, "ㄅㄟˋ", "ㄕˋ", null, null, null], "{a}的{b}倍是多少？": [null, null, null, "ㄉㄜ˙", null, null, null, "ㄅㄟˋ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "{n}的乘法": [null, null, null, "ㄉㄜ˙", "ㄔㄥˊ", "ㄈㄚˇ"], "{n}的口訣練完了！得到1顆星星": [null, null, null, "ㄉㄜ˙", "ㄎㄡˇ", "ㄐㄩㄝˊ", "ㄌㄧㄢˋ", "ㄨㄢˊ", "ㄌㄜ˙", null, "ㄉㄜˊ", "ㄉㄠˋ", null, "ㄎㄜ", "ㄒㄧㄥ", "ㄒㄧㄥ"], "{n}題答對{ok}題，花了{s}秒": [null, null, null, "ㄊㄧˊ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, null, "ㄊㄧˊ", null, "ㄏㄨㄚ", "ㄌㄜ˙", null, null, null, "ㄇㄧㄠˇ"], "□ 裡是多少？": [null, null, "ㄌㄧˇ", "ㄕˋ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "□ 裡要填多少？": [null, null, "ㄌㄧˇ", "ㄧㄠˋ", "ㄊㄧㄢˊ", "ㄉㄨㄛ", "ㄕㄠˇ", null], "○ 裡要填哪一個？": [null, null, "ㄌㄧˇ", "ㄧㄠˋ", "ㄊㄧㄢˊ", "ㄋㄚˇ", "ㄧ", "ㄍㄜˋ", null], "一一得一": ["ㄧ", "ㄧ", "ㄉㄜˊ", "ㄧ"], "一七得七": ["ㄧ", "ㄑㄧ", "ㄉㄜˊ", "ㄑㄧ"], "一三得三": ["ㄧ", "ㄙㄢ", "ㄉㄜˊ", "ㄙㄢ"], "一九得九": ["ㄧ", "ㄐㄧㄡˇ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "一二得二": ["ㄧ", "ㄦˋ", "ㄉㄜˊ", "ㄦˋ"], "一五得五": ["ㄧ", "ㄨˇ", "ㄉㄜˊ", "ㄨˇ"], "一八得八": ["ㄧ", "ㄅㄚ", "ㄉㄜˊ", "ㄅㄚ"], "一六得六": ["ㄧ", "ㄌㄧㄡˋ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "一十": ["ㄧ", "ㄕˊ"], "一四得四": ["ㄧ", "ㄙˋ", "ㄉㄜˊ", "ㄙˋ"], "一枝鉛筆{a}元，買{b}枝要付多少元？": ["ㄧ", "ㄓ", "ㄑㄧㄢ", "ㄅㄧˇ", null, null, null, "ㄩㄢˊ", null, "ㄇㄞˇ", null, null, null, "ㄓ", "ㄧㄠˋ", "ㄈㄨˋ", "ㄉㄨㄛ", "ㄕㄠˇ", "ㄩㄢˊ", null], "一次多{a}": ["ㄧ", "ㄘˋ", "ㄉㄨㄛ", null, null, null], "一盒有{a}顆糖果，{b}盒一共有幾顆？": ["ㄧ", "ㄏㄜˊ", "ㄧㄡˇ", null, null, null, "ㄎㄜ", "ㄊㄤˊ", "ㄍㄨㄛˇ", null, null, null, null, "ㄏㄜˊ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄎㄜ", null], "一般飼料": ["ㄧˋ", "ㄅㄢ", "ㄙˋ", "ㄌㄧㄠˋ"], "一般飼料：點水面撒下去": ["ㄧˋ", "ㄅㄢ", "ㄙˋ", "ㄌㄧㄠˋ", null, "ㄉㄧㄢˇ", "ㄕㄨㄟˇ", "ㄇㄧㄢˋ", "ㄙㄚ", "ㄒㄧㄚˋ", "ㄑㄩˋ"], "一隻小狗有4隻腳，{b}隻小狗一共有幾隻腳？": ["ㄧ", "ㄓ", "ㄒㄧㄠˇ", "ㄍㄡˇ", "ㄧㄡˇ", null, "ㄓ", "ㄐㄧㄠˇ", null, null, null, null, "ㄓ", "ㄒㄧㄠˇ", "ㄍㄡˇ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄓ", "ㄐㄧㄠˇ", null], "一隻章魚有8隻腳，{b}隻章魚一共有幾隻腳？": ["ㄧ", "ㄓ", "ㄓㄤ", "ㄩˊ", "ㄧㄡˇ", null, "ㄓ", "ㄐㄧㄠˇ", null, null, null, null, "ㄓ", "ㄓㄤ", "ㄩˊ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄓ", "ㄐㄧㄠˇ", null], "七一得七": ["ㄑㄧ", "ㄧ", "ㄉㄜˊ", "ㄑㄧ"], "七七四十九": ["ㄑㄧ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄐㄧㄡˇ"], "七七四十九：7個星期就是49天。": ["ㄑㄧ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄐㄧㄡˇ", null, null, "ㄍㄜˋ", "ㄒㄧㄥ", "ㄑㄧˊ", "ㄐㄧㄡˋ", "ㄕˋ", null, null, "ㄊㄧㄢ", null], "七三二十一": ["ㄑㄧ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄧ"], "七九六十三": ["ㄑㄧ", "ㄐㄧㄡˇ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙㄢ"], "七二十四": ["ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "七五三十五": ["ㄑㄧ", "ㄨˇ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "七八五十六": ["ㄑㄧ", "ㄅㄚ", "ㄨˇ", "ㄕˊ", "ㄌㄧㄡˋ"], "七八五十六：5、6、7、8排好隊，56=7×8。": ["ㄑㄧ", "ㄅㄚ", "ㄨˇ", "ㄕˊ", "ㄌㄧㄡˋ", null, null, null, null, null, null, null, null, "ㄆㄞˊ", "ㄏㄠˇ", "ㄉㄨㄟˋ", null, null, null, null, null, null, null, null], "七六四十二": ["ㄑㄧ", "ㄌㄧㄡˋ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "七四二十八": ["ㄑㄧ", "ㄙˋ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "三一得三": ["ㄙㄢ", "ㄧ", "ㄉㄜˊ", "ㄙㄢ"], "三七二十一": ["ㄙㄢ", "ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄧ"], "三三得九": ["ㄙㄢ", "ㄙㄢ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "三九二十七": ["ㄙㄢ", "ㄐㄧㄡˇ", "ㄦˋ", "ㄕˊ", "ㄑㄧ"], "三二得六": ["ㄙㄢ", "ㄦˋ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "三五十五": ["ㄙㄢ", "ㄨˇ", "ㄕˊ", "ㄨˇ"], "三八二十四": ["ㄙㄢ", "ㄅㄚ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "三六十八": ["ㄙㄢ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄅㄚ"], "三四十二": ["ㄙㄢ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "不對喔，再看一次：": ["ㄅㄨˋ", "ㄉㄨㄟˋ", "ㄛ", null, "ㄗㄞˋ", "ㄎㄢˋ", "ㄧ", "ㄘˋ", null], "中國風造景": ["ㄓㄨㄥ", "ㄍㄨㄛˊ", "ㄈㄥ", "ㄗㄠˋ", "ㄐㄧㄥˇ"], "九一得九": ["ㄐㄧㄡˇ", "ㄧ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "九七六十三": ["ㄐㄧㄡˇ", "ㄑㄧ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙㄢ"], "九三二十七": ["ㄐㄧㄡˇ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄑㄧ"], "九九八十一": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄅㄚ", "ㄕˊ", "ㄧ"], "九二十八": ["ㄐㄧㄡˇ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "九五四十五": ["ㄐㄧㄡˇ", "ㄨˇ", "ㄙˋ", "ㄕˊ", "ㄨˇ"], "九八七十二": ["ㄐㄧㄡˇ", "ㄅㄚ", "ㄑㄧ", "ㄕˊ", "ㄦˋ"], "九六五十四": ["ㄐㄧㄡˇ", "ㄌㄧㄡˋ", "ㄨˇ", "ㄕˊ", "ㄙˋ"], "九四三十六": ["ㄐㄧㄡˇ", "ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "二一得二": ["ㄦˋ", "ㄧ", "ㄉㄜˊ", "ㄦˋ"], "二七十四": ["ㄦˋ", "ㄑㄧ", "ㄕˊ", "ㄙˋ"], "二三得六": ["ㄦˋ", "ㄙㄢ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "二九十八": ["ㄦˋ", "ㄐㄧㄡˇ", "ㄕˊ", "ㄅㄚ"], "二二得四": ["ㄦˋ", "ㄦˋ", "ㄉㄜˊ", "ㄙˋ"], "二五一十": ["ㄦˋ", "ㄨˇ", "ㄧ", "ㄕˊ"], "二八十六": ["ㄦˋ", "ㄅㄚ", "ㄕˊ", "ㄌㄧㄡˋ"], "二六十二": ["ㄦˋ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄦˋ"], "二四得八": ["ㄦˋ", "ㄙˋ", "ㄉㄜˊ", "ㄅㄚ"], "五一得五": ["ㄨˇ", "ㄧ", "ㄉㄜˊ", "ㄨˇ"], "五七三十五": ["ㄨˇ", "ㄑㄧ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "五三十五": ["ㄨˇ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "五九四十五": ["ㄨˇ", "ㄐㄧㄡˇ", "ㄙˋ", "ㄕˊ", "ㄨˇ"], "五二一十": ["ㄨˇ", "ㄦˋ", "ㄧ", "ㄕˊ"], "五五二十五": ["ㄨˇ", "ㄨˇ", "ㄦˋ", "ㄕˊ", "ㄨˇ"], "五八四十": ["ㄨˇ", "ㄅㄚ", "ㄙˋ", "ㄕˊ"], "五六三十": ["ㄨˇ", "ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ"], "五四二十": ["ㄨˇ", "ㄙˋ", "ㄦˋ", "ㄕˊ"], "交換也一樣：{x}，答案還是{p}": ["ㄐㄧㄠ", "ㄏㄨㄢˋ", "ㄧㄝˇ", "ㄧ", "ㄧㄤˋ", null, null, null, null, null, "ㄉㄚˊ", "ㄢˋ", "ㄏㄞˊ", "ㄕˋ", null, null, null], "人": ["ㄖㄣˊ"], "你好！二成八等於十六。我們一起來練習九九乘法吧！": ["ㄋㄧˇ", "ㄏㄠˇ", null, "ㄦˋ", "ㄔㄥˊ", "ㄅㄚ", "ㄉㄥˇ", "ㄩˊ", "ㄕˊ", "ㄌㄧㄡˋ", null, "ㄨㄛˇ", "ㄇㄣ˙", "ㄧ", "ㄑㄧˇ", "ㄌㄞˊ", "ㄌㄧㄢˋ", "ㄒㄧˊ", "ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄅㄚ˙", null], "個": ["ㄍㄜˋ"], "假山": ["ㄐㄧㄚˇ", "ㄕㄢ"], "元": ["ㄩㄢˊ"], "先找「每」一份有幾個：{x}": ["ㄒㄧㄢ", "ㄓㄠˇ", null, "ㄇㄟˇ", null, "ㄧ", "ㄈㄣˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄍㄜˋ", null, null, null, null], "先點一個裝飾": ["ㄒㄧㄢ", "ㄉㄧㄢˇ", "ㄧ", "ㄍㄜˋ", "ㄓㄨㄤ", "ㄕˋ"], "全部": ["ㄑㄩㄢˊ", "ㄅㄨˋ"], "全部清除重來": ["ㄑㄩㄢˊ", "ㄅㄨˋ", "ㄑㄧㄥ", "ㄔㄨˊ", "ㄔㄨㄥˊ", "ㄌㄞˊ"], "全部答對，你是乘法魔法師！": ["ㄑㄩㄢˊ", "ㄅㄨˋ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, "ㄋㄧˇ", "ㄕˋ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄇㄛˊ", "ㄈㄚˇ", "ㄕ", null], "八一得八": ["ㄅㄚ", "ㄧ", "ㄉㄜˊ", "ㄅㄚ"], "八七五十六": ["ㄅㄚ", "ㄑㄧ", "ㄨˇ", "ㄕˊ", "ㄌㄧㄡˋ"], "八三二十四": ["ㄅㄚ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "八九七十二": ["ㄅㄚ", "ㄐㄧㄡˇ", "ㄑㄧ", "ㄕˊ", "ㄦˋ"], "八二十六": ["ㄅㄚ", "ㄦˋ", "ㄕˊ", "ㄌㄧㄡˋ"], "八五四十": ["ㄅㄚ", "ㄨˇ", "ㄙˋ", "ㄕˊ"], "八八六十四": ["ㄅㄚ", "ㄅㄚ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙˋ"], "八六四十八": ["ㄅㄚ", "ㄌㄧㄡˋ", "ㄙˋ", "ㄕˊ", "ㄅㄚ"], "八四三十二": ["ㄅㄚ", "ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "六一得六": ["ㄌㄧㄡˋ", "ㄧ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "六七四十二": ["ㄌㄧㄡˋ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "六三十八": ["ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ", "ㄅㄚ"], "六九五十四": ["ㄌㄧㄡˋ", "ㄐㄧㄡˇ", "ㄨˇ", "ㄕˊ", "ㄙˋ"], "六二十二": ["ㄌㄧㄡˋ", "ㄦˋ", "ㄕˊ", "ㄦˋ"], "六五三十": ["ㄌㄧㄡˋ", "ㄨˇ", "ㄙㄢ", "ㄕˊ"], "六八四十八": ["ㄌㄧㄡˋ", "ㄅㄚ", "ㄙˋ", "ㄕˊ", "ㄅㄚ"], "六六三十六": ["ㄌㄧㄡˋ", "ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "六四二十四": ["ㄌㄧㄡˋ", "ㄙˋ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "其他": ["ㄑㄧˊ", "ㄊㄚ"], "再念一次": ["ㄗㄞˋ", "ㄋㄧㄢˋ", "ㄧ", "ㄘˋ"], "再想想，答案是{p}": ["ㄗㄞˋ", "ㄒㄧㄤˇ", "ㄒㄧㄤ˙", null, "ㄉㄚˊ", "ㄢˋ", "ㄕˋ", null, null, null], "再玩一次": ["ㄗㄞˋ", "ㄨㄢˊ", "ㄧ", "ㄘˋ"], "再翻一倍：8是4的兩倍。答案的最後一個數字是8、6、4、2、0，一直重複。": ["ㄗㄞˋ", "ㄈㄢ", "ㄧˊ", "ㄅㄟˋ", null, null, "ㄕˋ", null, "ㄉㄜ˙", "ㄌㄧㄤˇ", "ㄅㄟˋ", null, "ㄉㄚˊ", "ㄢˋ", "ㄉㄜ˙", "ㄗㄨㄟˋ", "ㄏㄡˋ", "ㄧ", "ㄍㄜˋ", "ㄕㄨˋ", "ㄗˋ", "ㄕˋ", null, null, null, null, null, null, null, null, null, null, "ㄧˋ", "ㄓˊ", "ㄔㄨㄥˊ", "ㄈㄨˋ", null], "初階": ["ㄔㄨ", "ㄐㄧㄝ"], "初階最好：{s}秒答對{ok}題": ["ㄔㄨ", "ㄐㄧㄝ", "ㄗㄨㄟˋ", "ㄏㄠˇ", null, null, null, null, "ㄇㄧㄠˇ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, null, null, null, "ㄊㄧˊ"], "十": ["ㄕˊ"], "取個名字": ["ㄑㄩˇ", "ㄍㄜˋ", "ㄇㄧㄥˊ", "ㄗˋ"], "取名字": ["ㄑㄩˇ", "ㄇㄧㄥˊ", "ㄗˋ"], "取好名字了！": ["ㄑㄩˇ", "ㄏㄠˇ", "ㄇㄧㄥˊ", "ㄗˋ", "ㄌㄜ˙", null], "可以用「擺放」搬到喜歡的位置。": ["ㄎㄜˇ", "ㄧˇ", "ㄩㄥˋ", null, "ㄅㄞˇ", "ㄈㄤˋ", null, "ㄅㄢ", "ㄉㄠˋ", "ㄒㄧˇ", "ㄏㄨㄢ", "ㄉㄜ˙", "ㄨㄟˋ", "ㄓˋ", null], "可以用的星星{a}顆，總共得過{b}顆": ["ㄎㄜˇ", "ㄧˇ", "ㄩㄥˋ", "ㄉㄜ˙", "ㄒㄧㄥ", "ㄒㄧㄥ", null, null, null, "ㄎㄜ", null, "ㄗㄨㄥˇ", "ㄍㄨㄥˋ", "ㄉㄜˊ", "ㄍㄨㄛˋ", null, null, null, "ㄎㄜ"], "四一得四": ["ㄙˋ", "ㄧ", "ㄉㄜˊ", "ㄙˋ"], "四七二十八": ["ㄙˋ", "ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "四三十二": ["ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "四九三十六": ["ㄙˋ", "ㄐㄧㄡˇ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "四二得八": ["ㄙˋ", "ㄦˋ", "ㄉㄜˊ", "ㄅㄚ"], "四五二十": ["ㄙˋ", "ㄨˇ", "ㄦˋ", "ㄕˊ"], "四八三十二": ["ㄙˋ", "ㄅㄚ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "四六二十四": ["ㄙˋ", "ㄌㄧㄡˋ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "四四十六": ["ㄙˋ", "ㄙˋ", "ㄕˊ", "ㄌㄧㄡˋ"], "城堡": ["ㄔㄥˊ", "ㄅㄠˇ"], "填了{a}，正確是{b}": ["ㄊㄧㄢˊ", "ㄌㄜ˙", null, null, null, null, "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄕˋ", null, null, null], "夜燈": ["ㄧㄝˋ", "ㄉㄥ"], "大陸口音": ["ㄉㄚˋ", "ㄌㄨˋ", "ㄎㄡˇ", "ㄧㄣ"], "大鵝卵石": ["ㄉㄚˋ", "ㄜˊ", "ㄌㄨㄢˇ", "ㄕˊ"], "好": ["ㄏㄠˇ"], "媽媽買了{b}袋蘋果，每袋有{a}個。一共有幾個蘋果？": ["ㄇㄚ", "ㄇㄚ˙", "ㄇㄞˇ", "ㄌㄜ˙", null, null, null, "ㄉㄞˋ", "ㄆㄧㄥˊ", "ㄍㄨㄛˇ", null, "ㄇㄟˇ", "ㄉㄞˋ", "ㄧㄡˇ", null, null, null, "ㄍㄜˋ", null, "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄍㄜˋ", "ㄆㄧㄥˊ", "ㄍㄨㄛˇ", null], "完成": ["ㄨㄢˊ", "ㄔㄥˊ"], "寶箱": ["ㄅㄠˇ", "ㄒㄧㄤ"], "小丑魚": ["ㄒㄧㄠˇ", "ㄔㄡˇ", "ㄩˊ"], "小章魚": ["ㄒㄧㄠˇ", "ㄓㄤ", "ㄩˊ"], "小螃蟹": ["ㄒㄧㄠˇ", "ㄆㄤˊ", "ㄒㄧㄝˋ"], "岩石拱門": ["ㄧㄢˊ", "ㄕˊ", "ㄍㄨㄥˇ", "ㄇㄣˊ"], "左邊有{l}根，右邊有{r}根": ["ㄗㄨㄛˇ", "ㄅㄧㄢ", "ㄧㄡˇ", null, null, null, "ㄍㄣ", null, "ㄧㄡˋ", "ㄅㄧㄢ", "ㄧㄡˇ", null, null, null, "ㄍㄣ"], "已擁有": ["ㄧˇ", "ㄩㄥ", "ㄧㄡˇ"], "已經很熟的有{n}句，共81句": ["ㄧˇ", "ㄐㄧㄥ", "ㄏㄣˇ", "ㄕㄡˊ", "ㄉㄜ˙", "ㄧㄡˇ", null, null, null, "ㄐㄩˋ", null, "ㄍㄨㄥˋ", null, null, "ㄐㄩˋ"], "平均每題": ["ㄆㄧㄥˊ", "ㄐㄩㄣ", "ㄇㄟˇ", "ㄊㄧˊ"], "張": ["ㄓㄤ"], "彩色石頭": ["ㄘㄞˇ", "ㄙㄜˋ", "ㄕˊ", "ㄊㄡ˙"], "彩虹": ["ㄘㄞˇ", "ㄏㄨㄥˊ"], "彩虹珊瑚": ["ㄘㄞˇ", "ㄏㄨㄥˊ", "ㄕㄢ", "ㄏㄨˊ"], "很快沉到沙上，花園鰻、小螃蟹、小章魚、海龜愛吃。": ["ㄏㄣˇ", "ㄎㄨㄞˋ", "ㄔㄣˊ", "ㄉㄠˋ", "ㄕㄚ", "ㄕㄤˋ", null, "ㄏㄨㄚ", "ㄩㄢˊ", "ㄇㄢˊ", null, "ㄒㄧㄠˇ", "ㄆㄤˊ", "ㄒㄧㄝˋ", null, "ㄒㄧㄠˇ", "ㄓㄤ", "ㄩˊ", null, "ㄏㄞˇ", "ㄍㄨㄟ", "ㄞˋ", "ㄔ", null], "得": ["ㄉㄜˊ"], "得到{st}顆星星，可以去魚缸買東西喔！": ["ㄉㄜˊ", "ㄉㄠˋ", null, null, null, null, "ㄎㄜ", "ㄒㄧㄥ", "ㄒㄧㄥ", null, "ㄎㄜˇ", "ㄧˇ", "ㄑㄩˋ", "ㄩˊ", "ㄍㄤ", "ㄇㄞˇ", "ㄉㄨㄥ", "ㄒㄧ˙", "ㄛ", null], "心情": ["ㄒㄧㄣ", "ㄑㄧㄥˊ"], "想一想口訣：": ["ㄒㄧㄤˇ", "ㄧ", "ㄒㄧㄤˇ", "ㄎㄡˇ", "ㄐㄩㄝˊ", null], "慢慢沉下去，一般的魚會搶著吃。": ["ㄇㄢˋ", "ㄇㄢˋ", "ㄔㄣˊ", "ㄒㄧㄚˋ", "ㄑㄩˋ", null, "ㄧˋ", "ㄅㄢ", "ㄉㄜ˙", "ㄩˊ", "ㄏㄨㄟˋ", "ㄑㄧㄤˇ", "ㄓㄨˋ", "ㄔ", null], "成": ["ㄔㄥˊ"], "手指頭魔法：點一根手指把它彎下去，左邊是十位，右邊是個位。": ["ㄕㄡˇ", "ㄓˇ", "ㄊㄡ˙", "ㄇㄛˊ", "ㄈㄚˇ", null, "ㄉㄧㄢˇ", "ㄧ", "ㄍㄣ", "ㄕㄡˇ", "ㄓˇ", "ㄅㄚˇ", "ㄊㄚ", "ㄨㄢ", "ㄒㄧㄚˋ", "ㄑㄩˋ", null, "ㄗㄨㄛˇ", "ㄅㄧㄢ", "ㄕˋ", "ㄕˊ", "ㄨㄟˋ", null, "ㄧㄡˋ", "ㄅㄧㄢ", "ㄕˋ", "ㄍㄜˋ", "ㄨㄟˋ", null], "打開進階了！下次可以挑戰20題！": ["ㄉㄚˇ", "ㄎㄞ", "ㄐㄧㄣˋ", "ㄐㄧㄝ", "ㄌㄜ˙", null, "ㄒㄧㄚˋ", "ㄘˋ", "ㄎㄜˇ", "ㄧˇ", "ㄊㄧㄠ", "ㄓㄢˋ", null, null, "ㄊㄧˊ", null], "拱橋": ["ㄍㄨㄥˇ", "ㄑㄧㄠˊ"], "擺放": ["ㄅㄞˇ", "ㄈㄤˋ"], "擺放模式：點裝飾，再點沙地": ["ㄅㄞˇ", "ㄈㄤˋ", "ㄇㄛˊ", "ㄕˋ", null, "ㄉㄧㄢˇ", "ㄓㄨㄤ", "ㄕˋ", null, "ㄗㄞˋ", "ㄉㄧㄢˇ", "ㄕㄚ", "ㄉㄧˋ"], "放好了！": ["ㄈㄤˋ", "ㄏㄠˇ", "ㄌㄜ˙", null], "數字鍵盤：答案的最後一個數字是3、6、9，2、5、8，1、4、7。": ["ㄕㄨˋ", "ㄗˋ", "ㄐㄧㄢˋ", "ㄆㄢˊ", null, "ㄉㄚˊ", "ㄢˋ", "ㄉㄜ˙", "ㄗㄨㄟˋ", "ㄏㄡˋ", "ㄧ", "ㄍㄜˋ", "ㄕㄨˋ", "ㄗˋ", "ㄕˋ", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], "新朋友來了！": ["ㄒㄧㄣ", "ㄆㄥˊ", "ㄧㄡˇ", "ㄌㄞˊ", "ㄌㄜ˙", null], "日期": ["ㄖˋ", "ㄑㄧˊ"], "時間": ["ㄕˊ", "ㄐㄧㄢ"], "最慢的三題：": ["ㄗㄨㄟˋ", "ㄇㄢˋ", "ㄉㄜ˙", "ㄙㄢ", "ㄊㄧˊ", null], "每一份{a}個 × {b}份，寫成{x}": ["ㄇㄟˇ", "ㄧ", "ㄈㄣˋ", null, null, null, "ㄍㄜˋ", null, null, null, null, null, null, "ㄈㄣˋ", null, "ㄒㄧㄝˇ", "ㄔㄥˊ", null, null, null], "每一題：": ["ㄇㄟˇ", "ㄧ", "ㄊㄧˊ", null], "每個小朋友有{a}張貼紙，{b}個小朋友一共有幾張？": ["ㄇㄟˇ", "ㄍㄜˋ", "ㄒㄧㄠˇ", "ㄆㄥˊ", "ㄧㄡˇ", "ㄧㄡˇ", null, null, null, "ㄓㄤ", "ㄊㄧㄝ", "ㄓˇ", null, null, null, null, "ㄍㄜˋ", "ㄒㄧㄠˇ", "ㄆㄥˊ", "ㄧㄡˇ", "ㄧ", "ㄍㄨㄥˋ", "ㄧㄡˇ", "ㄐㄧˇ", "ㄓㄤ", null], "每盤有{a}個，有{b}盤": ["ㄇㄟˇ", "ㄆㄢˊ", "ㄧㄡˇ", null, null, null, "ㄍㄜˋ", null, "ㄧㄡˇ", null, null, null, "ㄆㄢˊ"], "每盤有{a}個，有{b}盤。乘法算式是哪一個？": ["ㄇㄟˇ", "ㄆㄢˊ", "ㄧㄡˇ", null, null, null, "ㄍㄜˋ", null, "ㄧㄡˇ", null, null, null, "ㄆㄢˊ", null, "ㄔㄥˊ", "ㄈㄚˇ", "ㄙㄨㄢˋ", "ㄕˋ", "ㄕˋ", "ㄋㄚˇ", "ㄧ", "ㄍㄜˋ", null], "每輛車坐{a}個人，{b}輛車可以坐幾個人？": ["ㄇㄟˇ", "ㄌㄧㄤˋ", "ㄔㄜ", "ㄗㄨㄛˋ", null, null, null, "ㄍㄜˋ", "ㄖㄣˊ", null, null, null, null, "ㄌㄧㄤˋ", "ㄔㄜ", "ㄎㄜˇ", "ㄧˇ", "ㄗㄨㄛˋ", "ㄐㄧˇ", "ㄍㄜˋ", "ㄖㄣˊ", null], "水車小屋": ["ㄕㄨㄟˇ", "ㄔㄜ", "ㄒㄧㄠˇ", "ㄨ"], "沉底飼料": ["ㄔㄣˊ", "ㄉㄧˇ", "ㄙˋ", "ㄌㄧㄠˋ"], "沉底飼料吃完了！按「商店」用星星換。": ["ㄔㄣˊ", "ㄉㄧˇ", "ㄙˋ", "ㄌㄧㄠˋ", "ㄔ", "ㄨㄢˊ", "ㄌㄜ˙", null, "ㄢˋ", null, "ㄕㄤ", "ㄉㄧㄢˋ", null, "ㄩㄥˋ", "ㄒㄧㄥ", "ㄒㄧㄥ", "ㄏㄨㄢˋ", null], "沉底飼料：花園鰻和螃蟹愛吃": ["ㄔㄣˊ", "ㄉㄧˇ", "ㄙˋ", "ㄌㄧㄠˋ", null, "ㄏㄨㄚ", "ㄩㄢˊ", "ㄇㄢˊ", "ㄏㄜˊ", "ㄆㄤˊ", "ㄒㄧㄝˋ", "ㄞˋ", "ㄔ"], "沉船": ["ㄔㄣˊ", "ㄔㄨㄢˊ"], "沒有，全部答對！": ["ㄇㄟˊ", "ㄧㄡˇ", null, "ㄑㄩㄢˊ", "ㄅㄨˋ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null], "河豚": ["ㄏㄜˊ", "ㄊㄨㄣˊ"], "注音：開": ["ㄓㄨˋ", "ㄧㄣ", null, "ㄎㄞ"], "注音：關": ["ㄓㄨˋ", "ㄧㄣ", null, "ㄍㄨㄢ"], "海底風": ["ㄏㄞˇ", "ㄉㄧˇ", "ㄈㄥ"], "海星": ["ㄏㄞˇ", "ㄒㄧㄥ"], "海螺": ["ㄏㄞˇ", "ㄌㄨㄛˊ"], "海馬": ["ㄏㄞˇ", "ㄇㄚˇ"], "海龜": ["ㄏㄞˇ", "ㄍㄨㄟ"], "清空魚缸": ["ㄑㄧㄥ", "ㄎㄨㄥ", "ㄩˊ", "ㄍㄤ"], "潛水員": ["ㄑㄧㄢˊ", "ㄕㄨㄟˇ", "ㄩㄢˊ"], "燈光": ["ㄉㄥ", "ㄍㄨㄤ"], "白光": ["ㄅㄞˊ", "ㄍㄨㄤ"], "白石子小路": ["ㄅㄞˊ", "ㄕˊ", "ㄗˇ", "ㄒㄧㄠˇ", "ㄌㄨˋ"], "看時鐘：分針走1大格是5分。答案的最後一個數字，不是5就是0。": ["ㄎㄢˋ", "ㄕˊ", "ㄓㄨㄥ", null, "ㄈㄣ", "ㄓㄣ", "ㄗㄡˇ", null, "ㄉㄚˋ", "ㄍㄜˊ", "ㄕˋ", null, "ㄈㄣ", null, "ㄉㄚˊ", "ㄢˋ", "ㄉㄜ˙", "ㄗㄨㄟˋ", "ㄏㄡˋ", "ㄧ", "ㄍㄜˋ", "ㄕㄨˋ", "ㄗˋ", null, "ㄅㄨˊ", "ㄕˋ", null, "ㄐㄧㄡˋ", "ㄕˋ", null, null], "真的要清除嗎？再按一次": ["ㄓㄣ", "ㄉㄜ˙", "ㄧㄠˋ", "ㄑㄧㄥ", "ㄔㄨˊ", "ㄇㄚ˙", null, "ㄗㄞˋ", "ㄢˋ", "ㄧ", "ㄘˋ"], "石頭小屋": ["ㄕˊ", "ㄊㄡ˙", "ㄒㄧㄠˇ", "ㄨ"], "確定": ["ㄑㄩㄝˋ", "ㄉㄧㄥˋ"], "神仙魚": ["ㄕㄣˊ", "ㄒㄧㄢ", "ㄩˊ"], "秒": ["ㄇㄧㄠˇ"], "第7單元": ["ㄉㄧˋ", null, "ㄉㄢ", "ㄩㄢˊ"], "第9單元": ["ㄉㄧˋ", null, "ㄉㄢ", "ㄩㄢˊ"], "第{i}張，共{n}張": ["ㄉㄧˋ", null, null, null, "ㄓㄤ", null, "ㄍㄨㄥˋ", null, null, null, "ㄓㄤ"], "第{i}題，共{n}題": ["ㄉㄧˋ", null, null, null, "ㄊㄧˊ", null, "ㄍㄨㄥˋ", null, null, null, "ㄊㄧˊ"], "等於": ["ㄉㄥˇ", "ㄩˊ"], "答對": ["ㄉㄚˊ", "ㄉㄨㄟˋ"], "答對了！": ["ㄉㄚˊ", "ㄉㄨㄟˋ", "ㄌㄜ˙", null], "答案是{p}": ["ㄉㄚˊ", "ㄢˋ", "ㄕˋ", null, null, null], "答錯的題目：": ["ㄉㄚˊ", "ㄘㄨㄛˋ", "ㄉㄜ˙", "ㄊㄧˊ", "ㄇㄨˋ", null], "範圍": ["ㄈㄢˋ", "ㄨㄟˊ"], "紅珊瑚": ["ㄏㄨㄥˊ", "ㄕㄢ", "ㄏㄨˊ"], "紅色的數字就是5的乘法答案！": ["ㄏㄨㄥˊ", "ㄙㄜˋ", "ㄉㄜ˙", "ㄕㄨˋ", "ㄗˋ", "ㄐㄧㄡˋ", "ㄕˋ", null, "ㄉㄜ˙", "ㄔㄥˊ", "ㄈㄚˇ", "ㄉㄚˊ", "ㄢˋ", null], "紫色海扇": ["ㄗˇ", "ㄙㄜˋ", "ㄏㄞˇ", "ㄕㄢˋ"], "綠色水草叢": ["ㄌㄩˋ", "ㄙㄜˋ", "ㄕㄨㄟˇ", "ㄘㄠˇ", "ㄘㄨㄥˊ"], "翻一倍：4是2的兩倍。先想2的答案，再加一次自己。": ["ㄈㄢ", "ㄧˊ", "ㄅㄟˋ", null, null, "ㄕˋ", null, "ㄉㄜ˙", "ㄌㄧㄤˇ", "ㄅㄟˋ", null, "ㄒㄧㄢ", "ㄒㄧㄤˇ", null, "ㄉㄜ˙", "ㄉㄚˊ", "ㄢˋ", null, "ㄗㄞˋ", "ㄐㄧㄚ", "ㄧ", "ㄘˋ", "ㄗˋ", "ㄐㄧˇ", null], "翻一倍：6是3的兩倍。6乘雙數，答案的尾巴和乘數一樣。": ["ㄈㄢ", "ㄧˊ", "ㄅㄟˋ", null, null, "ㄕˋ", null, "ㄉㄜ˙", "ㄌㄧㄤˇ", "ㄅㄟˋ", null, null, "ㄔㄥˊ", "ㄕㄨㄤ", "ㄕㄨˋ", null, "ㄉㄚˊ", "ㄢˋ", "ㄉㄜ˙", "ㄨㄟˇ", "ㄅㄚ˙", "ㄏㄜˊ", "ㄔㄥˊ", "ㄕㄨˋ", "ㄧ", "ㄧㄤˋ", null], "肚子餓了，快餵我！": ["ㄉㄨˇ", "ㄗ˙", "ㄜˋ", "ㄌㄜ˙", null, "ㄎㄨㄞˋ", "ㄨㄟˋ", "ㄨㄛˇ", null], "腦珊瑚": ["ㄋㄠˇ", "ㄕㄢ", "ㄏㄨˊ"], "臺灣": ["ㄊㄞˊ", "ㄨㄢ"], "花園鰻": ["ㄏㄨㄚ", "ㄩㄢˊ", "ㄇㄢˊ"], "草皮地毯": ["ㄘㄠˇ", "ㄆㄧˊ", "ㄉㄧˋ", "ㄊㄢˇ"], "藍倒吊": ["ㄌㄢˊ", "ㄉㄠˋ", "ㄉㄧㄠˋ"], "藍光": ["ㄌㄢˊ", "ㄍㄨㄤ"], "裝好魚缸燈了！按上面的💡換燈色。": ["ㄓㄨㄤ", "ㄏㄠˇ", "ㄩˊ", "ㄍㄤ", "ㄉㄥ", "ㄌㄜ˙", null, "ㄢˋ", "ㄕㄤˋ", "ㄇㄧㄢˋ", "ㄉㄜ˙", null, "ㄏㄨㄢˋ", "ㄉㄥ", "ㄙㄜˋ", null], "裝飾": ["ㄓㄨㄤ", "ㄕˋ"], "要再練習的：": ["ㄧㄠˋ", "ㄗㄞˋ", "ㄌㄧㄢˋ", "ㄒㄧˊ", "ㄉㄜ˙", null], "貝殼": ["ㄅㄟˋ", "ㄎㄜˊ"], "買": ["ㄇㄞˇ"], "跳格子：一次跳兩格，答案都是雙數。": ["ㄊㄧㄠˋ", "ㄍㄜˊ", "ㄗ˙", null, "ㄧ", "ㄘˋ", "ㄊㄧㄠˋ", "ㄌㄧㄤˇ", "ㄍㄜˊ", null, "ㄉㄚˊ", "ㄢˋ", "ㄉㄡ", "ㄕˋ", "ㄕㄨㄤ", "ㄕㄨˋ", null], "轉一轉": ["ㄓㄨㄢˇ", "ㄧ", "ㄓㄨㄢˇ"], "送你一隻金魚和10份飼料！點水面就可以餵魚喔！": ["ㄙㄨㄥˋ", "ㄋㄧˇ", "ㄧ", "ㄓ", "ㄐㄧㄣ", "ㄩˊ", "ㄏㄜˊ", null, null, "ㄈㄣˋ", "ㄙˋ", "ㄌㄧㄠˋ", null, "ㄉㄧㄢˇ", "ㄕㄨㄟˇ", "ㄇㄧㄢˋ", "ㄐㄧㄡˋ", "ㄎㄜˇ", "ㄧˇ", "ㄨㄟˋ", "ㄩˊ", "ㄛ", null], "這台裝置找不到中文語音。": ["ㄓㄜˋ", "ㄊㄞˊ", "ㄓㄨㄤ", "ㄓˋ", "ㄓㄠˇ", "ㄅㄨˊ", "ㄉㄠˋ", "ㄓㄨㄥ", "ㄨㄣˊ", "ㄩˇ", "ㄧㄣ", null], "這台裝置沒辦法顯示3D魚缸，請換一個瀏覽器試試看。": ["ㄓㄜˋ", "ㄊㄞˊ", "ㄓㄨㄤ", "ㄓˋ", "ㄇㄟˊ", "ㄅㄢˋ", "ㄈㄚˇ", "ㄒㄧㄢˇ", "ㄕˋ", null, null, "ㄩˊ", "ㄍㄤ", null, "ㄑㄧㄥˇ", "ㄏㄨㄢˋ", "ㄧ", "ㄍㄜˋ", "ㄌㄧㄡˊ", "ㄌㄢˇ", "ㄑㄧˋ", "ㄕˋ", "ㄕ˙", "ㄎㄢˋ", null], "進階": ["ㄐㄧㄣˋ", "ㄐㄧㄝ"], "進階已打開": ["ㄐㄧㄣˋ", "ㄐㄧㄝ", "ㄧˇ", "ㄉㄚˇ", "ㄎㄞ"], "進階目標：答對9題以上、60秒內完成。": ["ㄐㄧㄣˋ", "ㄐㄧㄝ", "ㄇㄨˋ", "ㄅㄧㄠ", null, "ㄉㄚˊ", "ㄉㄨㄟˋ", null, "ㄊㄧˊ", "ㄧˇ", "ㄕㄤˋ", null, null, null, "ㄇㄧㄠˇ", "ㄋㄟˋ", "ㄨㄢˊ", "ㄔㄥˊ", null], "進階還沒打開": ["ㄐㄧㄣˋ", "ㄐㄧㄝ", "ㄏㄞˊ", "ㄇㄟˊ", "ㄉㄚˇ", "ㄎㄞ"], "進階還沒打開：先在初階答對9題以上，而且60秒內完成！": ["ㄐㄧㄣˋ", "ㄐㄧㄝ", "ㄏㄞˊ", "ㄇㄟˊ", "ㄉㄚˇ", "ㄎㄞ", null, "ㄒㄧㄢ", "ㄗㄞˋ", "ㄔㄨ", "ㄐㄧㄝ", "ㄉㄚˊ", "ㄉㄨㄟˋ", null, "ㄊㄧˊ", "ㄧˇ", "ㄕㄤˋ", null, "ㄦˊ", "ㄑㄧㄝˇ", null, null, "ㄇㄧㄠˇ", "ㄋㄟˋ", "ㄨㄢˊ", "ㄔㄥˊ", null], "選了：": ["ㄒㄩㄢˇ", "ㄌㄜ˙", null], "選出正確的算式和答案": ["ㄒㄩㄢˇ", "ㄔㄨ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄜ˙", "ㄙㄨㄢˋ", "ㄕˋ", "ㄏㄜˊ", "ㄉㄚˊ", "ㄢˋ"], "還沒有可以移動的裝飾，先去商店買吧！": ["ㄏㄞˊ", "ㄇㄟˊ", "ㄧㄡˇ", "ㄎㄜˇ", "ㄧˇ", "ㄧˊ", "ㄉㄨㄥˋ", "ㄉㄜ˙", "ㄓㄨㄤ", "ㄕˋ", null, "ㄒㄧㄢ", "ㄑㄩˋ", "ㄕㄤ", "ㄉㄧㄢˋ", "ㄇㄞˇ", "ㄅㄚ˙", null], "還沒有紀錄，玩一次快問快答就會出現。": ["ㄏㄞˊ", "ㄇㄟˊ", "ㄧㄡˇ", "ㄐㄧˋ", "ㄌㄨˋ", null, "ㄨㄢˊ", "ㄧ", "ㄘˋ", "ㄎㄨㄞˋ", "ㄨㄣˋ", "ㄎㄨㄞˋ", "ㄉㄚˊ", "ㄐㄧㄡˋ", "ㄏㄨㄟˋ", "ㄔㄨ", "ㄒㄧㄢˋ", null], "金魚": ["ㄐㄧㄣ", "ㄩˊ"], "釣魚老爺爺": ["ㄉㄧㄠˋ", "ㄩˊ", "ㄌㄠˇ", "ㄧㄝˊ", "ㄧㄝˊ"], "錯題": ["ㄘㄨㄛˋ", "ㄊㄧˊ"], "錯題本是空的，太棒了！": ["ㄘㄨㄛˋ", "ㄊㄧˊ", "ㄅㄣˇ", "ㄕˋ", "ㄎㄨㄥ", "ㄉㄜ˙", null, "ㄊㄞˋ", "ㄅㄤˋ", "ㄌㄜ˙", null], "開": ["ㄎㄞ"], "關": ["ㄍㄨㄢ"], "隻": ["ㄓ"], "零一二三四五六七八九": ["ㄌㄧㄥˊ", "ㄧ", "ㄦˋ", "ㄙㄢ", "ㄙˋ", "ㄨˇ", "ㄌㄧㄡˋ", "ㄑㄧ", "ㄅㄚ", "ㄐㄧㄡˇ"], "音效：": ["ㄧㄣ", "ㄒㄧㄠˋ", null], "音樂：": ["ㄧㄣ", "ㄌㄜˋ", null], "順序反了！要寫「每一份 × 幾份」。": ["ㄕㄨㄣˋ", "ㄒㄩˋ", "ㄈㄢˇ", "ㄌㄜ˙", null, "ㄧㄠˋ", "ㄒㄧㄝˇ", null, "ㄇㄟˇ", "ㄧ", "ㄈㄣˋ", null, null, null, "ㄐㄧˇ", "ㄈㄣˋ", null, null], "顆": ["ㄎㄜ"], "飼料": ["ㄙˋ", "ㄌㄧㄠˋ"], "飼料吃完了！按「商店」用星星換飼料。": ["ㄙˋ", "ㄌㄧㄠˋ", "ㄔ", "ㄨㄢˊ", "ㄌㄜ˙", null, "ㄢˋ", null, "ㄕㄤ", "ㄉㄧㄢˋ", null, "ㄩㄥˋ", "ㄒㄧㄥ", "ㄒㄧㄥ", "ㄏㄨㄢˋ", "ㄙˋ", "ㄌㄧㄠˋ", null], "香港／粵語": ["ㄒㄧㄤ", "ㄍㄤˇ", null, "ㄩㄝˋ", "ㄩˇ"], "魚和海龜": ["ㄩˊ", "ㄏㄜˊ", "ㄏㄞˇ", "ㄍㄨㄟ"], "魚缸商店": ["ㄩˊ", "ㄍㄤ", "ㄕㄤ", "ㄉㄧㄢˋ"], "魚缸準備中…": ["ㄩˊ", "ㄍㄤ", "ㄓㄨㄣˇ", "ㄅㄟˋ", "ㄓㄨㄥ", null], "魚缸滿了，最多12隻。": ["ㄩˊ", "ㄍㄤ", "ㄇㄢˇ", "ㄌㄜ˙", null, "ㄗㄨㄟˋ", "ㄉㄨㄛ", null, null, "ㄓ", null], "魚缸燈": ["ㄩˊ", "ㄍㄤ", "ㄉㄥ"], "魚缸裡的魚和裝飾都會不見，再按一次": ["ㄩˊ", "ㄍㄤ", "ㄌㄧˇ", "ㄉㄜ˙", "ㄩˊ", "ㄏㄜˊ", "ㄓㄨㄤ", "ㄕˋ", "ㄉㄡ", "ㄏㄨㄟˋ", "ㄅㄨˋ", "ㄐㄧㄢˋ", null, "ㄗㄞˋ", "ㄢˋ", "ㄧ", "ㄘˋ"], "點一個裝飾選它，再點沙地把它搬過去。": ["ㄉㄧㄢˇ", "ㄧ", "ㄍㄜˋ", "ㄓㄨㄤ", "ㄕˋ", "ㄒㄩㄢˇ", "ㄊㄚ", null, "ㄗㄞˋ", "ㄉㄧㄢˇ", "ㄕㄚ", "ㄉㄧˋ", "ㄅㄚˇ", "ㄊㄚ", "ㄅㄢ", "ㄍㄨㄛˋ", "ㄑㄩˋ", null], "點我翻過來": ["ㄉㄧㄢˇ", "ㄨㄛˇ", "ㄈㄢ", "ㄍㄨㄛˋ", "ㄌㄞˊ"], "💡 iPhone 可以下載「美佳（加強版）」，聲音會柔和很多。": [null, null, null, null, null, null, null, null, null, "ㄎㄜˇ", "ㄧˇ", "ㄒㄧㄚˋ", "ㄗㄞˋ", null, "ㄇㄟˇ", "ㄐㄧㄚ", null, "ㄐㄧㄚ", "ㄑㄧㄤˊ", "ㄅㄢˇ", null, null, null, "ㄕㄥ", "ㄧㄣ", "ㄏㄨㄟˋ", "ㄖㄡˊ", "ㄏㄜˊ", "ㄏㄣˇ", "ㄉㄨㄛ", null], "💡 這台 Android 沒有臺灣口音的語音，請照下面說明下載「中文（臺灣）」。": [null, null, "ㄓㄜˋ", "ㄊㄞˊ", null, null, null, null, null, null, null, null, null, "ㄇㄟˊ", "ㄧㄡˇ", "ㄊㄞˊ", "ㄨㄢ", "ㄎㄡˇ", "ㄧㄣ", "ㄉㄜ˙", "ㄩˇ", "ㄧㄣ", null, "ㄑㄧㄥˇ", "ㄓㄠˋ", "ㄒㄧㄚˋ", "ㄇㄧㄢˋ", "ㄕㄨㄛ", "ㄇㄧㄥˊ", "ㄒㄧㄚˋ", "ㄗㄞˋ", null, "ㄓㄨㄥ", "ㄨㄣˊ", null, "ㄊㄞˊ", "ㄨㄢ", null, null, null]};
+var COL={1:'#9aa5b1',2:'#f2994a',3:'#27ae60',4:'#2d9cdb',5:'#eb5757',6:'#9b51e0',7:'#f2c94c',8:'#56ccf2',9:'#e86fb0'};
+function $(id){return document.getElementById(id)}
+// ---------- 注音 ----------
+function rb(ch,b){
+  var light=b.indexOf('˙')>=0, body=b.replace('˙',''), tone='';
+  if('ˊˇˋ'.indexOf(body.slice(-1))>=0&&body.length>1){tone=body.slice(-1);body=body.slice(0,-1)}
+  var s='';for(var i=0;i<body.length;i++){s+='<span>'+body[i]+(i==body.length-1&&tone?'<i class="zt">'+tone+'</i>':'')+'</span>'}
+  if(light)s='<span class="l">˙</span>'+s;
+  return '<span class="z"><span class="h">'+ch+'</span><span class="b">'+s+'</span></span>';
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+// T(模板, 變數)：模板必須在 ZY 字典裡
+function T(tpl,v){
+  var bs=ZY[tpl],out='';
+  for(var i=0,k=0;i<tpl.length;i++){
+    var ch=tpl[i];
+    if(ch=='{'){var j=tpl.indexOf('}',i);var key=tpl.slice(i+1,j);out+='<b class="nz">'+esc(v[key])+'</b>';k+=j-i+1;i=j;continue}
+    var b=bs?bs[i]:null;
+    out+=b?rb(ch,b):esc(ch);
+  }
+  return out;
+}
+var CN='零一二三四五六七八九';
+function cnNum(n){if(n<10)return CN[n];if(n==10)return'一十';var t=Math.floor(n/10),o=n%10;return(t==1?'十':CN[t]+'十')+(o?CN[o]:'')}
+function kjText(a,b){var p=a*b;return p<10?CN[a]+CN[b]+'得'+CN[p]:CN[a]+CN[b]+cnNum(p)}
+function KJ(a,b){var s=kjText(a,b);var bs=ZY[s];var o='';for(var i=0;i<s.length;i++)o+=bs&&bs[i]?rb(s[i],bs[i]):s[i];return o}
+// ---------- 儲存 ----------
+var S={stars:0,facts:{},wrong:{}};
+try{var raw=localStorage.getItem('tt99');if(raw)S=JSON.parse(raw)}catch(e){}
+function save(){try{localStorage.setItem('tt99',JSON.stringify(S))}catch(e){};$('starCount').textContent=S.stars}
+function rec(a,b,ok){var k=a+'x'+b,f=S.facts[k]||{c:0,w:0,last:1};if(ok){f.c++;f.last=1}else{f.w++;f.last=0;S.wrong[k]=1}
+ if(ok&&f.c>=3&&S.wrong[k]&&f.last)delete S.wrong[k];S.facts[k]=f;save()}
+function level(a,b){var f=S.facts[a+'x'+b];if(!f)return 0;if(f.c>=3&&f.last)return 2;return f.c>0?1:0}
+if(S.earned==null)S.earned=S.stars||0;if(S.music==null)S.music=true;if(S.sfx==null)S.sfx=true;if(!S.hist)S.hist=[];
+function addStars(n){S.stars+=n;S.earned=(S.earned||0)+n;save()}
+function TT(s){return ZY[s]?T(s):esc(s)}
+// ---------- 語音 ----------
+// ================= 語音設定（各頁共用，存在 ttVoice，同一個網站的頁面互通） =================
+var VK=(function(){
+ var K='ttVoice',st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')||{}}catch(e){st={}}
+ function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+ function all(){try{return (window.speechSynthesis&&speechSynthesis.getVoices())||[]}catch(e){return[]}}
+ try{if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',function(){if(document.getElementById('vkBox'))fill()})}}catch(e){}
+ function isTW(v){return /(zh|cmn)[-_](hant[-_])?tw/i.test(v.lang)||/(臺灣|台灣|taiwan|國語)/i.test(v.name)}
+ function isHK(v){return /(zh|yue)[-_](hant[-_])?hk|yue/i.test(v.lang)||/(香港|粵|cantonese|hong kong)/i.test(v.name)}
+ function score(v){if(!(/^(zh|cmn|yue)/i.test(v.lang)||/(國語|中文|普通話|chinese)/i.test(v.name)))return -1;
+  var sc=isTW(v)?100:isHK(v)?2:20;
+  if(/natural|online|neural/i.test(v.name))sc+=30;
+  if(/加強|enhanced|premium|進階|高品質|優化/i.test(v.name))sc+=25;
+  if(/hsiaochen|hsiaoyu|曉臻|曉雨|美佳|mei-?jia/i.test(v.name))sc+=10;
+  if(/google/i.test(v.name))sc+=3;return sc}
+ function tag(v){return isTW(v)?'臺灣':isHK(v)?'香港／粵語':'大陸口音'}
+ function list(){return all().filter(function(v){return score(v)>=0}).sort(function(a,b){return score(b)-score(a)})}
+ function pick(){var vs=all();if(st.voice){for(var i=0;i<vs.length;i++)if(vs[i].name===st.voice)return vs[i]}
+  var best=null,bs=-1;vs.forEach(function(v){var s=score(v);if(s>bs){bs=s;best=v}});return bs>=0?best:null}
+ function apply(u,rate){var v=pick();if(v){u.voice=v;u.lang=v.lang}else u.lang='zh-TW';u.rate=rate||st.rate||0.9;u.pitch=st.pitch||1.1;return u}
+ function test(){try{var u=new SpeechSynthesisUtterance('你好！二成八等於十六。我們一起來練習九九乘法吧！');apply(u);speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+ function fill(){var sel=document.getElementById('vkSel'),box=document.getElementById('vkInfo');if(!sel)return;var vs=list(),cur=pick(),top=vs[0];
+  sel.innerHTML='<option value="">自動選擇（臺灣口音、品質最好的優先）</option>'+vs.map(function(v){return '<option value="'+esc(v.name)+'"'+(st.voice===v.name?' selected':'')+'>'+(v===top&&isTW(v)?'⭐ ':'')+esc(v.name)+'【'+tag(v)+'】</option>'}).join('');
+  var ua=navigator.userAgent,edge=/Edg\//.test(ua),win=/Windows/.test(ua),and=/Android/.test(ua),ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&'ontouchend' in document);
+  var tip='';
+  if(win&&!edge)tip='💡 Windows 請改用 <b>Edge 瀏覽器</b>打開，會有很自然的臺灣口音（HsiaoChen、HsiaoYu）。';
+  else if(and&&!vs.some(isTW))tip='💡 這台 Android 沒有臺灣口音的語音，請照下面說明下載「中文（臺灣）」。';
+  else if(ios&&!vs.some(function(v){return isTW(v)&&/加強|enhanced|premium/i.test(v.name)}))tip='💡 iPhone 可以下載「美佳（加強版）」，聲音會柔和很多。';
+  box.innerHTML=(cur?'目前使用：<b>'+esc(cur.name)+'</b>【'+tag(cur)+'】':'這台裝置找不到中文語音。')+(cur&&!isTW(cur)?'<br>⚠️ 這是大陸或香港口音，建議換成標「臺灣」的聲音。':'')+(tip?'<br>'+tip:'');
+  document.getElementById('vkRateV').textContent=(st.rate||0.9).toFixed(2)+'×';document.getElementById('vkPitchV').textContent=(st.pitch||1.1).toFixed(2)}
+ function open(){if(document.getElementById('vkBox'))return;
+  var d=document.createElement('div');d.id='vkBox';d.className='nz';
+  d.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,40,60,.5);display:flex;align-items:center;justify-content:center;padding:14px;font-family:inherit');
+  d.innerHTML='<div style="background:#fffdf7;border-radius:22px;padding:18px 18px 14px;max-width:460px;width:100%;max-height:92vh;overflow:auto;color:#1f3347;font-size:16px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.3)">'+
+   '<div style="font-size:22px;font-weight:900;margin-bottom:6px">🔊 語音設定</div>'+
+   '<div id="vkInfo" style="background:#f3f8ff;border-radius:12px;padding:8px 12px;font-size:14px"></div>'+
+   '<div style="margin:10px 0 6px;font-weight:700">選聲音</div><select id="vkSel" style="width:100%;font-size:15px;padding:8px;border-radius:10px;border:2px solid #cfe0ef"></select>'+
+   '<div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-weight:700">🐢 語速 <input type="range" id="vkRate" min="0.6" max="1.2" step="0.05" value="'+(st.rate||0.9)+'" style="flex:1"> <b id="vkRateV" style="min-width:52px"></b></div>'+
+   '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-weight:700">🎵 音調 <input type="range" id="vkPitch" min="0.8" max="1.5" step="0.05" value="'+(st.pitch||1.1)+'" style="flex:1"> <b id="vkPitchV" style="min-width:52px"></b></div>'+
+   '<div style="font-size:13px;color:#667">念慢一點、音調高一點，聽起來會比較柔和。這裡的設定，島嶼探險隊、魔法數學大冒險、九九乘法遊樂園會一起用（同一台裝置、同一個瀏覽器）。</div>'+
+   '<details style="margin-top:8px;font-size:14px"><summary style="font-weight:700;cursor:pointer">怎麼換成自然的臺灣口音？</summary><ul style="padding-left:20px;margin:6px 0">'+
+   '<li><b>Windows</b>：用 <b>Edge</b> 打開這個網頁，選「Microsoft HsiaoChen／HsiaoYu Online (Natural)」。</li>'+
+   '<li><b>Android</b>：設定 → 系統 → 語言 → 文字轉語音 → 引擎選 Google → 齒輪 → 安裝語音資料 → 下載「中文（臺灣）」，再把 Chrome 關掉重開。</li>'+
+   '<li><b>iPhone</b>：設定 → 輔助使用 → 朗讀內容 → 聲音 → 中文（臺灣）→ 下載「美佳（加強版）」，再重開這個網頁。</li>'+
+   '<li>標「大陸口音」的聲音盡量不要選。</li></ul></details>'+
+   '<div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px">'+
+   '<button id="vkReset" style="border:0;border-radius:12px;padding:8px 12px;background:#eee;font:inherit;font-weight:700;cursor:pointer">恢復建議值</button>'+
+   '<button id="vkTest" style="border:0;border-radius:12px;padding:8px 14px;background:#4cd18a;color:#fff;font:inherit;font-weight:800;cursor:pointer">▶ 試聽</button>'+
+   '<button id="vkClose" style="border:0;border-radius:12px;padding:8px 14px;background:#2d9cdb;color:#fff;font:inherit;font-weight:800;cursor:pointer">好了</button></div></div>';
+  document.body.appendChild(d);fill();setTimeout(fill,700);
+  d.onclick=function(e){if(e.target===d)d.remove()};
+  document.getElementById('vkClose').onclick=function(){d.remove()};
+  document.getElementById('vkTest').onclick=test;
+  document.getElementById('vkSel').onchange=function(e){st.voice=e.target.value;save();fill();test()};
+  document.getElementById('vkRate').oninput=function(e){st.rate=+e.target.value;save();fill()};
+  document.getElementById('vkPitch').oninput=function(e){st.pitch=+e.target.value;save();fill()};
+  document.getElementById('vkReset').onclick=function(){st.rate=0.9;st.pitch=1.1;save();document.getElementById('vkRate').value=0.9;document.getElementById('vkPitch').value=1.1;fill();test()}}
+ return {apply:apply,open:open,pick:pick,st:st};
+})();
+
+var SPEAKING=false;
+function duck(on){SPEAKING=on;try{if(!AC)return;if(on){musicStop(true);AC.suspend()}else if(!PAUSED){AC.resume().then(function(){if(S.music&&MU.want)musicPlay(MU.want)})}}catch(e){}}
+function say(t){try{var u=new SpeechSynthesisUtterance(t);VK.apply(u);duck(true);var done=function(){setTimeout(function(){duck(false)},500)};u.onend=done;u.onerror=done;setTimeout(function(){if(SPEAKING&&!speechSynthesis.speaking)duck(false)},12000);speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){duck(false)}}
+$('vkBtn').onclick=function(){VK.open()};
+// ---------- 音效與音樂 ----------
+var AC=null,PAUSED=false;
+function ac(){try{if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state=='suspended'&&!PAUSED&&!SPEAKING)AC.resume()}catch(e){}return AC}
+function tone(f,t0,d,type,vol,dest){var a=AC,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol,t0+.015);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(dest||a.destination);o.start(t0);o.stop(t0+d+.02)}
+function sfx(k){if(!S.sfx||PAUSED||SPEAKING)return;if(!ac())return;try{var notes={ok:[660,880],no:[262,196],win:[523,659,784,1046],buy:[784,988,1318],eat:[700,880],pop:[900],tick:[1200],flip:[520,660]}[k]||[440];
+ notes.forEach(function(f,i){tone(f,AC.currentTime+i*.1,k=='pop'||k=='tick'?.08:.16,k=='no'?'square':'triangle',k=='tick'?.05:k=='no'?.06:.13)})}catch(e){}}
+var SONGS={
+ park:{bpm:100,w:'triangle',mel:[72,0,74,76,79,0,76,74,72,0,67,0,69,72,74,0,76,0,79,81,79,76,74,72,74,0,72,0,0,0,0,0],bass:[48,55,52,55,53,57,55,50,48,55,52,55,43,50,48,48]},
+ quick:{bpm:126,w:'triangle',mel:[76,76,79,0,76,74,72,0,74,74,76,0,74,72,71,0,72,76,79,84,83,79,76,74,72,74,76,0,72,0,0,0],bass:[48,48,55,55,50,50,55,55,48,48,52,52,43,43,48,48]},
+ tank:{bpm:70,w:'sine',mel:[79,0,0,76,0,0,74,0,72,0,0,74,0,0,76,0,81,0,0,79,0,0,76,0,74,0,0,72,0,0,0,0],bass:[48,52,55,52,45,48,52,48,41,45,48,45,43,47,50,47]}};
+var MU={song:null,step:0,next:0,timer:null,gain:null,want:null};
+function mf(n){return 440*Math.pow(2,(n-69)/12)}
+function musicPlay(name){MU.want=name;if(!S.music||PAUSED||SPEAKING){musicStop(true);return}if(!AC||AC.state!='running'){return}if(MU.song==name&&MU.timer)return;musicStop(true);MU.want=name;
+ MU.song=name;MU.step=0;MU.next=AC.currentTime+.1;MU.gain=AC.createGain();MU.gain.gain.value=.35;MU.gain.connect(AC.destination);
+ MU.timer=setInterval(function(){if(PAUSED)return;var s=SONGS[MU.song],dt=60/s.bpm/2;if(MU.next<AC.currentTime)MU.next=AC.currentTime+.05;while(MU.next<AC.currentTime+.3){var m=s.mel[MU.step%s.mel.length],b=s.bass[Math.floor(MU.step/2)%s.bass.length];
+  if(m)tone(mf(m),MU.next,dt*.9,s.w,s.w=='sine'?.08:.06,MU.gain);if(MU.step%2==0)tone(mf(b),MU.next,dt*1.8,'sine',.05,MU.gain);MU.next+=dt;MU.step++}},80)}
+function musicStop(keepWant){if(MU.timer)clearInterval(MU.timer);MU.timer=null;MU.song=null;if(MU.gain){try{MU.gain.disconnect()}catch(e){}MU.gain=null}if(!keepWant)MU.want=null}
+var lastRAF=Date.now();(function raf(){lastRAF=Date.now();requestAnimationFrame(raf)})();
+function setPaused(p){if(p==PAUSED)return;PAUSED=p;try{if(AC){if(p)AC.suspend();else if(!SPEAKING)AC.resume()}}catch(e){}
+ if(p){musicStop(true);try{speechSynthesis.cancel()}catch(e){}}else if(S.music&&MU.want&&!SPEAKING)setTimeout(function(){musicPlay(MU.want)},100)}
+function hiddenNow(){return document.hidden||document.visibilityState=='hidden'||(Date.now()-lastRAF>800)}
+setInterval(function(){setPaused(hiddenNow())},400);
+document.addEventListener('visibilitychange',function(){setPaused(hiddenNow())});
+window.addEventListener('pagehide',function(){setPaused(true)});
+document.addEventListener('pointerdown',function(){lastRAF=Date.now();setPaused(false);ac();if(AC&&AC.state!='running'&&!SPEAKING){AC.resume().then(function(){if(S.music&&MU.want&&!MU.timer)musicPlay(MU.want)})}else if(S.music&&MU.want&&!MU.timer)musicPlay(MU.want)},{passive:true});
+function soundBtns(){$('musBtn').innerHTML='🎵 '+T('音樂：')+T(S.music?'開':'關');$('sfxBtn').innerHTML='🔊 '+T('音效：')+T(S.sfx?'開':'關')}
+$('musBtn').onclick=function(){S.music=!S.music;save();soundBtns();if(S.music){ac();musicPlay(MU.want||'park')}else musicStop(true)};
+$('sfxBtn').onclick=function(){S.sfx=!S.sfx;save();soundBtns();sfx('ok')};
+// ---------- 分頁 ----------
+document.querySelectorAll('nav button').forEach(function(b){b.onclick=function(){go(b.dataset.v)}});
+function go(v){document.querySelectorAll('nav button').forEach(function(x){x.classList.toggle('on',x.dataset.v==v)});
+ document.querySelectorAll('.view').forEach(function(x){x.classList.toggle('on',x.id=='v-'+v)});
+ if(v=='map')drawMap();if(v=='me')drawMe();musicPlay(v=='quick'&&$('quickPlay').style.display=='block'?'quick':'park');try{history.replaceState(null,'','#'+v)}catch(e){}window.scrollTo(0,0)}
+var zyOn=true;$('zyBtn').onclick=function(){zyOn=!zyOn;document.body.classList.toggle('nozy',!zyOn);$('zyBtn').innerHTML=zyOn?T('注音：開'):T('注音：關')};
+// ---------- 圖 ----------
+function groupsHTML(a,b){var cols=a<=4?2:3,s='<div class="dots">';for(var g=0;g<b;g++){s+='<div class="grp" style="grid-template-columns:repeat('+cols+',16px)">';for(var i=0;i<a;i++)s+='<span class="dot" style="background:'+COL[a]+'"></span>';s+='</div>'}return s+'</div>'}
+// ---------- 地圖 ----------
+var cur=[3,4];
+function mapHTML(clickable){var s='<tr><th style="background:#555">×</th>';for(var b=1;b<=9;b++)s+='<th style="background:'+COL[b]+'">'+b+'</th>';s+='</tr>';
+ for(var a=1;a<=9;a++){s+='<tr><th style="background:'+COL[a]+'">'+a+'</th>';for(var b=1;b<=9;b++){var lv=level(a,b);var c=(lv==2?'m2':lv==1?'m1':'')+(clickable&&cur[0]==a&&cur[1]==b?' cur':'')+(clickable&&(a==cur[0]&&b<cur[1]||b==cur[1]&&a<cur[0])?' hl':'');s+='<td class="'+c+'" data-a="'+a+'" data-b="'+b+'">'+(a*b)+'</td>'}s+='</tr>'}return s}
+function mapSayText(a,b){return a+'成'+b+'等於'+(a*b)+'，'+kjText(a,b)}
+function drawMap(){$('map').innerHTML=mapHTML(true);$('map').querySelectorAll('td').forEach(function(td){td.onclick=function(){cur=[+td.dataset.a,+td.dataset.b];drawMap();sfx('tick');say(mapSayText(cur[0],cur[1]))}});
+ var a=cur[0],b=cur[1],p=a*b;
+ var add=[];for(var i=0;i<b;i++)add.push(a);
+ $('detail').innerHTML='<div class="eqbig nz">'+a+' × '+b+' = '+p+'</div><div class="kjbig">'+KJ(a,b)+'</div>'+
+ '<div style="text-align:center">'+T('每盤有{a}個，有{b}盤',{a:a,b:b})+'</div>'+groupsHTML(a,b)+
+ '<div style="text-align:center" class="nz"><b>'+add.join(' + ')+' = '+p+'</b></div>'+
+ '<div style="text-align:center">'+T('{a}的{b}倍是{p}',{a:a,b:b,p:p})+'</div>'+
+ (a!=b?'<div class="hint">'+T('交換也一樣：{x}，答案還是{p}',{x:b+'×'+a,p:p})+'</div>':'')+
+ '<div style="text-align:center"><button class="btn w" id="mapSay">🔊 '+T('再念一次')+'</button></div>';
+ $('mapSay').onclick=function(){say(mapSayText(a,b))};
+}
+// ---------- 口訣卡 ----------
+var cardN=2,cardB=1,cardOrder=[];
+function picks(el,cb,curv,multi){var s='';for(var n=2;n<=9;n++)s+='<button class="pick'+(n==curv?' on':'')+'" data-n="'+n+'" style="background:'+COL[n]+'">'+n+'</button>';el.innerHTML=s;
+ el.querySelectorAll('.pick').forEach(function(p){p.onclick=function(){el.querySelectorAll('.pick').forEach(function(x){x.classList.remove('on')});p.classList.add('on');cb(+p.dataset.n)}})}
+function newCards(n){cardN=n;cardOrder=[1,2,3,4,5,6,7,8,9];cardB=0;showCard()}
+function showCard(){var b=cardOrder[cardB];$('card').classList.remove('flip');
+ setTimeout(function(){$('cardFront').textContent=cardN+' × '+b+' = ?';$('cardBackEq').textContent=cardN+' × '+b+' = '+(cardN*b);$('cardBackKj').innerHTML=KJ(cardN,b)},150);
+ $('cardTip').innerHTML=T('點我翻過來');$('cardInfo').innerHTML=T('第{i}張，共{n}張',{i:cardB+1,n:cardOrder.length})}
+$('card').onclick=function(){sfx('flip');$('card').classList.toggle('flip');if($('card').classList.contains('flip'))say(kjText(cardN,cardOrder[cardB]))};
+$('cardSay').onclick=function(){say(kjText(cardN,cardOrder[cardB]))};
+$('cardYes').onclick=function(){rec(cardN,cardOrder[cardB],true);nextCard(false)};
+$('cardNo').onclick=function(){rec(cardN,cardOrder[cardB],false);nextCard(true)};
+function nextCard(again){if(again)cardOrder.push(cardOrder[cardB]);cardB++;if(cardB>=cardOrder.length){addStars(1);celebrate();$('cardInfo').innerHTML=T('{n}的口訣練完了！得到1顆星星',{n:cardN});cardB=0;cardOrder=[1,2,3,4,5,6,7,8,9];setTimeout(showCard,1200)}else showCard()}
+picks($('cardPicks'),newCards,2);newCards(2);
+// ---------- 記憶魔法 ----------
+var TR={
+2:function(){return '<div class="hint">'+T('跳格子：一次跳兩格，答案都是雙數。')+'</div><div class="qeq nz" style="font-size:30px">2、4、6、8、10、12、14、16、18</div>'},
+5:function(){return '<div class="hint">'+T('看時鐘：分針走1大格是5分。答案的最後一個數字，不是5就是0。')+'</div>'+clock()},
+4:function(){return '<div class="hint">'+T('翻一倍：4是2的兩倍。先想2的答案，再加一次自己。')+'</div>'+doubleRows(2,4)},
+8:function(){return '<div class="hint">'+T('再翻一倍：8是4的兩倍。答案的最後一個數字是8、6、4、2、0，一直重複。')+'</div>'+doubleRows(4,8)},
+3:function(){return '<div class="hint">'+T('數字鍵盤：答案的最後一個數字是3、6、9，2、5、8，1、4、7。')+'</div>'+keypad()},
+6:function(){return '<div class="hint">'+T('翻一倍：6是3的兩倍。6乘雙數，答案的尾巴和乘數一樣。')+'</div>'+doubleRows(3,6)},
+9:function(){return '<div class="hint">'+T('手指頭魔法：點一根手指把它彎下去，左邊是十位，右邊是個位。')+'</div>'+fingers(3)},
+7:function(){return '<div class="hint">'+T('7的乘法你早就會一大半了！交換一下就是學過的句子，只有7×7=49是新的。')+'</div>'+
+  '<div class="opts nz">'+[1,2,3,4,5,6,8,9].map(function(b){return '<button>7×'+b+' = '+b+'×7 = '+(7*b)+'</button>'}).join('')+'<button class="right">7×7 = 49</button></div>'+
+  '<div class="hint">'+T('七七四十九：7個星期就是49天。')+'</div><div class="hint">'+T('七八五十六：5、6、7、8排好隊，56=7×8。')+'</div>'}
+};
+function clock(){var s='<svg viewBox="-110 -110 220 220" width="220" height="220" style="display:block;margin:auto"><circle r="100" fill="#fff" stroke="#eb5757" stroke-width="6"/>';
+ for(var i=1;i<=12;i++){var an=(i*30-90)*Math.PI/180;s+='<text x="'+(Math.cos(an)*78)+'" y="'+(Math.sin(an)*78+8)+'" text-anchor="middle" font-size="20" font-weight="800">'+i+'</text><text x="'+(Math.cos(an)*55)+'" y="'+(Math.sin(an)*55+6)+'" text-anchor="middle" font-size="14" fill="#eb5757" font-weight="800">'+(i*5)+'</text>'}
+ return s+'<line x1="0" y1="0" x2="0" y2="-70" stroke="#333" stroke-width="5" stroke-linecap="round"/></svg><p class="muted" style="text-align:center">'+T('紅色的數字就是5的乘法答案！')+'</p>'}
+function doubleRows(x,y){var s='<div class="nz" style="font-family:ui-monospace,Menlo,monospace;font-size:22px;font-weight:800;line-height:1.8;text-align:center">';
+ for(var b=1;b<=9;b++)s+=x+'×'+b+'='+(x*b)+' ➜ '+(x*b)+'+'+(x*b)+' = <span style="color:'+COL[y]+'">'+y+'×'+b+'='+(y*b)+'</span><br>';return s+'</div>'}
+function keypad(){var s='<div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;align-items:center"><div class="nz" style="display:grid;grid-template-columns:repeat(3,56px);gap:6px">';
+ '123456789'.split('').forEach(function(k){s+='<div style="height:56px;line-height:56px;text-align:center;font-size:26px;font-weight:900;border-radius:10px;border:3px solid #27ae60;background:#e9f8ef">'+k+'</div>'});
+ s+='</div><div class="nz" style="font-size:22px;font-weight:800;line-height:1.7">';for(var b=1;b<=9;b++)s+='3×'+b+' = '+(3*b)+'<br>';return s+'</div></div>'}
+function fingers(k){var s='<div class="fingers nz">';for(var i=1;i<=10;i++){if(i==6)s+='<span class="gap"></span>';s+='<span class="'+(i==k?'down':'')+'" data-f="'+i+'">'+i+'</span>'}
+ var L=k-1,R=10-k;s+='</div><div class="qeq nz" style="font-size:40px">9 × '+k+' = '+L+''+R+'</div><p style="text-align:center">'+T('左邊有{l}根，右邊有{r}根',{l:L,r:R})+'</p>';
+ setTimeout(function(){document.querySelectorAll('.fingers span[data-f]').forEach(function(f){f.onclick=function(){renderFingers(+f.dataset.f)}})},0);return s}
+function renderFingers(k){$('trickBody').innerHTML='<div class="kjbig" style="color:'+COL[9]+'">'+T('{n}的乘法',{n:9})+'</div><div class="hint">'+T('手指頭魔法：點一根手指把它彎下去，左邊是十位，右邊是個位。')+'</div>'+fingers(k)}
+function showTrick(n){$('trickBody').innerHTML='<div class="kjbig" style="color:'+COL[n]+'">'+T('{n}的乘法',{n:n})+'</div>'+TR[n]()}
+picks($('trickPicks'),showTrick,2);showTrick(2);
+// ---------- 數字鍵 ----------
+function makePad(el,onKey){var s='';[1,2,3,4,5,6,7,8,9].forEach(function(k){s+='<button data-k="'+k+'">'+k+'</button>'});s+='<button data-k="del">⌫</button><button data-k="0">0</button><button data-k="ok" class="ok">'+T('確定')+'</button>';el.innerHTML=s;
+ el.querySelectorAll('button').forEach(function(b){b.onclick=function(){onKey(b.dataset.k)}})}
+// ---------- 快問快答 ----------
+var Q={list:[],i:0,ok:0,inp:'',lock:false,t0:0};
+document.querySelectorAll('[data-set]').forEach(function(b){b.onclick=function(){startQuick(b.dataset.set)}});
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var QN=10;if(!S.adv)S.adv={};if(!S.qbest)S.qbest={};if(!S.qlv)S.qlv='b';
+var SETS=[['2,5,4,8','第7單元'],['3,6,7,9','第9單元'],['2,3,4,5,6,7,8,9','全部']];
+function lvDraw(){$('lvB').classList.toggle('sel',S.qlv=='b');$('lvA').classList.toggle('sel',S.qlv=='a');
+ $('lvInfo').innerHTML='<div class="lvList">'+SETS.map(function(x){var b=S.qbest[x[0]];return '<div>'+TT(x[1])+'：'+(S.adv[x[0]]?'<b style="color:#1a7a43">'+T('進階已打開')+'</b>':'🔒 '+T('進階還沒打開'))+(b?'　<span class="muted">'+T('初階最好：{s}秒答對{ok}題',{s:b.sec,ok:b.ok})+'</span>':'')+'</div>'}).join('')+'</div>';
+ document.querySelectorAll('[data-set]').forEach(function(bt){var st=bt.dataset.set;bt.classList.toggle('locked',S.qlv=='a'&&st!='wrong'&&!S.adv[st])})}
+$('lvB').onclick=function(){S.qlv='b';save();lvDraw()};$('lvA').onclick=function(){S.qlv='a';save();lvDraw()};
+function quickPool(set){var pool=[],seen={};function add(a,b){var k=a+'x'+b;if(!seen[k]){seen[k]=1;pool.push([a,b])}}
+ if(set=='wrong'){var ws=Object.keys(S.wrong);ws.forEach(function(k){var p=k.split('x');add(+p[0],+p[1])});
+  shuffle(ws.slice()).forEach(function(k){var a=+k.split('x')[0];for(var b=2;b<=9;b++)if(pool.length<QN)add(a,b)});
+  for(var a=2;a<=9&&pool.length<QN;a++)for(var b=2;b<=9&&pool.length<QN;b++)if(Math.random()<.5)add(a,b);
+  for(var a=2;a<=9&&pool.length<QN;a++)for(var b=2;b<=9&&pool.length<QN;b++)add(a,b);return pool}
+ set.split(',').forEach(function(a){for(var b=2;b<=9;b++)add(+a,b)});return pool}
+function startQuick(set){QN=S.qlv=='a'?20:10;
+ if(S.qlv=='a'&&set!='wrong'&&!S.adv[set]){go('quick');lvDraw();$('lvInfo').insertAdjacentHTML('afterbegin','<p class="fb bad">'+T('進階還沒打開：先在初階答對9題以上，而且60秒內完成！')+'</p>');sfx('no');return}
+ if(set=='wrong'&&!Object.keys(S.wrong).length){go('quick');$('quickSetup').insertAdjacentHTML('beforeend','<p class="fb good">'+T('錯題本是空的，太棒了！')+'</p>');return}
+ var pool=quickPool(set),last={};(S.lastQ||[]).forEach(function(k){last[k]=1});
+ var wrongFirst=set=='wrong'?pool.slice(0,Object.keys(S.wrong).length):[];
+ var rest=pool.slice(wrongFirst.length),fresh=shuffle(rest.filter(function(q){return !last[q[0]+'x'+q[1]]})),old=shuffle(rest.filter(function(q){return last[q[0]+'x'+q[1]]}));
+ var list=shuffle(wrongFirst).concat(fresh,old).slice(0,QN);
+ if(list.length<QN){var i=0;while(list.length<QN){list.push(list[i%list.length]);i++}}
+ Q.list=shuffle(list);Q.i=0;Q.ok=0;Q.t0=Date.now();Q.miss=[];Q.items=[];Q.set=set;
+ go('quick');$('quickSetup').style.display='none';$('quickEnd').style.display='none';$('quickPlay').style.display='block';musicPlay('quick');showQ()}
+function showQ(){var q=Q.list[Q.i];Q.inp='';Q.lock=false;Q.qt=Date.now();$('qA').textContent=q[0];$('qB').textContent=q[1];$('qIn').innerHTML='&nbsp;';$('qFb').innerHTML='';
+ $('qProg').style.width=(Q.i/Q.list.length*100)+'%';$('qCount').innerHTML=T('第{i}題，共{n}題',{i:Q.i+1,n:Q.list.length})}
+makePad($('qPad'),function(k){if(Q.lock)return;if(k=='del')Q.inp=Q.inp.slice(0,-1);else if(k=='ok'){checkQ();return}else if(Q.inp.length<2)Q.inp+=k;$('qIn').innerHTML=Q.inp||'&nbsp;'});
+document.addEventListener('keydown',function(e){if(!$('v-quick').classList.contains('on')||$('quickPlay').style.display=='none')return;if(/^[0-9]$/.test(e.key))$('qPad').querySelector('[data-k="'+e.key+'"]').click();if(e.key=='Backspace')$('qPad').querySelector('[data-k="del"]').click();if(e.key=='Enter')$('qPad').querySelector('[data-k="ok"]').click()});
+function checkQ(){if(!Q.inp)return;var q=Q.list[Q.i],p=q[0]*q[1];Q.lock=true;var ok=+Q.inp==p;rec(q[0],q[1],ok);Q.items.push([q[0],q[1],+Q.inp,ok?1:0,Date.now()-Q.qt]);sfx(ok?'ok':'no');
+ if(ok){Q.ok++;$('qFb').className='fb good';$('qFb').innerHTML=T('答對了！')+' '+KJ(q[0],q[1])}
+ else{Q.miss.push(q);$('qFb').className='fb bad';$('qFb').innerHTML=T('再想想，答案是{p}',{p:p})+'　'+KJ(q[0],q[1])}
+ setTimeout(function(){Q.i++;if(Q.i>=Q.list.length)endQuick();else showQ()},ok?900:2200)}
+function endQuick(){var sec=Math.round((Date.now()-Q.t0)/1000),n=Q.list.length,st=n==20?(Q.ok==n?3:Q.ok>=16?2:Q.ok>=10?1:0):(Q.ok==n?3:Q.ok>=8?2:Q.ok>=5?1:0);addStars(st);if(st==3)celebrate();if(st)sfx('win');
+ var lab={'2,5,4,8':'第7單元','3,6,7,9':'第9單元','2,3,4,5,6,7,8,9':'全部','wrong':'錯題'}[Q.set]||'';
+ var unlock=false,lvl=n==20?'進階':'初階';if(n==10&&Q.set!='wrong'){var bb=S.qbest[Q.set];if(!bb||Q.ok>bb.ok||(Q.ok==bb.ok&&sec<bb.sec))S.qbest[Q.set]={ok:Q.ok,sec:sec};if(Q.ok>=9&&sec<=60&&!S.adv[Q.set]){S.adv[Q.set]=1;unlock=true}}
+ S.hist.unshift({d:Date.now(),set:lab,lv:lvl,n:n,ok:Q.ok,sec:sec,st:st,it:Q.items});if(S.hist.length>50)S.hist.length=50;S.lastQ=Q.list.map(function(q){return q[0]+'x'+q[1]});save();musicPlay('park');
+ $('quickPlay').style.display='none';$('quickEnd').style.display='block';
+ $('quickEnd').innerHTML='<div class="bigstar nz">'+'⭐'.repeat(st)+'☆'.repeat(3-st)+'</div><p>'+T('{n}題答對{ok}題，花了{s}秒',{n:n,ok:Q.ok,s:sec})+'</p>'+(st?'<p>'+T('得到{st}顆星星，可以去魚缸買東西喔！',{st:st})+'</p>':'')+(unlock?'<p class="fb good">🎉 '+T('打開進階了！下次可以挑戰20題！')+'</p>':(n==10&&Q.set!='wrong'&&!S.adv[Q.set]?'<p class="muted">'+T('進階目標：答對9題以上、60秒內完成。')+'</p>':''))+
+ (Q.miss.length?'<p>'+T('要再練習的：')+'</p><div class="wrongs" style="justify-content:center">'+Q.miss.map(function(q){return '<span>'+q[0]+'×'+q[1]+'='+(q[0]*q[1])+'</span>'}).join('')+'</div>':'<p>'+T('全部答對，你是乘法魔法師！')+'</p>')+
+ '<p><button class="btn" id="qAgain">'+T('再玩一次')+'</button></p>';$('qAgain').onclick=function(){$('quickEnd').style.display='none';$('quickSetup').style.display='block'}}
+// ---------- 考試練習 ----------
+var E={list:[],i:0,ok:0,set:[]};
+document.querySelectorAll('[data-eset]').forEach(function(b){b.onclick=function(){startExam(b.dataset.eset.split(',').map(Number))}});
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function pickA(){return E.set[rnd(0,E.set.length-1)]}
+var WORD=[
+ ['一盒有{a}顆糖果，{b}盒一共有幾顆？','顆'],
+ ['每個小朋友有{a}張貼紙，{b}個小朋友一共有幾張？','張'],
+ ['一枝鉛筆{a}元，買{b}枝要付多少元？','元'],
+ ['每輛車坐{a}個人，{b}輛車可以坐幾個人？','人'],
+ ['媽媽買了{b}袋蘋果，每袋有{a}個。一共有幾個蘋果？','個'],
+ ['一隻小狗有4隻腳，{b}隻小狗一共有幾隻腳？','隻',4],
+ ['一隻章魚有8隻腳，{b}隻章魚一共有幾隻腳？','隻',8]];
+function genQ(type){var a=pickA(),b=rnd(2,9),p=a*b;
+ if(type=='pic'){b=rnd(2,5);p=a*b;return{kind:'opt',fact:[a,b],html:'<div class="qtext">'+T('每盤有{a}個，有{b}盤。乘法算式是哪一個？',{a:a,b:b})+'</div>'+groupsHTML(a,b),
+   opts:shuffle([[a+' × '+b+' = '+p,1],[b+' × '+a+' = '+p,'rev'],[a+' + '+b+' = '+(a+b),0]]),explain:T('每一份{a}個 × {b}份，寫成{x}',{a:a,b:b,x:a+'×'+b+'='+p})}}
+ if(type=='times')return{kind:'num',fact:[a,b],ans:p,html:'<div class="qtext">'+T('{a}的{b}倍是多少？',{a:a,b:b})+'</div>',explain:T('{a}的{b}倍就是{x}',{a:a,b:b,x:a+'×'+b+'='+p})};
+ if(type=='blank'){var left=Math.random()<.5;return{kind:'num',fact:[a,b],ans:left?a:b,html:'<div class="qtext">'+T('□ 裡要填多少？')+'</div><div class="qeq nz">'+(left?'□ × '+b:a+' × □')+' = '+p+'</div>',explain:T('想一想口訣：')+KJ(a,b)}}
+ if(type=='cmp'){var c,d;if(Math.random()<.35){c=b;d=a}
+   else{c=pickA();d=rnd(2,9)}var l=a*b,r=c*d,sym=l>r?'>':l<r?'<':'=';
+   return{kind:'opt',html:'<div class="qtext">'+T('○ 裡要填哪一個？')+'</div><div class="qeq nz" style="font-size:40px">'+a+'×'+b+' ○ '+c+'×'+d+'</div>',
+   opts:[['>',sym=='>'?1:0],['<',sym=='<'?1:0],['=',sym=='='?1:0]],explain:'<span class="nz">'+a+'×'+b+'='+l+'，'+c+'×'+d+'='+r+'</span>'}}
+ if(type=='seq'){var miss=rnd(2,4),arr=[];for(var i=1;i<=6;i++)arr.push(i==miss+1?'□':a*i);return{kind:'num',ans:a*(miss+1),fact:[a,miss+1],html:'<div class="qtext">'+T('□ 裡是多少？')+'</div><div class="qeq nz" style="font-size:36px">'+arr.join('、')+'</div>',explain:T('一次多{a}',{a:a})}}
+ // word
+ var w=WORD[rnd(0,WORD.length-1)];if(w[2])a=w[2];p=a*b;
+ return{kind:'opt',fact:[a,b],html:'<div class="qtext">'+T(w[0],{a:a,b:b})+'</div><p class="muted">'+T('選出正確的算式和答案')+'</p>',
+  opts:shuffle([[a+' × '+b+' = '+p,1],[b+' × '+a+' = '+p,'rev'],[a+' + '+b+' = '+(a+b),0]]),explain:T('先找「每」一份有幾個：{x}',{x:a+'×'+b+'='+p})}}
+function startExam(set){E.set=set;E.i=0;E.ok=0;var types=shuffle(['pic','times','blank','cmp','seq','word','word','blank']);E.list=types.map(genQ);
+ $('examSetup').style.display='none';$('examEnd').style.display='none';$('examPlay').style.display='block';showE()}
+function showE(){var q=E.list[E.i];$('eProg').style.width=(E.i/E.list.length*100)+'%';$('eCount').innerHTML=T('第{i}題，共{n}題',{i:E.i+1,n:E.list.length});$('eFb').innerHTML='';$('eNext').style.display='none';E.inp='';E.lock=false;
+ var h=q.html;
+ if(q.kind=='opt'){h+='<div class="opts nz">'+q.opts.map(function(o,i){return '<button data-i="'+i+'">'+o[0]+'</button>'}).join('')+'</div>'}
+ else{h+='<div class="qeq nz"><span class="ansshow" id="eIn">&nbsp;</span></div><div class="pad nz" id="ePad"></div>'}
+ $('eQ').innerHTML=h;
+ if(q.kind=='opt')$('eQ').querySelectorAll('.opts button').forEach(function(b){b.onclick=function(){if(E.lock)return;E.lock=true;var o=q.opts[+b.dataset.i];var ok=o[1]===1;
+   $('eQ').querySelectorAll('.opts button').forEach(function(x){if(q.opts[+x.dataset.i][1]===1)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+   finE(ok,o[1]=='rev'?T('順序反了！要寫「每一份 × 幾份」。'):'')}});
+ else makePad($('ePad'),function(k){if(E.lock)return;if(k=='del')E.inp=E.inp.slice(0,-1);else if(k=='ok'){if(!E.inp)return;E.lock=true;finE(+E.inp==q.ans,'');return}else if(E.inp.length<2)E.inp+=k;$('eIn').innerHTML=E.inp||'&nbsp;'})}
+function finE(ok,extra){var q=E.list[E.i];if(q.fact)rec(q.fact[0],q.fact[1],ok);if(ok)E.ok++;
+ $('eFb').className='fb '+(ok?'good':'bad');$('eFb').innerHTML=(ok?T('答對了！'):(extra||T('不對喔，再看一次：'))+(q.ans!=null?' '+T('答案是{p}',{p:q.ans}):''))+'<br>'+q.explain;
+ $('eNext').style.display='block'}
+$('eNextBtn').onclick=function(){E.i++;if(E.i>=E.list.length)endE();else showE()};
+function endE(){var st=E.ok==8?3:E.ok>=6?2:E.ok>=4?1:0;addStars(st);if(st==3)celebrate();$('examPlay').style.display='none';$('examEnd').style.display='block';
+ $('examEnd').innerHTML='<div class="bigstar nz">'+'⭐'.repeat(st)+'☆'.repeat(3-st)+'</div><p>'+T('8題答對{ok}題',{ok:E.ok})+'</p><p><button class="btn" id="eAgain">'+T('再玩一次')+'</button></p>';
+ $('eAgain').onclick=function(){$('examEnd').style.display='none';$('examSetup').style.display='block'}}
+// ---------- 我的星星 ----------
+function drawMe(){var n=0;for(var a=1;a<=9;a++)for(var b=1;b<=9;b++)if(level(a,b)==2)n++;
+ $('meSum').innerHTML='<div class="bigstar nz">⭐ '+S.stars+'</div><p>'+T('可以用的星星{a}顆，總共得過{b}顆',{a:S.stars,b:S.earned||0})+'</p><p>'+T('已經很熟的有{n}句，共81句',{n:n})+'</p>';drawHist();
+ $('meMap').innerHTML=mapHTML(false);var ks=Object.keys(S.wrong);
+ $('meWrong').innerHTML=ks.length?ks.map(function(k){var p=k.split('x');return '<span>'+p[0]+'×'+p[1]+'='+(p[0]*p[1])+'</span>'}).join(''):'<p class="muted">'+T('錯題本是空的，太棒了！')+'</p>'}
+$('meWrongGo').onclick=function(){startQuick('wrong')};
+function fmtD(t){var d=new Date(t);function p(n){return (n<10?'0':'')+n}return (d.getMonth()+1)+'/'+d.getDate()+' '+p(d.getHours())+':'+p(d.getMinutes())}
+function drawHist(){var H=S.hist||[];if(!H.length){$('meHist').innerHTML='<p class="muted">'+T('還沒有紀錄，玩一次快問快答就會出現。')+'</p>';return}
+ var h='<table class="hist"><tr><th>'+T('日期')+'</th><th>'+T('範圍')+'</th><th>'+T('答對')+'</th><th>'+T('時間')+'</th><th>'+T('平均每題')+'</th></tr>';
+ H.forEach(function(r,i){h+='<tr class="r" data-h="'+i+'"><td class="nz">'+fmtD(r.d)+'</td><td>'+TT(r.set)+(r.lv?' '+TT(r.lv):'')+'</td><td class="nz">'+r.ok+'/'+r.n+(r.st?' '+'⭐'.repeat(r.st):'')+'</td><td class="nz">'+r.sec+T('秒')+'</td><td class="nz">'+(r.sec/r.n).toFixed(1)+T('秒')+'</td></tr><tr class="d" id="hd'+i+'" style="display:none"><td colspan="5" class="hdet"></td></tr>'});
+ $('meHist').innerHTML=h+'</table>';
+ $('meHist').querySelectorAll('tr.r').forEach(function(tr){tr.onclick=function(){var i=+tr.dataset.h,r=H[i],row=$('hd'+i);if(row.style.display!='none'){row.style.display='none';return}
+  var wr=r.it.filter(function(x){return !x[3]}),sl=r.it.slice().sort(function(a,b){return b[4]-a[4]}).slice(0,3);
+  var c=row.firstChild;c.innerHTML='<b>'+T('答錯的題目：')+'</b>'+(wr.length?wr.map(function(x){return '<span class="w nz">'+x[0]+'×'+x[1]+'</span>'+T('填了{a}，正確是{b}',{a:x[2],b:x[0]*x[1]})}).join('　'):T('沒有，全部答對！'))+
+   '<br><b>'+T('最慢的三題：')+'</b><span class="nz">'+sl.map(function(x){return x[0]+'×'+x[1]+'（'+(x[4]/1000).toFixed(1)+'s）'}).join('　')+'</span>'+
+   '<br><b>'+T('每一題：')+'</b><span class="nz">'+r.it.map(function(x){return (x[3]?'':'❌')+x[0]+'×'+x[1]+' '+(x[4]/1000).toFixed(1)+'s'}).join('、')+'</span>';row.style.display=''}})}
+$('tankGo').onclick=function(){openTank()};
+var tankArm=false;$('tankReset').onclick=function(){if(!tankArm){tankArm=true;$('tankReset').innerHTML=T('魚缸裡的魚和裝飾都會不見，再按一次');setTimeout(function(){tankArm=false;$('tankReset').innerHTML=T('清空魚缸')},3000);return}
+ S.tank={fish:[],deco:{},food:0,nid:1,gift:1};save();tankArm=false;$('tankReset').innerHTML=T('清空魚缸')};
+var resetArm=false;$('meReset').onclick=function(){if(!resetArm){resetArm=true;$('meReset').innerHTML=T('真的要清除嗎？再按一次');setTimeout(function(){resetArm=false;$('meReset').innerHTML=T('全部清除重來')},3000);return}
+ S={stars:0,facts:{},wrong:{},earned:0,hist:[],music:S.music,sfx:S.sfx,tank:S.tank};save();drawMe();resetArm=false;$('meReset').innerHTML=T('全部清除重來')};
+// ---------- 我的魚缸（3D） ----------
+var FISH=[
+ {k:'gold',n:'金魚',p:5,c:'#f08a3c'},
+ {k:'clown',n:'小丑魚',p:8,c:'#ee7a2e'},
+ {k:'tang',n:'藍倒吊',p:10,c:'#3b6fc4'},
+ {k:'angel',n:'神仙魚',p:12,c:'#e8e4d8'},
+ {k:'puffer',n:'河豚',p:15,c:'#e6cf7a'},
+ {k:'eel',n:'花園鰻',p:10,c:'#efe6d0'},
+ {k:'horse',n:'海馬',p:15,c:'#e8a85a'},
+ {k:'octo',n:'小章魚',p:18,c:'#e58a8a'},
+ {k:'crab',n:'小螃蟹',p:12,c:'#e8553e'},
+ {k:'turtle',n:'海龜',p:25,c:'#6b8a4a'}];
+var DECO=[
+ {k:'lamp',n:'魚缸燈',p:30,c:'#fff3b0',g:'燈光'},
+ {k:'mountain',n:'假山',p:20,c:'#bcc2c8',g:'中國風造景'},
+ {k:'bridge',n:'拱橋',p:18,c:'#ecebe4',g:'中國風造景'},
+ {k:'fisher',n:'釣魚老爺爺',p:12,c:'#e2c46e',g:'中國風造景'},
+ {k:'cottage',n:'石頭小屋',p:15,c:'#cfc6b8',g:'中國風造景'},
+ {k:'watermill',n:'水車小屋',p:18,c:'#f5dc7a',g:'中國風造景'},
+ {k:'grassmat',n:'草皮地毯',p:10,c:'#5cc84a',g:'中國風造景'},
+ {k:'path',n:'白石子小路',p:8,c:'#ffffff',g:'中國風造景'},
+ {k:'boulder',n:'大鵝卵石',p:8,c:'#b38b68',g:'中國風造景'},
+ {k:'bush',n:'綠色水草叢',p:10,c:'#7ed957',g:'中國風造景'},
+ {k:'redcoral',n:'紅珊瑚',p:12,c:'#ff5a3c',g:'海底風'},
+ {k:'brain',n:'腦珊瑚',p:10,c:'#e9a75a',g:'海底風'},
+ {k:'fan',n:'紫色海扇',p:12,c:'#c27ae6',g:'海底風'},
+ {k:'starfish',n:'海星',p:6,c:'#ff7a3c',g:'海底風'},
+ {k:'shell',n:'貝殼',p:6,c:'#f6d9c9',g:'海底風'},
+ {k:'conch',n:'海螺',p:6,c:'#f2c79a',g:'海底風'},
+ {k:'arch',n:'岩石拱門',p:20,c:'#8f8378',g:'海底風'},
+ {k:'coral',n:'彩虹珊瑚',p:12,c:'#ff6b9a',g:'海底風'},
+ {k:'pebble',n:'彩色石頭',p:8,c:'#b57bff',g:'其他'},
+ {k:'chest',n:'寶箱',p:15,c:'#c8862e',g:'其他'},
+ {k:'diver',n:'潛水員',p:15,c:'#e0a84a',g:'其他'},
+ {k:'castle',n:'城堡',p:20,c:'#9aa5b1',g:'其他'},
+ {k:'ship',n:'沉船',p:25,c:'#8a5a2b',g:'其他'}];
+var DEFPOS={castle:[5,-2.6,0],chest:[-2,2.3,0],diver:[3.2,-1.6,0],ship:[-1.2,-3.0,.4],coral:[6.4,2.2,0],mountain:[-6,-2.9,0],bridge:[.6,-.6,0],fisher:[2.6,.9,-.6],cottage:[5.4,.2,-.4],watermill:[-3.6,-1.4,.4],
+ boulder:[-4.6,2.7,0],bush:[7,-1.3,0],redcoral:[-6.8,1,0],brain:[4,2.7,0],fan:[6.9,-3,0],starfish:[1.6,3,0],shell:[-.6,3.1,0],conch:[3.2,3.3,0],arch:[-3.4,.9,0]};
+var YOFF={castle:-.15,chest:-.1,ship:-.2,mountain:-.1,arch:-.15,bridge:-.05,boulder:0,starfish:0,shell:-.05,conch:.05};
+var NOMOVE={lamp:1,pebble:1,grassmat:1,path:1};
+var LAMP_N=['白光','藍光','彩虹','夜燈'];
+var FOODSEL=1,MOVING=false;
+var FISH_MAX=12,FOOD_PER_STAR=5,TANK_IMG={};
+function fishDef(k){for(var i=0;i<FISH.length;i++)if(FISH[i].k==k)return FISH[i]}
+function decoDef(k){for(var i=0;i<DECO.length;i++)if(DECO[i].k==k)return DECO[i]}
+function tankState(){if(!S.tank)S.tank={fish:[],deco:{},food:0,nid:1};var T0=S.tank;if(!T0.deco)T0.deco={};if(!T0.fish)T0.fish=[];if(!T0.nid)T0.nid=1;if(T0.food2==null)T0.food2=5;if(!T0.pos)T0.pos={};if(T0.lampMode==null)T0.lampMode=0;
+ var now=Date.now();T0.fish.forEach(function(f){var h=(now-(f.t||now))/3600000;f.love=Math.max(10,Math.round((f.love==null?80:f.love)-h*3));f.t=now});return T0}
+function fishName(f){return f.name?esc(f.name):TT(fishDef(f.k).n)}
+var THREE_P=null;
+function loadThree(){if(THREE_P)return THREE_P;
+ var tryImp=function(u,ms){return Promise.race([import(u),new Promise(function(_,rj){setTimeout(function(){rj(new Error('timeout'))},ms)})])};
+ THREE_P=tryImp('./three.module.min.js',8000).catch(function(){return tryImp('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js',15000)})
+  .then(function(m){if(!m||!m.WebGLRenderer)throw new Error('no three');return m});
+ THREE_P.catch(function(){THREE_P=null});return THREE_P}
+var TK=null;
+function openTank(){var st=tankState();
+ if(!st.gift){st.gift=1;st.fish.push({id:st.nid++,k:'gold',name:'',love:80,t:Date.now()});st.food+=10;save();
+  setTimeout(function(){tankMsg(T('送你一隻金魚和10份飼料！點水面就可以餵魚喔！'))},1200)}
+ $('tank').hidden=false;document.body.style.overflow='hidden';musicPlay('tank');tankBar();
+ $('tankView').innerHTML='<div class="tkload">'+T('魚缸準備中…')+'</div>';
+ loadThree().then(function(THREE){if($('tank').hidden)return;buildTank(THREE)}).catch(function(){
+  $('tankView').innerHTML='<div class="tkload">'+T('這台裝置沒辦法顯示3D魚缸，請換一個瀏覽器試試看。')+'</div>'})}
+function closeTank(){MOVING=false;$('movePanel').hidden=true;$('tank').classList.remove('moving');$('tank').hidden=true;document.body.style.overflow='';$('shop').hidden=true;$('fishInfo').hidden=true;
+ if(TK){TK.alive=false;try{TK.renderer.dispose();TK.renderer.forceContextLoss()}catch(e){}TK=null}$('tankView').innerHTML='';
+ save();musicPlay('park');drawMe()}
+function tankBar(){var st=tankState();$('tkStars').textContent=S.stars;$('tkFood').textContent=st.food;$('tkFood2').textContent=st.food2;$('tkCount').textContent=st.fish.length+'/'+FISH_MAX;
+ $('tkF1').classList.toggle('on',FOODSEL==1);$('tkF2').classList.toggle('on',FOODSEL==2);$('tkLamp').hidden=!st.deco.lamp;$('tkMove').classList.toggle('on',MOVING);$('tkMove').innerHTML=MOVING?'✅ '+T('完成'):'✋ '+T('擺放')}
+function tankMsg(h){var m=$('tkMsg');m.innerHTML=h;m.classList.add('on');clearTimeout(tankMsg.t);tankMsg.t=setTimeout(function(){m.classList.remove('on')},3200)}
+function heartBar(v){var n=Math.round(v/20);return '<span class="nz">'+'❤️'.repeat(n)+'🤍'.repeat(5-n)+'</span>'}
+
+function buildTank(THREE){
+ var el=$('tankView');el.innerHTML='';
+ var W=16,H=9,D=8,X0=-W/2,X1=W/2,Z0=-D/2,Z1=D/2;
+ var renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(2,window.devicePixelRatio||1));
+ renderer.outputColorSpace=THREE.SRGBColorSpace;el.appendChild(renderer.domElement);
+ var scene=new THREE.Scene();
+ var bg=document.createElement('canvas');bg.width=4;bg.height=256;var g2=bg.getContext('2d'),gr=g2.createLinearGradient(0,0,0,256);
+ function bgTex(cs){var c=document.createElement('canvas');c.width=4;c.height=256;var x=c.getContext('2d'),g=x.createLinearGradient(0,0,0,256);cs.forEach(function(p){g.addColorStop(p[0],p[1])});x.fillStyle=g;x.fillRect(0,0,4,256);var t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+ var BG={day:bgTex([[0,'#eefaff'],[.35,'#a6def5'],[.75,'#4fb0e0'],[1,'#2a86c4']]),blue:bgTex([[0,'#bfe6ff'],[.4,'#5fb4ec'],[.8,'#2a7fd0'],[1,'#164f9a']]),night:bgTex([[0,'#20406a'],[.5,'#10284a'],[1,'#06142a']])};
+ gr.addColorStop(0,'#eefaff');gr.addColorStop(1,'#2a86c4');g2.fillStyle=gr;g2.fillRect(0,0,4,256);
+ var bgt=BG.day;scene.background=bgt;var mainScene=scene;
+ scene.fog=new THREE.Fog(0x9ad6f0,16,40);
+ var camera=new THREE.PerspectiveCamera(45,1,.1,200);
+ var hemi=new THREE.HemisphereLight(0xffffff,0x7fb6c8,1.55);scene.add(hemi);
+ var sun=new THREE.DirectionalLight(0xffffff,1.45);sun.position.set(3,14,6);scene.add(sun);
+ var pl=new THREE.PointLight(0xffffff,.6,30);pl.position.set(-4,7,3);scene.add(pl);
+ var M=function(c,o){return new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.6,flatShading:true},o||{}))};
+ var mesh=function(geo,mat){return new THREE.Mesh(geo,mat)};
+ var anim=[],clickable=[];
+ // 背板與側邊
+ var glass=mesh(new THREE.BoxGeometry(W,H,D),new THREE.MeshStandardMaterial({color:0xdff3f0,transparent:true,opacity:.07,roughness:.05,metalness:0,side:THREE.DoubleSide,depthWrite:false}));glass.position.y=H/2;glass.renderOrder=5;scene.add(glass);
+ // 沙底
+ function sandH(x,z){var back=(Z1-z)/D;return .35+back*back*1.1+Math.sin(x*.45+1.3)*.22*back+Math.cos(x*.9+z*.6)*.12+Math.sin(x*3.1+z*1.7)*.03+Math.exp(-((x+4.5)*(x+4.5)+(z+2.2)*(z+2.2))/6)*.55+Math.exp(-((x-3.5)*(x-3.5)+(z+2.6)*(z+2.6))/5)*.45}
+ var stc=document.createElement('canvas');stc.width=stc.height=256;var sx=stc.getContext('2d');sx.fillStyle='#f1e6cf';sx.fillRect(0,0,256,256);
+ for(var i=0;i<9000;i++){var v=Math.random();sx.fillStyle=v<.5?'rgba(255,255,250,.7)':v<.82?'rgba(205,185,150,.45)':v<.94?'rgba(160,140,115,.4)':'rgba(255,240,220,.9)';var r0=Math.random()*1.6+.4;sx.fillRect(Math.random()*256,Math.random()*256,r0,r0)}
+ var sandT=new THREE.CanvasTexture(stc);sandT.wrapS=sandT.wrapT=THREE.RepeatWrapping;sandT.repeat.set(4,2);sandT.colorSpace=THREE.SRGBColorSpace;
+ var sandM=new THREE.MeshStandardMaterial({map:sandT,roughness:.95,color:0xffffff});
+ var sg=new THREE.PlaneGeometry(W-.02,D-.02,96,48);sg.rotateX(-Math.PI/2);var sp=sg.attributes.position;
+ for(var i=0;i<sp.count;i++){sp.setY(i,sandH(sp.getX(i),sp.getZ(i)))}sg.computeVertexNormals();
+ var sand=mesh(sg,sandM);scene.add(sand);
+ // 沙的側面（從玻璃看得到一層一層的沙）
+ var skc=document.createElement('canvas');skc.width=64;skc.height=128;var kx=skc.getContext('2d');var sgr=kx.createLinearGradient(0,0,0,128);sgr.addColorStop(0,'#efe2c6');sgr.addColorStop(.5,'#b9a17a');sgr.addColorStop(1,'#8f7a5c');kx.fillStyle=sgr;kx.fillRect(0,0,64,128);
+ for(var i=0;i<1400;i++){kx.fillStyle=Math.random()<.5?'rgba(255,250,235,.5)':'rgba(90,70,50,.45)';kx.fillRect(Math.random()*64,Math.random()*128,1.4,1.4)}
+ var skT=new THREE.CanvasTexture(skc);skT.wrapS=THREE.RepeatWrapping;skT.colorSpace=THREE.SRGBColorSpace;var skM=new THREE.MeshStandardMaterial({map:skT,roughness:1,side:THREE.DoubleSide});
+ function skirt(pts){var pos=[],uv=[],idx=[];pts.forEach(function(p,i){pos.push(p[0],0,p[1],p[0],sandH(p[0],p[1]),p[1]);var u=i/(pts.length-1)*6;uv.push(u,0,u,1);if(i){var a=(i-1)*2;idx.push(a,a+2,a+1,a+1,a+2,a+3)}});
+  var g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();scene.add(mesh(g,skM))}
+ var N0=60,fx=[],bx=[],lz=[],rz=[];for(var i=0;i<=N0;i++){var x=X0+.01+(W-.02)*i/N0;fx.push([x,Z1-.01]);bx.push([x,Z0+.01])}for(var i=0;i<=30;i++){var z=Z0+.01+(D-.02)*i/30;lz.push([X0+.01,z]);rz.push([X1-.01,z])}
+ skirt(fx);skirt(bx);skirt(lz);skirt(rz);
+ // 自然的小石子
+ (function(){var geo=new THREE.DodecahedronGeometry(.13,0),n=160,im=new THREE.InstancedMesh(geo,new THREE.MeshStandardMaterial({roughness:.9,flatShading:true}),n),m4=new THREE.Matrix4(),q=new THREE.Quaternion(),c=new THREE.Color(),cols=[0x9a8f80,0x7d7466,0xb8ab95,0x6d665c,0xc9bca5,0x8a7a66];
+  for(var i=0;i<n;i++){var x=X0+.4+Math.random()*(W-.8),z=Z0+.4+Math.random()*(D-.8),sc=.5+Math.random()*1.3;q.setFromEuler(new THREE.Euler(Math.random()*3,Math.random()*3,0));m4.compose(new THREE.Vector3(x,sandH(x,z)+.03,z),q,new THREE.Vector3(sc,sc*.6,sc));im.setMatrixAt(i,m4);im.setColorAt(i,c.setHex(cols[i%cols.length]))}scene.add(im)})();
+ // 光紋（caustics）
+ var cc=document.createElement('canvas');cc.width=cc.height=256;var cx=cc.getContext('2d');cx.strokeStyle='rgba(255,250,235,.5)';cx.lineWidth=3;
+ for(var k=0;k<60;k++){cx.beginPath();var px=Math.random()*256,py=Math.random()*256;cx.moveTo(px,py);for(var s2=0;s2<4;s2++){px+=(Math.random()-.5)*60;py+=(Math.random()-.5)*60;cx.lineTo(px,py)}cx.stroke()}
+ var ct=new THREE.CanvasTexture(cc);ct.wrapS=ct.wrapT=THREE.RepeatWrapping;ct.repeat.set(3,1.6);
+ var caus=mesh(sg,new THREE.MeshBasicMaterial({map:ct,transparent:true,opacity:.28,blending:THREE.AdditiveBlending,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2}));scene.add(caus);
+ anim.push(function(t){ct.offset.set(t*.02,Math.sin(t*.3)*.05)});
+ // 光束
+ var RAYK=1;
+ for(var r=0;r<5;r++){var rc=document.createElement('canvas');rc.width=32;rc.height=128;var rx=rc.getContext('2d'),rg=rx.createLinearGradient(0,0,0,128);rg.addColorStop(0,'rgba(255,255,255,.35)');rg.addColorStop(1,'rgba(255,255,255,0)');rx.fillStyle=rg;rx.fillRect(0,0,32,128);
+  var rt=new THREE.CanvasTexture(rc);var ray=mesh(new THREE.PlaneGeometry(1.2+Math.random(),H*1.2),new THREE.MeshBasicMaterial({map:rt,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));
+  ray.position.set(-6+r*3+Math.random(),H*.55,-1.5+Math.random()*2);ray.rotation.z=.25;scene.add(ray);(function(ray,ph){anim.push(function(t){ray.material.opacity=(.4+Math.sin(t*.7+ph)*.18)*RAYK})})(ray,r)}
+ // 水面
+ var wg=new THREE.PlaneGeometry(W,D,32,16);wg.rotateX(-Math.PI/2);var wpos=wg.attributes.position;
+ var water=mesh(wg,new THREE.MeshStandardMaterial({color:0xe8fbff,transparent:true,opacity:.3,roughness:.1,side:THREE.DoubleSide,depthWrite:false}));water.position.y=H;scene.add(water);
+ anim.push(function(t){for(var i=0;i<wpos.count;i++){var x=wpos.getX(i),z=wpos.getZ(i);wpos.setY(i,Math.sin(x*.8+t*1.6)*.08+Math.cos(z*1.1+t*1.2)*.06)}wpos.needsUpdate=true});
+ // 魚缸外框
+ var fr=M(0x2e3438,{roughness:.35,flatShading:false}),E=.18;
+ [Z0,Z1].forEach(function(z){[[0,H,z,W+E*2,E,E],[0,0,z,W+E*2,E,E],[X0,H/2,z,E,H,E],[X1,H/2,z,E,H,E]].forEach(function(b){var m=mesh(new THREE.BoxGeometry(b[3],b[4],b[5]),fr);m.position.set(b[0],b[1],b[2]);scene.add(m)})});
+ [X0,X1].forEach(function(x){[H,0].forEach(function(y){var m=mesh(new THREE.BoxGeometry(E,E,D),fr);m.position.set(x,y,0);scene.add(m)})});
+ var stand=mesh(new THREE.BoxGeometry(W+1.5,1.2,D+1),M(0x7a5a3e,{flatShading:false,roughness:.7}));stand.position.set(0,-.9,0);scene.add(stand);
+ // 石頭
+ [[-6.5,-3,1.4],[-3.5,-3.2,1],[4,-3.1,1.2],[6.8,-2.6,.9],[0,-3.3,.8]].forEach(function(r){var m=mesh(new THREE.DodecahedronGeometry(r[2],1),M(0xa49a8e,{roughness:.9}));m.scale.y=.75;m.position.set(r[0],sandH(r[0],r[1])+r[2]*.25,r[1]);m.rotation.set(Math.random(),Math.random(),0);scene.add(m)});
+ // 水草（會搖）
+ function weed(x,z,h,col){var root=new THREE.Group();root.position.set(x,sandH(x,z)-.05,z);scene.add(root);var parent=root,segs=[];var n=Math.round(h/.55);
+  for(var i=0;i<n;i++){var s=new THREE.Group();s.position.y=i?.55:0;var leaf=mesh(new THREE.BoxGeometry(.32-i*.015,.6,.08),M(col));leaf.position.y=.3;s.add(leaf);parent.add(s);parent=s;segs.push(s)}
+  var ph=Math.random()*6;anim.push(function(t){segs.forEach(function(s,i){s.rotation.z=Math.sin(t*1.2+ph+i*.5)*.12;s.rotation.x=Math.cos(t*.9+ph+i*.4)*.06})})}
+ [[-7,-2.8,6,0x4cbf5c],[-6.2,-2.2,4.5,0x6fd16a],[-1.5,-3.2,5,0x3fae55],[1,-2.9,3.5,0x8fdc6a],[3.2,-3.3,6.5,0x37a050],[7.2,-1.5,4,0x5cc866],[-4,-1,2.8,0x9be36b],[5.5,-3.4,5.5,0x45b860],[-2.6,-2.4,3.2,0xe0704a],[6.4,-2.9,3.6,0xd9a040]].forEach(function(w){weed(w[0],w[1],w[2],w[3])});
+ // 海葵（小丑魚的家）
+ var anem=new THREE.Group();anem.position.set(-5,sandH(-5,1)-.1,1);scene.add(anem);var base=mesh(new THREE.CylinderGeometry(.7,.9,.5,10),M(0xff8fb0));base.position.y=.25;anem.add(base);var tents=[];
+ for(var a=0;a<22;a++){var tt=new THREE.Group();var an=a/22*Math.PI*2,rr=.25+Math.random()*.45;tt.position.set(Math.cos(an)*rr,.45,Math.sin(an)*rr);var tm=mesh(new THREE.CylinderGeometry(.05,.07,1,5),M(a%2?0xffb6cc:0xff9fbe));tm.position.y=.5;tt.add(tm);var tip=mesh(new THREE.SphereGeometry(.08,6,5),M(0xfff0f8));tip.position.y=1;tt.add(tip);anem.add(tt);tents.push([tt,an])}
+ anim.push(function(t){tents.forEach(function(p,i){p[0].rotation.x=Math.sin(t*1.5+i)*.25;p[0].rotation.z=Math.cos(t*1.3+i*.7)*.25})});
+ // 打氣機泡泡
+ var bubs=[],bm=new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.55,roughness:.1});
+ function bubble(x,y,z,r){var b=mesh(new THREE.SphereGeometry(r||(.06+Math.random()*.1),8,6),bm);b.position.set(x,y,z);b.userData={x:x,z:z,sp:.8+Math.random()*.8,ph:Math.random()*6};scene.add(b);bubs.push(b);return b}
+ var stoneY=sandH(7,-3.2);var stone=mesh(new THREE.CylinderGeometry(.35,.4,.3,8),M(0x6a7f8f));stone.position.set(7,stoneY+.1,-3.2);scene.add(stone);
+ anim.push(function(t,dt){if(Math.random()<.18)bubble(7+(Math.random()-.5)*.2,stoneY+.3,-3.2+(Math.random()-.5)*.2);
+  for(var i=bubs.length-1;i>=0;i--){var b=bubs[i],u=b.userData;b.position.y+=u.sp*dt*1.6;b.position.x=u.x+Math.sin(t*3+u.ph)*.12;if(b.position.y>H){scene.remove(b);b.geometry.dispose();bubs.splice(i,1)}}});
+ // 裝飾
+ var decoMade={},decoObjs={},decoClick=[];
+ function jitter(geo,a){var p=geo.attributes.position;for(var i=0;i<p.count;i++){p.setXYZ(i,p.getX(i)+(Math.random()-.5)*a,p.getY(i)+(Math.random()-.5)*a,p.getZ(i)+(Math.random()-.5)*a)}geo.computeVertexNormals();return geo}
+ function makeDeco(k){if(decoMade[k])return;decoMade[k]=1;var g=new THREE.Group();scene.add(g);
+  if(k=='castle'){g.position.set(4.6,sandH(4.6,-2.4)-.15,-2.4);var stoneM=M(0xd6d0c4),roofM=M(0xe86f78);
+   [[0,0,1.2,2.6],[-1.3,0,.6,1.9],[1.3,0,.6,1.9]].forEach(function(c){var tw=mesh(new THREE.CylinderGeometry(c[2],c[2]*1.05,c[3],10),stoneM);tw.position.set(c[0],c[3]/2,c[1]);g.add(tw);var rf=mesh(new THREE.ConeGeometry(c[2]*1.2,c[2]*1.6,10),roofM);rf.position.set(c[0],c[3]+c[2]*.8,c[1]);g.add(rf)});
+   var door=mesh(new THREE.CircleGeometry(.45,12),M(0x2b3440));door.position.set(0,.5,1.21);g.add(door);
+   anim.push(function(){if(Math.random()<.04)bubble(g.position.x,g.position.y+2.8,g.position.z)})}
+  if(k=='chest'){g.position.set(-1.8,sandH(-1.8,2)-.1,2);var box=mesh(new THREE.BoxGeometry(1.6,.8,1),M(0x9a5b22));box.position.y=.4;g.add(box);
+   var band=M(0xffd23f,{metalness:.6,roughness:.3});[-.55,.55].forEach(function(x){var b=mesh(new THREE.BoxGeometry(.12,.84,1.04),band);b.position.set(x,.4,0);g.add(b)});
+   var lid=new THREE.Group();lid.position.set(0,.8,-.5);g.add(lid);var lm=mesh(new THREE.CylinderGeometry(.5,.5,1.6,10,1,false,0,Math.PI),M(0xa8652a));lm.rotation.z=Math.PI/2;lm.position.z=.5;lid.add(lm);
+   var gold=mesh(new THREE.SphereGeometry(.35,8,6),M(0xffd23f,{metalness:.7,roughness:.25,emissive:0x664400}));gold.position.y=.75;g.add(gold);
+   anim.push(function(t){var o=Math.max(0,Math.sin(t*.5));lid.rotation.x=-o*.9;if(o>.95&&Math.random()<.3)bubble(g.position.x,g.position.y+1,g.position.z)})}
+  if(k=='diver'){g.position.set(2.2,sandH(2.2,-1.6)-.05,-1.6);var suit=M(0x3d5f8a),brass=M(0xe0a84a,{metalness:.6,roughness:.3});
+   var body=mesh(new THREE.BoxGeometry(.8,1,.5),suit);body.position.y=.9;g.add(body);[-.22,.22].forEach(function(x){var leg=mesh(new THREE.BoxGeometry(.3,.6,.35),suit);leg.position.set(x,.3,0);g.add(leg)});
+   var helm=mesh(new THREE.SphereGeometry(.5,12,10),brass);helm.position.y=1.75;g.add(helm);var win=mesh(new THREE.CircleGeometry(.25,12),M(0x9fe8ff,{emissive:0x226688}));win.position.set(0,1.75,.49);g.add(win);
+   anim.push(function(t){g.rotation.y=(g.userData.ry||0)+Math.sin(t*.4)*.3;if(Math.random()<.06)bubble(g.position.x,g.position.y+2.3,g.position.z)})}
+  if(k=='pebble'){var cols=[0xff8a7a,0xffd36a,0x7fc8ee,0xb79af0,0x7fd69a,0xff9fc8,0xffffff],geo=new THREE.SphereGeometry(.18,7,5),im=new THREE.InstancedMesh(geo,new THREE.MeshStandardMaterial({roughness:.5}),70),m4=new THREE.Matrix4(),q=new THREE.Quaternion(),c=new THREE.Color();
+   for(var i=0;i<70;i++){var px2=-7+Math.random()*14,pz2=1+Math.random()*2.7;m4.compose(new THREE.Vector3(px2,sandH(px2,pz2)+.05,pz2),q,new THREE.Vector3(1,.55,1));im.setMatrixAt(i,m4);im.setColorAt(i,c.setHex(cols[i%cols.length]))}g.add(im)}
+  if(k=='ship'){g.position.set(-5.4,sandH(-5.4,-2.6)-.2,-2.6);g.rotation.set(0,.4,.18);var hull=mesh(new THREE.BoxGeometry(3.2,1,1.3),M(0x7a4a22));hull.position.y=.5;g.add(hull);
+   var bow=mesh(new THREE.ConeGeometry(.65,1.2,4),M(0x7a4a22));bow.rotation.z=-Math.PI/2;bow.rotation.x=Math.PI/4;bow.position.set(2.1,.5,0);g.add(bow);
+   var mast=mesh(new THREE.CylinderGeometry(.07,.07,2.4,6),M(0x5a3a1a));mast.position.set(-.3,1.9,0);mast.rotation.z=.3;g.add(mast);
+   var sail=mesh(new THREE.PlaneGeometry(1.2,1),new THREE.MeshStandardMaterial({color:0xe8e0c8,side:THREE.DoubleSide}));sail.position.set(-.1,2.1,.05);sail.rotation.z=.3;g.add(sail);
+   anim.push(function(){if(Math.random()<.03)bubble(g.position.x,g.position.y+1.2,g.position.z)})}
+  if(k=='coral'){g.position.set(6,sandH(6,1.4)-.05,1.4);var cc2=[0xff7a6a,0xffa94d,0xffd84d,0x6fd38a,0x6fb6f0,0xc38ef0];
+   for(var i=0;i<14;i++){var h=.8+Math.random()*1.6,br=mesh(new THREE.CylinderGeometry(.08,.14,h,6),M(cc2[i%6]));var an2=Math.random()*6.28,rr2=Math.random()*.8;br.position.set(Math.cos(an2)*rr2,h/2,Math.sin(an2)*rr2);br.rotation.set((Math.random()-.5)*.6,0,(Math.random()-.5)*.6);g.add(br);
+    var tip2=mesh(new THREE.SphereGeometry(.16,7,5),M(cc2[(i+2)%6]));tip2.position.set(br.position.x+Math.sin(br.rotation.z)*-h/2,h,br.position.z+Math.sin(br.rotation.x)*h/2);g.add(tip2)}}
+  // ===== v4 新裝飾 =====
+  if(k=='mountain'){var rockM=M(0xbcc2c8,{roughness:.85}),mossM=M(0x5cbf4a);
+   [[0,0,1.3,5.6],[-1.2,.3,.9,3.8],[1.1,-.2,.8,2.9],[-.3,.8,.7,2.2]].forEach(function(c){var gg=jitter(new THREE.ConeGeometry(c[2],c[3],7,4),.12);var pk=mesh(gg,rockM);pk.position.set(c[0],c[3]/2,c[1]);g.add(pk);
+    for(var i=0;i<5;i++){var hh=Math.random()*c[3]*.7,rr=c[2]*(1-hh/c[3])*.9,a=Math.random()*6.28;var ms=mesh(new THREE.SphereGeometry(.22+Math.random()*.15,7,5),mossM);ms.scale.y=.5;ms.position.set(c[0]+Math.cos(a)*rr*.8,hh+.1,c[1]+Math.sin(a)*rr*.8);g.add(ms)}});}
+  if(k=='bridge'){var bm3=M(0xecebe4,{roughness:.8}),R=1.7,N=13;
+   for(var i=0;i<=N;i++){var a=Math.PI-i/N*Math.PI,bk=mesh(new THREE.BoxGeometry(.46,.32,1.3),bm3);bk.position.set(Math.cos(a)*R,Math.sin(a)*R*.75+.15,0);bk.rotation.z=Math.atan2(Math.cos(a)*.75,-Math.sin(a));g.add(bk);
+    if(i%2==0)[-.6,.6].forEach(function(z){var po=mesh(new THREE.BoxGeometry(.12,.38,.12),bm3);po.position.set(Math.cos(a)*R,Math.sin(a)*R*.75+.5,z);g.add(po)})}
+   [-1,1].forEach(function(sd){var ft=mesh(new THREE.BoxGeometry(.7,.5,1.4),M(0xcfcfc6));ft.position.set(sd*(R+.2),.2,0);g.add(ft)});}
+  if(k=='fisher'){var rk=mesh(new THREE.DodecahedronGeometry(.55,0),M(0x9a948a));rk.scale.y=.6;rk.position.y=.25;g.add(rk);
+   var bd=mesh(new THREE.CylinderGeometry(.22,.3,.6,8),M(0xd8c79e,{flatShading:false}));bd.position.y=.8;g.add(bd);
+   var hd2=mesh(new THREE.SphereGeometry(.2,10,8),M(0xf0c8a0,{flatShading:false}));hd2.position.y=1.25;g.add(hd2);
+   var hat=mesh(new THREE.ConeGeometry(.42,.28,12),M(0xe2c46e));hat.position.y=1.5;g.add(hat);
+   var beard=mesh(new THREE.ConeGeometry(.1,.25,6),M(0xffffff));beard.rotation.x=Math.PI;beard.position.set(0,1.08,.15);g.add(beard);
+   [-1,1].forEach(function(sd){var lg=mesh(new THREE.CylinderGeometry(.07,.07,.45,6),M(0x6a7a8a));lg.rotation.x=Math.PI/2;lg.position.set(sd*.12,.55,.25);g.add(lg)});
+   var rodG=new THREE.Group();rodG.position.set(.15,.95,.2);g.add(rodG);var rod=mesh(new THREE.CylinderGeometry(.02,.03,2.2,5),M(0x7a5a2a));rod.rotation.x=-1.0;rod.position.set(0,.5,.8);rodG.add(rod);
+   var line=mesh(new THREE.CylinderGeometry(.006,.006,1.4,3),M(0xffffff));line.position.set(0,.6,1.7);rodG.add(line);
+   anim.push(function(t){rodG.rotation.x=Math.sin(t*1.2)*.08;rodG.rotation.z=Math.sin(t*.7)*.05});}
+  if(k=='cottage'){var wm=M(0xcfc6b8,{roughness:.9}),body2=mesh(new THREE.BoxGeometry(1.5,1.2,1.3),wm);body2.position.y=.6;g.add(body2);
+   for(var i=0;i<14;i++){var sb=mesh(new THREE.DodecahedronGeometry(.13,0),M(i%2?0xa89f92:0xbab1a3));var fc=Math.floor(Math.random()*3);sb.position.set(fc==0?-.76:fc==1?.76:(Math.random()-.5)*1.4,.2+Math.random()*1,fc==2?.66:(Math.random()-.5)*1.2);g.add(sb)}
+   [-1,1].forEach(function(sd){var rf=mesh(new THREE.BoxGeometry(1.75,.12,.95),M(0x8a7766));rf.position.set(0,1.45,sd*.36);rf.rotation.x=sd*.65;g.add(rf)});
+   var dr=mesh(new THREE.BoxGeometry(.38,.6,.05),M(0x4aa8e0));dr.position.set(.2,.32,.66);g.add(dr);var wd=mesh(new THREE.BoxGeometry(.3,.3,.05),M(0x7fd0f5,{emissive:0x113344}));wd.position.set(-.38,.75,.66);g.add(wd);
+   var ch=mesh(new THREE.BoxGeometry(.22,.5,.22),M(0x9a8f80));ch.position.set(-.45,1.75,-.1);g.add(ch);}
+  if(k=='watermill'){var base3=mesh(new THREE.DodecahedronGeometry(.8,0),M(0xa8a29a));base3.scale.set(1.2,.5,1);base3.position.y=.3;g.add(base3);
+   var hs=mesh(new THREE.BoxGeometry(.9,.9,.8),M(0xf5dc7a));hs.position.y=1.05;g.add(hs);var rf2=mesh(new THREE.ConeGeometry(.78,.55,4),M(0xe9e2d0));rf2.rotation.y=Math.PI/4;rf2.position.y=1.78;g.add(rf2);
+   var win2=mesh(new THREE.BoxGeometry(.5,.32,.05),M(0xffffff));win2.position.set(0,1.05,.41);g.add(win2);
+   var wheel=new THREE.Group();wheel.position.set(.62,1,0);g.add(wheel);var rim2=mesh(new THREE.TorusGeometry(.5,.05,6,16),M(0x8a5a2b));rim2.rotation.y=Math.PI/2;wheel.add(rim2);
+   for(var i=0;i<8;i++){var pd=mesh(new THREE.BoxGeometry(.06,.98,.14),M(0xa86f3a));pd.rotation.x=i/8*Math.PI;wheel.add(pd)}
+   anim.push(function(t,dt){wheel.rotation.x+=dt*.9});}
+  if(k=='boulder'){var bc=[0xb38b68,0xc9a27a,0x8f6f55,0xd8c2a0,0xa07a5a,0xc0a888];for(var i=0;i<7;i++){var bb=mesh(new THREE.SphereGeometry(.28+Math.random()*.2,12,9),M(bc[i%6],{flatShading:false,roughness:.45}));bb.scale.set(1.2,.6,1);bb.position.set((Math.random()-.5)*1.8,.12,(Math.random()-.5)*1.1);bb.rotation.y=Math.random()*3;g.add(bb)}}
+  if(k=='bush'){var st2=mesh(new THREE.CylinderGeometry(.06,.1,2,6),M(0x6a8a3a));st2.position.y=1;g.add(st2);var lvs=[];
+   for(var i=0;i<30;i++){var lf=mesh(new THREE.IcosahedronGeometry(.28+Math.random()*.18,0),M([0x5cc84a,0x7ed957,0x4cb840,0x8fe066][i%4]));var a=Math.random()*6.28,hh=1+Math.random()*2.2,rr=.25+Math.random()*(1-(hh-1)/2.4)*.9;lf.position.set(Math.cos(a)*rr,hh,Math.sin(a)*rr);g.add(lf);lvs.push(lf)}
+   anim.push(function(t){g.rotation.z=Math.sin(t*.8)*.04;g.rotation.x=Math.cos(t*.6)*.03});}
+  if(k=='redcoral'){var rcm=M(0xff5a3c);(function br(par,len,rad,depth){var c3=mesh(new THREE.CylinderGeometry(rad*.7,rad,len,6),rcm);c3.position.y=len/2;par.add(c3);if(depth<=0)return;
+    for(var i=0;i<(depth>2?3:2);i++){var gg=new THREE.Group();gg.position.y=len*(.6+Math.random()*.35);gg.rotation.set((Math.random()-.5)*1.2,Math.random()*6.28,(Math.random()-.5)*1.2);par.add(gg);br(gg,len*.72,rad*.7,depth-1)}})(g,1.2,.16,3);}
+  if(k=='brain'){var bcv=document.createElement('canvas');bcv.width=bcv.height=128;var bx2=bcv.getContext('2d');bx2.fillStyle='#e9a75a';bx2.fillRect(0,0,128,128);bx2.strokeStyle='#a8682a';bx2.lineWidth=3;
+   for(var i=0;i<16;i++){bx2.beginPath();var yy=i*8+4;bx2.moveTo(0,yy);for(var x=0;x<=128;x+=8)bx2.lineTo(x,yy+Math.sin(x*.2+i)*4);bx2.stroke()}
+   var btx=new THREE.CanvasTexture(bcv);btx.colorSpace=THREE.SRGBColorSpace;var br2=mesh(new THREE.SphereGeometry(.85,20,14,0,Math.PI*2,0,Math.PI/2),new THREE.MeshStandardMaterial({map:btx,roughness:.8}));br2.scale.y=.75;g.add(br2);}
+  if(k=='fan'){var fcv=document.createElement('canvas');fcv.width=fcv.height=128;var fx2=fcv.getContext('2d');fx2.strokeStyle='#c27ae6';fx2.lineWidth=3;
+   for(var i=0;i<14;i++){fx2.beginPath();fx2.moveTo(64,128);fx2.lineTo(64+Math.cos(Math.PI+i/13*Math.PI)*-70,128-Math.abs(Math.sin(i/13*Math.PI))*120);fx2.stroke()}
+   for(var r2=20;r2<128;r2+=12){fx2.beginPath();fx2.arc(64,128,r2,Math.PI,0);fx2.stroke()}
+   var ftx=new THREE.CanvasTexture(fcv);ftx.colorSpace=THREE.SRGBColorSpace;var fanM=mesh(new THREE.CircleGeometry(1.4,24,0,Math.PI),new THREE.MeshStandardMaterial({map:ftx,transparent:true,alphaTest:.3,side:THREE.DoubleSide}));fanM.position.y=.1;g.add(fanM);
+   var stem=mesh(new THREE.CylinderGeometry(.05,.08,.4,6),M(0x9a5ac0));stem.position.y=.1;g.add(stem);anim.push(function(t){fanM.rotation.y=Math.sin(t*.9)*.25});}
+  if(k=='starfish'){var sh2=new THREE.Shape();for(var i=0;i<10;i++){var a=i/10*Math.PI*2+Math.PI/2,rr=i%2?.18:.5;var px3=Math.cos(a)*rr,py3=Math.sin(a)*rr;if(i)sh2.lineTo(px3,py3);else sh2.moveTo(px3,py3)}
+   var sfm=mesh(new THREE.ExtrudeGeometry(sh2,{depth:.1,bevelEnabled:true,bevelThickness:.05,bevelSize:.05,bevelSegments:2}),M(0xff7a3c,{flatShading:false}));sfm.rotation.x=-Math.PI/2;sfm.position.y=.05;g.add(sfm);
+   for(var i=0;i<8;i++){var dt2=mesh(new THREE.SphereGeometry(.03,5,4),M(0xffd2a0));var a=Math.random()*6.28,rr=Math.random()*.35;dt2.position.set(Math.cos(a)*rr,.2,Math.sin(a)*rr);g.add(dt2)}}
+  if(k=='shell'){var scv=document.createElement('canvas');scv.width=64;scv.height=64;var sx3=scv.getContext('2d');sx3.fillStyle='#f6d9c9';sx3.fillRect(0,0,64,64);sx3.strokeStyle='#e0a890';sx3.lineWidth=3;for(var i=0;i<9;i++){sx3.beginPath();sx3.moveTo(i*8,0);sx3.lineTo(i*8,64);sx3.stroke()}
+   var stx=new THREE.CanvasTexture(scv);stx.colorSpace=THREE.SRGBColorSpace;var smat=new THREE.MeshStandardMaterial({map:stx,side:THREE.DoubleSide,roughness:.5});
+   var bot2=mesh(new THREE.SphereGeometry(.5,16,8,0,Math.PI*2,Math.PI/2,Math.PI/2),smat);bot2.scale.y=.4;bot2.position.y=.2;g.add(bot2);
+   var pearl=mesh(new THREE.SphereGeometry(.14,12,10),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.15,metalness:.3}));pearl.position.y=.25;g.add(pearl);
+   var lidG=new THREE.Group();lidG.position.set(0,.2,-.48);g.add(lidG);var top2=mesh(new THREE.SphereGeometry(.5,16,8,0,Math.PI*2,0,Math.PI/2),smat);top2.scale.y=.4;top2.position.z=.48;lidG.add(top2);
+   anim.push(function(t){lidG.rotation.x=-Math.max(0,Math.sin(t*.6))*.7});}
+  if(k=='conch'){var cm2=M(0xf2c79a,{flatShading:false});for(var i=0;i<5;i++){var tr2=mesh(new THREE.TorusGeometry(.38-i*.07,.12-i*.015,8,14),cm2);tr2.rotation.x=Math.PI/2;tr2.position.y=.15+i*.14;tr2.position.x=i*.04;g.add(tr2)}
+   var tip3=mesh(new THREE.ConeGeometry(.08,.3,8),cm2);tip3.position.set(.2,.9,0);g.add(tip3);var lip=mesh(new THREE.SphereGeometry(.25,10,8),M(0xffa6a0,{flatShading:false}));lip.scale.set(.6,1,.4);lip.position.set(-.35,.2,.1);g.add(lip);g.rotation.z=1.2;g.userData.tilt=1;}
+  if(k=='arch'){var am=M(0x8f8378,{roughness:.9});var ag=jitter(new THREE.TorusGeometry(1.7,.55,8,18,Math.PI),.12);var ar=mesh(ag,am);ar.position.y=.1;g.add(ar);
+   [-1.7,1.7].forEach(function(x){var lg2=mesh(new THREE.DodecahedronGeometry(.75,0),am);lg2.scale.y=.7;lg2.position.set(x,.2,0);g.add(lg2)});
+   for(var i=0;i<6;i++){var ms2=mesh(new THREE.SphereGeometry(.2,6,5),M(0x6fbf5a));var a=Math.random()*Math.PI;ms2.scale.y=.5;ms2.position.set(Math.cos(a)*1.7,Math.sin(a)*1.7+.5,(Math.random()-.5)*.6);g.add(ms2)}}
+  if(k=='grassmat'){var bl=new THREE.ConeGeometry(.045,.42,3);bl.translate(0,.21,0);var gim=new THREE.InstancedMesh(bl,new THREE.MeshStandardMaterial({roughness:.8}),1300),m5=new THREE.Matrix4(),q5=new THREE.Quaternion(),c5=new THREE.Color(),n5=0,gc=[0x5cc84a,0x4cb840,0x7ed957,0x3fae3a];
+   for(var i=0;i<4000&&n5<1300;i++){var x=X0+.4+Math.random()*(W-.8),z=.6+Math.random()*(Z1-1.0);if(x>-.5&&x<1.7)continue;q5.setFromEuler(new THREE.Euler((Math.random()-.5)*.5,Math.random()*3,(Math.random()-.5)*.5));var s5=.6+Math.random()*.8;
+    m5.compose(new THREE.Vector3(x,sandH(x,z)-.02,z),q5,new THREE.Vector3(1,s5,1));gim.setMatrixAt(n5,m5);gim.setColorAt(n5,c5.setHex(gc[n5%4]));n5++}gim.count=n5;g.add(gim);g.userData.area=1;}
+  if(k=='path'){var pg=new THREE.SphereGeometry(.09,6,5),pim=new THREE.InstancedMesh(pg,new THREE.MeshStandardMaterial({roughness:.5}),420),m6=new THREE.Matrix4(),q6=new THREE.Quaternion(),c6=new THREE.Color();
+   for(var i=0;i<420;i++){var z=-.3+Math.random()*(Z1-.1),w2=.7+(z+.3)*.12,x=.6+(Math.random()-.5)*2*w2;m6.compose(new THREE.Vector3(x,sandH(x,z)+.03,z),q6,new THREE.Vector3(1,.6,1));pim.setMatrixAt(i,m6);pim.setColorAt(i,c6.setHex(i%5?0xffffff:0xe8e6e0))}g.add(pim);g.userData.area=1;}
+  if(k=='lamp'){var bar=mesh(new THREE.BoxGeometry(W*.9,.22,1.1),M(0x3a4148,{flatShading:false,roughness:.3,metalness:.4}));bar.position.y=H+.45;g.add(bar);
+   var led=mesh(new THREE.BoxGeometry(W*.86,.04,.8),new THREE.MeshBasicMaterial({color:0xffffff}));led.position.y=H+.32;g.add(led);g.userData.led=led;
+   [-1,1].forEach(function(sd){var lg3=mesh(new THREE.BoxGeometry(.12,.5,.12),M(0x3a4148));lg3.position.set(sd*W*.44,H+.2,0);g.add(lg3)});g.userData.area=1;}
+  decoObjs[k]=g;var P=(tankState().pos[k])||DEFPOS[k];
+  if(P&&!NOMOVE[k]){g.position.x=P[0];g.position.z=P[1];g.position.y=sandH(P[0],P[1])+(YOFF[k]!=null?YOFF[k]:-.05);if(P[2]!=null){g.rotation.y=P[2];g.userData.ry=P[2]}}
+  if(!NOMOVE[k])g.traverse(function(o){if(o.isMesh){o.userData.deco=k;decoClick.push(o)}});
+  if(k=='lamp'&&scene===mainScene)applyLamp();
+ }
+ // 魚缸燈
+ var spot=new THREE.SpotLight(0xffffff,0,40,.95,.6,0);spot.position.set(0,H+3,0);spot.target.position.set(0,0,0);scene.add(spot);scene.add(spot.target);var rainbow=false,glowOn=false;
+ function setGlow(on){glowOn=on;FS.forEach(function(f){f.g.traverse(function(o){if(o.isMesh&&o.material&&o.material.emissive&&!o.userData.keepEm){if(on)o.material.emissive.copy(o.material.color).multiplyScalar(.4);else o.material.emissive.setHex(0)}})})}
+ function applyLamp(){var st=tankState(),own=st.deco.lamp,m=own?st.lampMode:-1;rainbow=m==2;
+  var led=decoObjs.lamp&&decoObjs.lamp.userData.led;
+  if(m==-1){hemi.color.setHex(0xffffff);hemi.intensity=1.55;sun.color.setHex(0xffffff);sun.intensity=1.45;spot.intensity=0;mainScene.background=BG.day;mainScene.fog.color.setHex(0x9ad6f0);caus.material.opacity=.28;RAYK=1;setGlow(false);return}
+  if(led)led.material.color.setHex([0xffffff,0x7fc8ff,0xffffff,0x5f7fd0][m]);
+  if(m==0){hemi.color.setHex(0xffffff);hemi.intensity=1.75;sun.color.setHex(0xffffff);sun.intensity=1.7;spot.color.setHex(0xffffff);spot.intensity=1.6;mainScene.background=BG.day;mainScene.fog.color.setHex(0xa8ddf3);caus.material.opacity=.45;RAYK=1.5;setGlow(false)}
+  if(m==1){hemi.color.setHex(0xcfe9ff);hemi.intensity=1.45;sun.color.setHex(0x9fd4ff);sun.intensity=1.3;spot.color.setHex(0x6fbfff);spot.intensity=1.6;mainScene.background=BG.blue;mainScene.fog.color.setHex(0x4f9fe0);caus.material.opacity=.42;RAYK=1.3;setGlow(false)}
+  if(m==2){hemi.color.setHex(0xffffff);hemi.intensity=1.5;sun.color.setHex(0xffffff);sun.intensity=1.3;spot.intensity=1.8;mainScene.background=BG.day;mainScene.fog.color.setHex(0xa0d8f0);caus.material.opacity=.4;RAYK=1.2;setGlow(false)}
+  if(m==3){hemi.color.setHex(0x8fa8ff);hemi.intensity=.35;sun.color.setHex(0x8fa8ff);sun.intensity=.18;spot.color.setHex(0x6f8fff);spot.intensity=.6;mainScene.background=BG.night;mainScene.fog.color.setHex(0x0e2a48);caus.material.opacity=.15;RAYK=.25;setGlow(true)}}
+ anim.push(function(t){if(rainbow){var c=new THREE.Color().setHSL((t*.05)%1,.75,.6);spot.color.copy(c);var led=decoObjs.lamp&&decoObjs.lamp.userData.led;if(led)led.material.color.copy(c)}});
+ // 生物
+ var FS=[],pellets=[],hearts=[];
+ var eyeW=M(0xffffff,{flatShading:false}),eyeB=M(0x1b1b1b,{flatShading:false});
+ function eyes(parent,x,y,z,r){[-1,1].forEach(function(sg){var e=mesh(new THREE.SphereGeometry(r,10,8),eyeW);e.position.set(sg*x,y,z);parent.add(e);var p=mesh(new THREE.SphereGeometry(r*.55,8,6),eyeB);p.position.set(sg*(x+r*.45),y+r*.1,z+r*.35);parent.add(p)})}
+ function fin(w,h,col){var s=new THREE.Shape();s.moveTo(0,0);s.lineTo(-w,h/2);s.quadraticCurveTo(-w*.7,0,-w,-h/2);s.lineTo(0,0);var m=mesh(new THREE.ShapeGeometry(s),new THREE.MeshStandardMaterial({color:col,side:THREE.DoubleSide,roughness:.5,transparent:true,opacity:.92}));return m}
+ function bodyE(sx,sy,sz,col){var m=mesh(new THREE.SphereGeometry(1,16,12),M(col,{flatShading:false,roughness:.45}));m.scale.set(sx,sy,sz);return m}
+ function makeCreature(f){var d=fishDef(f.k),g=new THREE.Group(),inner=new THREE.Group();g.add(inner);var tail=new THREE.Group(),info={k:f.k,data:f,g:g,inner:inner,tail:tail,parts:[],size:1,speed:1.4,yr:[1,8.2],upright:false};
+  var col=new THREE.Color(d.c).getHex();
+  if(f.k=='gold'){var b=bodyE(.45,.55,.8,col);inner.add(b);tail.position.z=-.75;var t1=fin(1.1,1.2,0xffa64d);t1.rotation.y=-Math.PI/2;tail.add(t1);inner.add(tail);eyes(inner,.32,.18,.45,.13);
+   var df=fin(.5,.5,0xffa64d);df.rotation.set(0,Math.PI/2,Math.PI/2);df.position.set(0,.5,0);inner.add(df);info.speed=1.3}
+  if(f.k=='clown'){var b=bodyE(.35,.42,.72,col);inner.add(b);[.4,0,-.42].forEach(function(z,i){var pf=Math.sqrt(Math.max(.05,1-Math.pow(z/.72,2)));var band=bodyE(.36*pf*1.04,.43*pf*1.04,.09,0xffffff);band.position.z=z;inner.add(band)});
+   tail.position.z=-.68;var t1=fin(.55,.7,0xff7a1a);t1.rotation.y=-Math.PI/2;tail.add(t1);inner.add(tail);eyes(inner,.26,.14,.42,.11);info.speed=1.5;info.home=new THREE.Vector3(-5,2.2,1);info.size=.85}
+  if(f.k=='tang'){var b=bodyE(.28,.62,.8,col);inner.add(b);var stripe=bodyE(.29,.32,.55,0x10275f);stripe.position.set(0,.12,-.05);inner.add(stripe);
+   tail.position.z=-.75;var t1=fin(.6,.8,0xffd23f);t1.rotation.y=-Math.PI/2;tail.add(t1);inner.add(tail);eyes(inner,.2,.2,.48,.12);info.speed=1.7}
+  if(f.k=='angel'){var b=bodyE(.16,.85,.62,col);inner.add(b);[.25,-.15].forEach(function(z){var band=bodyE(.17,.86*Math.sqrt(1-Math.pow(z/.62,2)),.09,0x2b2b2b);band.position.z=z;inner.add(band)});
+   var top=fin(.9,.35,0xd8d2c0);top.rotation.set(0,Math.PI/2,-Math.PI/2.4);top.position.set(0,.7,-.1);inner.add(top);var bot=fin(.9,.35,0xd8d2c0);bot.rotation.set(0,Math.PI/2,Math.PI/2.4);bot.position.set(0,-.7,-.1);inner.add(bot);
+   tail.position.z=-.58;var t1=fin(.5,.7,0xd8d2c0);t1.rotation.y=-Math.PI/2;tail.add(t1);inner.add(tail);eyes(inner,.13,.18,.38,.11);info.speed=1.1;info.size=1.1}
+  if(f.k=='puffer'){var b=bodyE(.62,.58,.7,col);inner.add(b);var belly=bodyE(.5,.35,.55,0xfff3d0);belly.position.y=-.25;inner.add(belly);
+   for(var i=0;i<10;i++){var sp2=mesh(new THREE.SphereGeometry(.07,6,5),M(0x8a6a2a));var th=Math.random()*Math.PI*.8+.3,ph=Math.random()*Math.PI*2;sp2.position.set(Math.sin(th)*Math.cos(ph)*.62,Math.cos(th)*.58,Math.sin(th)*Math.sin(ph)*.7);inner.add(sp2)}
+   var spikes=new THREE.Group();for(var i=0;i<26;i++){var c2=mesh(new THREE.ConeGeometry(.05,.25,4),M(0xe0c060));var v=new THREE.Vector3(Math.random()-.5,Math.random()-.5,Math.random()-.5).normalize();c2.position.copy(v.clone().multiplyScalar(.62));c2.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),v);spikes.add(c2)}spikes.visible=false;inner.add(spikes);info.spikes=spikes;
+   tail.position.z=-.68;var t1=fin(.35,.45,0xe8c75a);t1.rotation.y=-Math.PI/2;tail.add(t1);inner.add(tail);eyes(inner,.36,.2,.48,.14);info.speed=.9}
+  if(f.k=='eel'){info.eel=true;var em=M(0xf6ecd0,{flatShading:false}),dm=M(0x2b2b2b,{flatShading:false});var segs=[],par=inner;
+   var hole=mesh(new THREE.TorusGeometry(.22,.07,6,12),M(0x9c8a6c));hole.rotation.x=Math.PI/2;inner.add(hole);
+   for(var j=0;j<9;j++){var sgE=new THREE.Group();sgE.position.y=j?.26:0;var bm2=mesh(new THREE.CylinderGeometry(.13,.14,.28,10),em);bm2.position.y=.13;sgE.add(bm2);
+    [-1,1].forEach(function(sd){var dot=mesh(new THREE.SphereGeometry(.04,6,5),dm);dot.position.set(sd*.12,j%2?.18:.08,j%2?.04:-.04);sgE.add(dot)});par.add(sgE);par=sgE;segs.push(sgE)}
+   var hd=mesh(new THREE.SphereGeometry(.15,10,8),em);hd.scale.set(1,1.1,1.25);hd.position.set(0,.18,.04);par.add(hd);eyes(par,.09,.24,.13,.06);info.head=hd;
+   info.segs=segs;info.speed=0;info.size=.8;tail=new THREE.Group();info.out=1}
+  if(f.k=='crab'){info.crab=true;info.bottom=true;var cr=M(0xe8553e,{flatShading:false}),cr2=M(0xf27a5e,{flatShading:false});var bodyC=bodyE(.5,.28,.38,0xe8553e);bodyC.position.y=.32;inner.add(bodyC);
+   [-1,1].forEach(function(sd){var stalk=mesh(new THREE.CylinderGeometry(.03,.03,.25,5),cr);stalk.position.set(sd*.14,.6,.25);inner.add(stalk);var ey=mesh(new THREE.SphereGeometry(.07,8,6),M(0x1b1b1b,{flatShading:false}));ey.position.set(sd*.14,.74,.27);inner.add(ey);
+    var arm=new THREE.Group();arm.position.set(sd*.42,.35,.28);inner.add(arm);var cl=mesh(new THREE.SphereGeometry(.16,10,8),cr2);cl.scale.set(1,.7,1.2);cl.position.set(sd*.12,.05,.12);arm.add(cl);
+    var pin=mesh(new THREE.ConeGeometry(.06,.2,6),cr2);pin.rotation.x=Math.PI/2;pin.position.set(sd*.12,.12,.3);arm.add(pin);(info.arms=info.arms||[]).push(arm)});
+   info.legs=[];[-1,1].forEach(function(sd){for(var j=0;j<3;j++){var lg=new THREE.Group();lg.position.set(sd*.38,.28,.1-j*.16);inner.add(lg);var lm=mesh(new THREE.CylinderGeometry(.025,.02,.42,5),cr);lm.rotation.z=sd*1.0;lm.position.set(sd*.15,-.08,0);lg.add(lm);info.legs.push([lg,sd,j])}});
+   info.speed=1;info.size=.8;info.yr=[0,0];tail=new THREE.Group()}
+  if(f.k=='horse'){info.upright=true;var hm=M(col,{flatShading:false});var pts=[[0,.9,0,.22],[0,.55,-.08,.26],[0,.2,-.04,.25],[0,-.15,.05,.2],[0,-.45,.08,.15],[0,-.7,.02,.11],[0,-.85,-.12,.09]];
+   pts.forEach(function(p){var s=mesh(new THREE.SphereGeometry(p[3],10,8),hm);s.position.set(p[0],p[1],p[2]);inner.add(s)});var head=mesh(new THREE.SphereGeometry(.24,10,8),hm);head.position.set(0,1.15,.12);inner.add(head);
+   var snout=mesh(new THREE.CylinderGeometry(.07,.09,.45,8),hm);snout.rotation.x=Math.PI/2;snout.position.set(0,1.1,.45);inner.add(snout);
+   var curl=mesh(new THREE.TorusGeometry(.12,.05,6,10,Math.PI*1.5),hm);curl.position.set(0,-.95,-.05);curl.rotation.y=Math.PI/2;inner.add(curl);
+   var df=fin(.3,.35,0xffd28a);df.rotation.y=Math.PI/2;df.position.set(0,.3,-.25);tail=new THREE.Group();tail.add(df);inner.add(tail);eyes(inner,.16,1.2,.15,.08);info.speed=.6;info.yr=[1.2,5];info.size=.9}
+  if(f.k=='octo'){info.upright=true;var om=M(col,{flatShading:false});var head=bodyE(.6,.7,.6,col);head.position.y=.9;inner.add(head);eyes(inner,.22,.85,.48,.13);info.tents=[];
+   for(var i=0;i<8;i++){var a2=i/8*Math.PI*2,tg=new THREE.Group();tg.position.set(Math.cos(a2)*.35,.4,Math.sin(a2)*.35);inner.add(tg);var segs=[];var par=tg;
+    for(var j=0;j<4;j++){var sg2=new THREE.Group();sg2.position.set(Math.cos(a2)*.1,-.24,Math.sin(a2)*.1);var sm=mesh(new THREE.SphereGeometry(.17-j*.03,8,6),om);sg2.add(sm);par.add(sg2);par=sg2;segs.push(sg2)}info.tents.push([segs,a2])}
+   info.speed=.8;info.yr=[.8,4.5];tail=new THREE.Group();info.size=1}
+  if(f.k=='turtle'){var shell=bodyE(1,.45,1.2,0x5b8c3a);shell.position.y=.1;inner.add(shell);var rim=bodyE(1.05,.2,1.25,0xc8b878);inner.add(rim);
+   for(var i=0;i<6;i++){var hx=mesh(new THREE.CylinderGeometry(.28,.28,.05,6),M(0x7aa84a));var a3=i/6*Math.PI*2;hx.position.set(Math.cos(a3)*.45,.5,Math.sin(a3)*.55);hx.rotation.x=Math.cos(a3)*.3;hx.rotation.z=-Math.sin(a3)*.3*0;inner.add(hx)}
+   var hx0=mesh(new THREE.CylinderGeometry(.3,.3,.06,6),M(0x7aa84a));hx0.position.y=.55;inner.add(hx0);
+   var head=bodyE(.32,.28,.38,0xa8c878);head.position.set(0,.05,1.35);inner.add(head);eyes(inner,.2,.15,1.5,.08);info.flips=[];
+   [[.85,.7,1],[-.85,.7,-1],[.8,-.75,1],[-.8,-.75,-1]].forEach(function(p){var fg=new THREE.Group();fg.position.set(p[0],0,p[1]);var fm=bodyE(.55,.08,.25,0xa8c878);fm.position.x=p[2]*.4;fg.add(fm);inner.add(fg);info.flips.push([fg,p[2]])});
+   info.speed=.7;info.size=1.5;tail=new THREE.Group()}
+  info.tail=tail;
+  var sc=f.k=='turtle'?.8:f.k=='crab'?.9:.85;g.scale.setScalar(sc);
+  g.traverse(function(o){if(o.isMesh){o.userData.fish=info;clickable.push(o)}});
+  g.position.set(X0+2+Math.random()*(W-4),info.yr[0]+Math.random()*(info.yr[1]-info.yr[0]),Z0+1.5+Math.random()*(D-3));
+  if(info.eel){var ne=FS.filter(function(x){return x.eel}).length;var ex=-3.3+(ne%4)*.65+(ne>3?.3:0),ez=1.6+(ne%2)*.5+(ne>3?.45:0);g.position.set(ex,sandH(ex,ez)-.05,ez)}
+  if(info.crab){var cx2=-4+Math.random()*8,cz2=1+Math.random()*2;g.position.set(cx2,sandH(cx2,cz2),cz2)}
+  if(f.k=='octo'||f.k=='turtle'||info.eel)info.bottom=true;
+  if(glowOn)g.traverse(function(o){if(o.isMesh&&o.material&&o.material.emissive)o.material.emissive.copy(o.material.color).multiplyScalar(.4)});
+  info.vel=new THREE.Vector3((Math.random()-.5),0,(Math.random()-.5)).normalize().multiplyScalar(info.speed);info.target=null;info.ph=Math.random()*6;info.puff=0;
+  scene.add(g);FS.push(info);return info}
+ function newTarget(f){var y0=Math.max(f.yr[0],1.9),y1=f.yr[1];var p=new THREE.Vector3(X0+1.5+Math.random()*(W-3),y0+Math.random()*(y1-y0),Z0+1.2+Math.random()*(D-2.4));
+  if(f.home&&Math.random()<.7)p=f.home.clone().add(new THREE.Vector3((Math.random()-.5)*2.2,(Math.random()-.3)*1.2,(Math.random()-.5)*1.6));
+  if(f.k=='turtle'&&Math.random()<.2)p.y=H-.6;f.target=p}
+ var tmp=new THREE.Vector3(),qt=new THREE.Quaternion(),m4b=new THREE.Matrix4(),upV=new THREE.Vector3(0,1,0);
+ var wpH=new THREE.Vector3();
+ function onFloor(p){return p.position.y<=sandH(p.position.x,p.position.z)+.12}
+ function updEel(f,t,dt){var food=null,best=1e9;f.head.getWorldPosition(wpH);pellets.forEach(function(p){var hd=Math.hypot(p.position.x-f.g.position.x,p.position.z-f.g.position.z);if(hd>3.2||p.position.y>5.5)return;var d=p.position.distanceTo(wpH);if(d<best){best=d;food=p}});
+  if(food&&(onFloor(food)||food.userData.held)){var v=wpH.clone().sub(food.position);var L=v.length();if(L>.05){food.position.addScaledVector(v.normalize(),Math.min(L,dt*1.6));food.userData.held=1}}
+  var lean=0,leanZ=0;if(food&&best<3){var dx=food.position.x-f.g.position.x,dz=food.position.z-f.g.position.z;lean=Math.max(-.5,Math.min(.5,dx*.25));leanZ=Math.max(-.5,Math.min(.5,dz*.25))}
+  f.out+=((food&&best<3)?1.2:(.75+Math.sin(t*.3+f.ph)*.25)-f.out)*Math.min(1,dt*2);
+  f.segs[0].scale.y=Math.max(.15,Math.min(1.3,f.out));f.segs.forEach(function(s,j){s.rotation.z=Math.sin(t*1.4+f.ph+j*.4)*.08-lean*.18;s.rotation.x=Math.cos(t*1.1+f.ph+j*.3)*.06+leanZ*.18});
+  f.g.rotation.y=Math.sin(t*.5+f.ph)*.6;if(food&&best<.5)eat(f,food)}
+ function updCrab(f,t,dt){var food=null,best=1e9;pellets.forEach(function(p){if(p.position.y>sandH(p.position.x,p.position.z)+.9)return;var d=Math.hypot(p.position.x-f.g.position.x,p.position.z-f.g.position.z);if(d<best){best=d;food=p}});
+  var tg;if(food)tg=food.position;else{if(!f.target||Math.hypot(f.target.x-f.g.position.x,f.target.z-f.g.position.z)<.4||Math.random()<.003)f.target=new THREE.Vector3(X0+1.5+Math.random()*(W-3),0,.4+Math.random()*(Z1-1.2));tg=f.target}
+  var dx=tg.x-f.g.position.x,dz=tg.z-f.g.position.z,dd=Math.hypot(dx,dz),sp=(food?1.4:.7)*((f.data.love||50)<30?.6:1),mv=dd>.05;
+  if(mv){f.g.position.x+=dx/dd*Math.min(dd,sp*dt);f.g.position.z+=dz/dd*Math.min(dd,sp*dt);var want=Math.atan2(dx,dz)-Math.PI/2;var cur=f.g.rotation.y,df=((want-cur+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;f.g.rotation.y=cur+df*Math.min(1,dt*3)}
+  f.g.position.x=Math.max(X0+.8,Math.min(X1-.8,f.g.position.x));f.g.position.z=Math.max(Z0+.8,Math.min(Z1-.8,f.g.position.z));f.g.position.y=sandH(f.g.position.x,f.g.position.z);
+  f.legs.forEach(function(l){l[0].rotation.x=mv?Math.sin(t*14+l[2]*1.3+(l[1]>0?0:1.5))*.5:0});f.arms.forEach(function(a,i){a.rotation.x=Math.sin(t*3+i*2)*.25});
+  if(food&&best<.5)eat(f,food)}
+ function updCreature(f,t,dt){if(f.eel)return updEel(f,t,dt);if(f.crab)return updCrab(f,t,dt);var love=f.data.love||50,slow=love<30?.6:1;var spd=f.speed*slow,food=null,best=1e9;
+  pellets.forEach(function(p){if(p.userData.type==2&&!f.bottom)return;var d=p.position.distanceTo(f.g.position);if(d<best){best=d;food=p}});
+  var tg;if(food){tg=food.position;spd*=1.9}else{if(!f.target||f.g.position.distanceTo(f.target)<.6||Math.random()<.002)newTarget(f);tg=f.target}
+  tmp.copy(tg).sub(f.g.position);var dist=tmp.length();tmp.y*=f.upright?1:.6;tmp.normalize().multiplyScalar(spd);
+  f.vel.lerp(tmp,Math.min(1,dt*(food?2.6:1.2)));var p=f.g.position;p.addScaledVector(f.vel,dt);
+  p.x=Math.max(X0+.8,Math.min(X1-.8,p.x));p.z=Math.max(Z0+.8,Math.min(Z1-.8,p.z));p.y=Math.max(sandH(p.x,p.z)+.45,Math.min(H-.4,p.y));
+  var hz=Math.hypot(f.vel.x,f.vel.z),lim=f.k=='turtle'?.3:.45;var hv=new THREE.Vector3(f.vel.x,f.upright?0:Math.max(-hz*lim,Math.min(hz*lim,f.vel.y)),f.vel.z);
+  if(hz>.06){m4b.lookAt(new THREE.Vector3(0,0,0),hv.clone().negate(),upV);qt.setFromRotationMatrix(m4b);f.g.quaternion.slerp(qt,Math.min(1,dt*3))}
+  var sp=f.vel.length()/(f.speed||1);
+  if(f.tail)f.tail.rotation.y=Math.sin(t*(6+sp*6)+f.ph)*.45;
+  if(f.upright)f.inner.position.y=Math.sin(t*1.5+f.ph)*.15;
+  if(f.tents)f.tents.forEach(function(tt,i){tt[0].forEach(function(s,j){s.rotation.x=Math.sin(t*2.5+i+j*.6)*.35;s.rotation.z=Math.cos(t*2.2+i*.8+j*.5)*.35})});
+  if(f.flips)f.flips.forEach(function(fl){fl[0].rotation.z=Math.sin(t*2.2+f.ph)*.45*fl[1];fl[0].rotation.y=Math.sin(t*2.2+f.ph+1)*.3});
+  if(f.spikes){if(f.puff>0){f.puff-=dt;var s=1.45;f.inner.scale.lerp(new THREE.Vector3(s,s,s),Math.min(1,dt*8));f.spikes.visible=true}else{f.inner.scale.lerp(new THREE.Vector3(1,1,1),Math.min(1,dt*4));f.spikes.visible=f.inner.scale.x>1.15}}
+  if(food&&best<.45+.35*f.size){eat(f,food)}}
+ // 飼料與愛心
+ var pelM=M(0xc0602a),pelM2=M(0x6f9a3a);
+ function dropFood(x,z,type){type=type||1;var extra=[];if(type==2){var eels=FS.filter(function(f){return f.eel});if(eels.length){var e=eels[Math.floor(Math.random()*eels.length)];extra.push([e.g.position.x+(Math.random()-.5)*.6,e.g.position.z+(Math.random()-.5)*.6])}}
+  for(var i=0;i<3+extra.length;i++){var p=mesh(type==2?new THREE.CylinderGeometry(.06,.06,.2,6):new THREE.SphereGeometry(.09,6,5),type==2?pelM2:pelM);if(type==2)p.rotation.z=Math.random()*3;p.position.set(Math.max(X0+1,Math.min(X1-1,x+(Math.random()-.5)*1.2)),H-.15,Math.max(Z0+.8,Math.min(Z1-.8,(z||0)+(Math.random()-.5)*1.6)));p.userData={vx:(Math.random()-.5)*.2,life:type==2?40:22,type:type};if(i>=3){var ex2=extra[i-3];p.position.x=ex2[0];p.position.z=ex2[1]}scene.add(p);pellets.push(p)}
+  for(var i=0;i<6;i++)bubble(x+(Math.random()-.5),H-.3,(z||0)+(Math.random()-.5),.05)}
+ var hc=document.createElement('canvas');hc.width=hc.height=64;var hx2=hc.getContext('2d');hx2.fillStyle='#ff4f8b';hx2.beginPath();hx2.moveTo(32,56);hx2.bezierCurveTo(2,34,6,8,22,8);hx2.bezierCurveTo(28,8,32,14,32,18);hx2.bezierCurveTo(32,14,36,8,42,8);hx2.bezierCurveTo(58,8,62,34,32,56);hx2.fill();
+ var heartT=new THREE.CanvasTexture(hc);heartT.colorSpace=THREE.SRGBColorSpace;
+ function heart(pos,n){for(var i=0;i<(n||1);i++){var s=new THREE.Sprite(new THREE.SpriteMaterial({map:heartT,transparent:true,depthWrite:false}));s.scale.set(.6,.6,1);s.position.copy(pos).add(new THREE.Vector3((Math.random()-.5)*.5,.5+i*.2,0));s.userData={life:1.6,vx:(Math.random()-.5)*.4};scene.add(s);hearts.push(s)}}
+ function eat(f,p){scene.remove(p);pellets.splice(pellets.indexOf(p),1);f.data.love=Math.min(100,(f.data.love||50)+12);f.data.t=Date.now();heart(f.g.position,f.data.love>=100?2:1);sfx('eat');
+  clearTimeout(eat.sv);eat.sv=setTimeout(save,800)}
+ anim.push(function(t,dt){for(var i=pellets.length-1;i>=0;i--){var p=pellets[i],u=p.userData;if(!u.held&&p.position.y>sandH(p.position.x,p.position.z)+.08){p.position.y-=dt*(u.type==2?2.2:.55);if(u.type!=2)p.position.x+=u.vx*dt}u.life-=dt;if(u.life<=0){scene.remove(p);pellets.splice(i,1)}}
+  for(var i=hearts.length-1;i>=0;i--){var h=hearts[i],u=h.userData;u.life-=dt;h.position.y+=dt*1.1;h.position.x+=u.vx*dt;h.material.opacity=Math.min(1,u.life);var s=.6+(1.6-u.life)*.25;h.scale.set(s,s,1);if(u.life<=0){scene.remove(h);h.material.dispose();hearts.splice(i,1)}}});
+ // 建立現有的魚和裝飾
+ var st=tankState();st.fish.forEach(makeCreature);Object.keys(st.deco).forEach(function(k){if(st.deco[k])makeDeco(k)});
+ // 鏡頭
+ var cam={az:0,pol:0,dist:18,zoom:1};
+ function layout(){var w=el.clientWidth||innerWidth,h=el.clientHeight||innerHeight;renderer.setSize(w,h,false);renderer.domElement.style.width=w+'px';renderer.domElement.style.height=h+'px';camera.aspect=w/h;
+  var fh=Math.tan(22.5*Math.PI/180);cam.dist=Math.max(17,(W/2+1.2)/(fh*camera.aspect)*(camera.aspect<1?.62:1),(H/2+1.5)/fh);scene.fog.near=cam.dist*.9;scene.fog.far=cam.dist*2.6+20;camera.updateProjectionMatrix()}
+ layout();window.addEventListener('resize',layout);
+ function placeCam(){var az=cam.az,pol=.12+cam.pol,d=cam.dist*cam.zoom;camera.position.set(Math.sin(az)*d*Math.cos(pol),H/2+Math.sin(pol)*d,Math.cos(az)*d*Math.cos(pol));camera.lookAt(0,H/2-.3,0)}
+ // 點擊／拖曳
+ var ray=new THREE.Raycaster(),ndc=new THREE.Vector2(),down=null,ptrs={},pinch=null;
+ renderer.domElement.addEventListener('wheel',function(e){e.preventDefault();cam.zoom=Math.max(.45,Math.min(1.5,cam.zoom*Math.exp(e.deltaY*.0012)))},{passive:false});
+ renderer.domElement.addEventListener('pointerdown',function(e){ptrs[e.pointerId]={x:e.clientX,y:e.clientY};var ks=Object.keys(ptrs);if(ks.length==2){var a=ptrs[ks[0]],b=ptrs[ks[1]];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),z:cam.zoom};down=null;return}down={x:e.clientX,y:e.clientY,az:cam.az,pol:cam.pol}});
+ var endP=function(e){delete ptrs[e.pointerId];if(Object.keys(ptrs).length<2)pinch=null};renderer.domElement.addEventListener('pointercancel',function(e){endP(e);down=null});renderer.domElement.addEventListener('pointerleave',endP);
+ renderer.domElement.addEventListener('pointermove',function(e){if(ptrs[e.pointerId])ptrs[e.pointerId]={x:e.clientX,y:e.clientY};var ks=Object.keys(ptrs);if(pinch&&ks.length>=2){var a=ptrs[ks[0]],b=ptrs[ks[1]],d=Math.hypot(a.x-b.x,a.y-b.y);if(d>10)cam.zoom=Math.max(.45,Math.min(1.5,pinch.z*pinch.d/d));return}if(!down||!e.buttons)return;cam.az=down.az-(e.clientX-down.x)*.006;cam.pol=Math.max(-.35,Math.min(1.25,down.pol+(e.clientY-down.y)*.004))});
+ renderer.domElement.addEventListener('pointerup',function(e){endP(e);if(!down)return;var mv=Math.abs(e.clientX-down.x)+Math.abs(e.clientY-down.y);down=null;if(mv>8)return;
+  var r=renderer.domElement.getBoundingClientRect();ndc.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);ray.setFromCamera(ndc,camera);
+  var hit=ray.intersectObjects(clickable,false)[0];
+  if(hit&&!MOVING){showFish(hit.object.userData.fish);return}
+  var st=tankState();if(MOVING){moveTap(e);return}var fk=FOODSEL==2?'food2':'food';if(st[fk]<=0){tankMsg(FOODSEL==2?T('沉底飼料吃完了！按「商店」用星星換。'):T('飼料吃完了！按「商店」用星星換飼料。'));sfx('no');return}
+  var nrm=new THREE.Vector3(Math.sin(cam.az),0,Math.cos(cam.az)),pz=new THREE.Plane(nrm,0),ip=new THREE.Vector3();if(!ray.ray.intersectPlane(pz,ip))return;
+  st[fk]--;tankBar();dropFood(ip.x,ip.z,FOODSEL);sfx('pop');save()});
+ var moveSel=null;
+ function selDeco(k){if(moveSel&&decoObjs[moveSel])decoObjs[moveSel].scale.setScalar(1);moveSel=k;var mp=$('movePanel');
+  if(!k){mp.innerHTML='<span>'+T('點一個裝飾選它，再點沙地把它搬過去。')+'</span>';return}
+  mp.innerHTML='<span>'+T('選了：')+TT(decoDef(k).n)+'</span><button class="btn w" id="mvRot">↻ '+T('轉一轉')+'</button><button class="btn g" id="mvOk">'+T('完成')+'</button>';
+  $('mvRot').onclick=function(){var g=decoObjs[k];g.userData.ry=(g.userData.ry||0)+Math.PI/4;g.rotation.y=g.userData.ry;savePos(k);sfx('tick')};$('mvOk').onclick=function(){setMoving(false)}}
+ function savePos(k){var g=decoObjs[k],st=tankState();st.pos[k]=[+g.position.x.toFixed(2),+g.position.z.toFixed(2),+(g.userData.ry||0).toFixed(3)];save()}
+ function moveTap(e){var dh=ray.intersectObjects(decoClick,false)[0];
+  if(dh&&dh.object.userData.deco!==moveSel){selDeco(dh.object.userData.deco);sfx('tick');return}
+  if(!moveSel){tankMsg(T('先點一個裝飾'));return}
+  var sh=ray.intersectObject(sand,false)[0];if(!sh)return;var x=Math.max(X0+1,Math.min(X1-1,sh.point.x)),z=Math.max(Z0+.8,Math.min(Z1-.8,sh.point.z)),g=decoObjs[moveSel];
+  g.position.set(x,sandH(x,z)+(YOFF[moveSel]!=null?YOFF[moveSel]:-.05),z);savePos(moveSel);sfx('pop')}
+ function setMoving(on){MOVING=on;$('tank').classList.toggle('moving',on);$('movePanel').hidden=!on;$('fishInfo').hidden=true;selDeco(null);tankBar();
+  if(on)tankMsg(Object.keys(decoObjs).filter(function(k){return !NOMOVE[k]}).length?T('擺放模式：點裝飾，再點沙地'):T('還沒有可以移動的裝飾，先去商店買吧！'))}
+ anim.push(function(t){if(moveSel&&decoObjs[moveSel])decoObjs[moveSel].scale.setScalar(1+Math.sin(t*6)*.05)});
+ function showFish(f){sfx('tick');if(f.spikes){f.puff=2}heart(f.g.position,1);var fi=$('fishInfo');TK.sel=f;
+  fi.innerHTML='<div class="fiN">'+fishName(f.data)+'</div><div class="nz">'+TT(fishDef(f.k).n)+'</div><div>'+T('心情')+' '+heartBar(f.data.love||50)+'</div>'+
+   ((f.data.love||50)<30?'<div style="color:#c0392b">'+T('肚子餓了，快餵我！')+'</div>':'')+
+   '<div class="fiRow"><input id="fiName" maxlength="6" placeholder="'+esc('取個名字')+'" value="'+esc(f.data.name||'')+'"><button class="btn g" id="fiSave">'+T('取名字')+'</button><button class="btn w" id="fiX">'+T('好')+'</button></div>';
+  fi.hidden=false;$('fiX').onclick=function(){fi.hidden=true};$('fiSave').onclick=function(){f.data.name=$('fiName').value.trim().slice(0,6);save();fi.hidden=true;tankMsg(T('取好名字了！'))}}
+ // 迴圈
+ function thumbs(){if(TANK_IMG.done)return;var tr=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});tr.setSize(160,120);tr.outputColorSpace=THREE.SRGBColorSpace;
+  var ts=new THREE.Scene();ts.add(new THREE.HemisphereLight(0xffffff,0x667777,1.3));var dl=new THREE.DirectionalLight(0xffffff,1);dl.position.set(3,5,6);ts.add(dl);var tc=new THREE.PerspectiveCamera(35,4/3,.1,100);
+  var saveS=scene,saveF=FS.length,saveC=clickable.length;
+  FISH.forEach(function(d){scene=ts;var c=makeCreature({k:d.k,love:80});FS.pop();c.g.position.set(0,0,0);c.g.rotation.set(0,d.k=='turtle'?.9:(c.upright||c.eel?.5:Math.PI/2),0);
+   var box=new THREE.Box3().setFromObject(c.g),ctr=box.getCenter(new THREE.Vector3()),sz=box.getSize(new THREE.Vector3()).length();tc.position.set(ctr.x+sz*.15,ctr.y+sz*.25,ctr.z+sz*1.25);tc.lookAt(ctr);
+   tr.render(ts,tc);TANK_IMG[d.k]=tr.domElement.toDataURL();ts.remove(c.g)});
+  scene=saveS;FS.length=saveF;clickable.length=saveC;
+  DECO.forEach(function(d){var g0=new THREE.Group();var keep=scene;scene=g0;var md=decoMade[d.k];decoMade[d.k]=0;var anim0=anim.length;makeDeco(d.k);anim.length=anim0;decoMade[d.k]=md;scene=keep;
+   var g=g0.children[0]||g0;if(!g.userData.area)g.position.set(0,0,0);if(d.k=='lamp')g.position.set(0,-H,0);g.rotation.set(0,.4,0);ts.add(g0);var box=new THREE.Box3().setFromObject(g0),ctr=box.getCenter(new THREE.Vector3()),sz=Math.max(1.5,box.getSize(new THREE.Vector3()).length());if(d.k=='pebble'||d.k=='grassmat'){sz=3.4;ctr.set(-3,ctr.y,2)}if(d.k=='path'){sz=3.4;ctr.set(.6,ctr.y,1.5)}
+   tc.position.set(ctr.x+sz*.3,ctr.y+sz*.45,ctr.z+sz*1.1);tc.lookAt(ctr);tr.render(ts,tc);TANK_IMG[d.k]=tr.domElement.toDataURL();ts.remove(g0)});
+  TANK_IMG.done=1;try{tr.dispose();tr.forceContextLoss()}catch(e){}}
+ try{thumbs()}catch(e){console.warn('thumbs',e)}
+ TK={alive:true,renderer:renderer,makeCreature:makeCreature,makeDeco:makeDeco,heart:heart,FS:FS,sel:null,applyLamp:applyLamp,setMoving:setMoving,pellets:pellets};applyLamp();
+ var last=performance.now(),t0=last;
+ (function loop(now){if(!TK||!TK.alive)return;requestAnimationFrame(loop);if(PAUSED){last=now;return}var dt=Math.min(.05,(now-last)/1000);last=now;var t=(now-t0)/1000;
+  anim.forEach(function(f){f(t,dt)});FS.forEach(function(f){updCreature(f,t,dt)});placeCam();renderer.render(scene,camera)})(last);
+}
+// 商店
+var shopTab='fish';
+function shopPic(d){return TANK_IMG[d.k]?'<img class="shImg" src="'+TANK_IMG[d.k]+'" alt="">':'<span class="sw" style="background:'+d.c+'"></span>'}
+function openShop(tab){shopTab=tab||shopTab;var st=tankState(),sh=$('shop');sh.hidden=false;
+ var tabs='<div class="shTabs"><button data-t="fish" class="'+(shopTab=='fish'?'on':'')+'">'+T('魚和海龜')+'</button><button data-t="deco" class="'+(shopTab=='deco'?'on':'')+'">'+T('裝飾')+'</button><button data-t="food" class="'+(shopTab=='food'?'on':'')+'">'+T('飼料')+'</button></div>';
+ var body='';
+ if(shopTab=='fish'){body=FISH.map(function(f){var n=st.fish.filter(function(x){return x.k==f.k}).length,can=S.stars>=f.p&&st.fish.length<FISH_MAX;
+  return '<div class="shItem">'+shopPic(f)+'<div class="shN">'+TT(f.n)+(n?' <small class="nz">×'+n+'</small>':'')+'</div><div class="shP nz">⭐ '+f.p+'</div><button class="btn '+(can?'g':'w')+'" data-buy="'+f.k+'"'+(can?'':' disabled')+'>'+T('買')+'</button></div>'}).join('')+
+  (st.fish.length>=FISH_MAX?'<p class="muted">'+T('魚缸滿了，最多12隻。')+'</p>':'')}
+ if(shopTab=='deco'){var lastG='';body=DECO.map(function(d){var own=st.deco[d.k],can=!own&&S.stars>=d.p,hd=d.g!=lastG?'<div class="shG">'+TT(d.g)+'</div>':'';lastG=d.g;
+  return hd+'<div class="shItem">'+shopPic(d)+'<div class="shN">'+TT(d.n)+'</div><div class="shP nz">'+(own?'✔':'⭐ '+d.p)+'</div><button class="btn '+(can?'g':'w')+'" data-deco="'+d.k+'"'+(can?'':' disabled')+'>'+(own?T('已擁有'):T('買'))+'</button></div>'}).join('')}
+ if(shopTab=='food'){body='<p>'+T('1顆星星可以換5份飼料。點一次水面用1份。')+'</p>'+
+  '<div class="shG">🍤 '+T('一般飼料')+'</div><p class="muted">'+T('慢慢沉下去，一般的魚會搶著吃。')+'</p><p class="nz" style="font-size:22px">🍤 '+st.food+'</p>'+
+  '<button class="btn g" data-food="1"'+(S.stars>=1?'':' disabled')+'>⭐1 → 🍤5</button><button class="btn g" data-food="5"'+(S.stars>=5?'':' disabled')+'>⭐5 → 🍤25</button>'+
+  '<div class="shG">🦐 '+T('沉底飼料')+'</div><p class="muted">'+T('很快沉到沙上，花園鰻、小螃蟹、小章魚、海龜愛吃。')+'</p><p class="nz" style="font-size:22px">🦐 '+st.food2+'</p>'+
+  '<button class="btn g" data-food2="1"'+(S.stars>=1?'':' disabled')+'>⭐1 → 🦐5</button><button class="btn g" data-food2="5"'+(S.stars>=5?'':' disabled')+'>⭐5 → 🦐25</button>'}
+ sh.innerHTML='<div class="shBox"><div class="shHead"><b>'+T('魚缸商店')+'</b><span class="nz">⭐ '+S.stars+'</span><button class="btn w" id="shX">✕</button></div>'+tabs+'<div class="shBody">'+body+'</div></div>';
+ $('shX').onclick=function(){sh.hidden=true};
+ sh.querySelectorAll('[data-t]').forEach(function(b){b.onclick=function(){openShop(b.dataset.t)}});
+ sh.querySelectorAll('[data-buy]').forEach(function(b){b.onclick=function(){var d=fishDef(b.dataset.buy);if(S.stars<d.p||st.fish.length>=FISH_MAX)return;S.stars-=d.p;var f={id:st.nid++,k:d.k,name:'',love:80,t:Date.now()};st.fish.push(f);save();sfx('buy');
+  if(TK){var c=TK.makeCreature(f);TK.heart(c.g.position,3)}tankBar();openShop();tankMsg(T('新朋友來了！')+' '+TT(d.n))}});
+ sh.querySelectorAll('[data-deco]').forEach(function(b){b.onclick=function(){var d=decoDef(b.dataset.deco);if(st.deco[d.k]||S.stars<d.p)return;S.stars-=d.p;st.deco[d.k]=1;save();sfx('buy');if(TK)TK.makeDeco(d.k);tankBar();openShop();tankMsg(d.k=='lamp'?T('裝好魚缸燈了！按上面的💡換燈色。'):T('放好了！')+' '+TT(d.n)+(NOMOVE[d.k]?'':'　'+T('可以用「擺放」搬到喜歡的位置。')))}});
+ sh.querySelectorAll('[data-food]').forEach(function(b){b.onclick=function(){var n=+b.dataset.food;if(S.stars<n)return;S.stars-=n;st.food+=n*FOOD_PER_STAR;save();sfx('buy');tankBar();openShop()}});
+ sh.querySelectorAll('[data-food2]').forEach(function(b){b.onclick=function(){var n=+b.dataset.food2;if(S.stars<n)return;S.stars-=n;st.food2+=n*FOOD_PER_STAR;save();sfx('buy');tankBar();openShop()}})}
+$('tkBack').onclick=closeTank;$('tkShop').onclick=function(){openShop()};
+$('tkF1').onclick=function(){FOODSEL=1;tankBar();sfx('tick');tankMsg(T('一般飼料：點水面撒下去'))};$('tkF2').onclick=function(){FOODSEL=2;tankBar();sfx('tick');tankMsg(T('沉底飼料：花園鰻和螃蟹愛吃'))};
+$('tkLamp').onclick=function(){var st=tankState();st.lampMode=(st.lampMode+1)%4;save();if(TK)TK.applyLamp();sfx('tick');tankMsg('💡 '+TT(LAMP_N[st.lampMode]))};
+$('tkMove').onclick=function(){if(TK)TK.setMoving(!MOVING)};
+
+// ---------- 彩帶 ----------
+function celebrate(){var c=document.createElement('canvas');c.className='confetti';c.width=innerWidth;c.height=innerHeight;document.body.appendChild(c);var x=c.getContext('2d'),ps=[];
+ for(var i=0;i<120;i++)ps.push({x:Math.random()*c.width,y:-20-Math.random()*200,v:2+Math.random()*4,r:4+Math.random()*5,c:COL[1+Math.floor(Math.random()*9)],s:Math.random()*6});
+ var t=0;(function f(){x.clearRect(0,0,c.width,c.height);ps.forEach(function(p){p.y+=p.v;p.x+=Math.sin((t+p.s)/10)*2;x.fillStyle=p.c;x.fillRect(p.x,p.y,p.r,p.r*1.6)});t++;if(t<160)requestAnimationFrame(f);else c.remove()})()}
+// ---------- 啟動 ----------
+soundBtns();lvDraw();save();var h=(location.hash||'').slice(1);go(['map','cards','tricks','quick','exam','me'].indexOf(h)>=0?h:'map');
+</script>
+</body>
+</html>

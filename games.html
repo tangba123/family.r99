@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8"/>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+<meta content="width=device-width,initial-scale=1,maximum-scale=1" name="viewport"/>
+<title>九九乘法遊戲島</title>
+<style>
+
+.z{display:inline-flex;align-items:center;vertical-align:middle;line-height:1;margin:0 .2em 0 .03em}
+.z .h{display:inline-block}
+.z .b{display:inline-flex;flex-direction:column;justify-content:center;font-size:.4em;line-height:1.02;
+  margin-left:.12em;min-width:1em;font-weight:400;position:relative;letter-spacing:0}
+.z .b span{display:block;text-align:center;position:relative}
+.z .b .l{line-height:.6}
+.z .b .zt{position:absolute;left:100%;top:-.45em;font-style:normal;margin-left:-.05em}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC","Noto Sans CJK TC",sans-serif;background:linear-gradient(180deg,#7fd3ff,#bfeaff 40%,#fff3c4);min-height:100vh;color:#2b2b2b;font-size:20px;overflow-x:hidden}
+.nozy .z .b{display:none}.nozy .z{margin:0}
+.wrap{max-width:860px;margin:0 auto;padding:10px 12px 40px}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:rgba(255,255,255,.85);border-radius:18px;padding:8px 12px;margin-bottom:10px;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.top h1{font-size:24px;margin:0;flex:1;white-space:nowrap;color:#1a6fa3}
+.stars{font-weight:900;font-size:20px;white-space:nowrap}
+.pill{border:2px solid #1a6fa3;background:#fff;color:#1a6fa3;border-radius:99px;padding:3px 10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap}
+.sea{position:relative}
+.islands{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.isl{border:0;border-radius:28px;padding:12px 10px;background:radial-gradient(ellipse at 50% 85%,#f7d99a 0 45%,#7fd47f 46%);box-shadow:0 8px 0 rgba(0,0,0,.15);cursor:pointer;font-family:inherit;text-align:center;position:relative}
+.isl:active{transform:translateY(4px);box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.isl .ic{font-size:54px;line-height:1.1}
+.isl b{display:block;font-size:20px}
+.isl .lv{display:flex;justify-content:center;gap:4px;margin-top:4px}
+.isl .lv i{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #ccc;font-style:normal;font-size:12px;line-height:18px}
+.isl .lv i.s1{background:#ffe9a8;border-color:#e0b100}.isl .lv i.s2{background:#ffd64d;border-color:#c99a00}.isl .lv i.s3{background:#ffb800;border-color:#a87a00;color:#fff}
+.isl.lock{filter:grayscale(1) brightness(.85);cursor:not-allowed}
+.isl .no{position:absolute;top:6px;left:12px;font-weight:900;color:#1a6fa3;font-size:18px}
+.view{display:none}.view.on{display:block}
+.game{background:rgba(255,255,255,.92);border-radius:24px;padding:12px;box-shadow:0 6px 0 rgba(0,0,0,.1);min-height:520px;position:relative;overflow:hidden}
+.ghead{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ghead .t{flex:1;font-weight:900;font-size:21px}
+.prog{height:12px;background:#eee;border-radius:99px;overflow:hidden;margin:4px 0 8px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#4cd18a,#2d9cdb);transition:.3s}
+.q{text-align:center;font-size:44px;font-weight:900;font-family:ui-monospace,Menlo,Consolas,monospace;margin:6px 0}
+.hint{text-align:center;font-size:18px;color:#555;min-height:30px}
+.fb{text-align:center;font-weight:900;font-size:20px;min-height:34px;line-height:1.9}
+.fb.good{color:#1a7a43}.fb.bad{color:#c0392b}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.opt{font-size:34px;font-weight:900;padding:12px 0;border-radius:18px;border:0;background:#e8f4fd;color:#1a5f8f;box-shadow:0 5px 0 #b6d6ec;cursor:pointer;font-family:inherit}
+.opt:active{transform:translateY(4px);box-shadow:none}
+.opt.right{background:#4cd18a;color:#fff;box-shadow:0 5px 0 #23995a}.opt.wrong{background:#ff6b6b;color:#fff;box-shadow:0 5px 0 #c03b3b}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:360px;margin:8px auto 0}
+.pad button{font-size:28px;font-weight:900;height:56px;border-radius:14px;border:0;background:#e8f4fd;color:#1a5f8f;box-shadow:0 4px 0 #b6d6ec;cursor:pointer;font-family:inherit}
+.pad button.ok{background:#4cd18a;color:#fff;box-shadow:0 4px 0 #23995a;font-size:20px;white-space:nowrap}
+.ans{display:inline-block;min-width:80px;border-bottom:5px solid #2d9cdb;color:#2d9cdb}
+.btn{border:0;border-radius:16px;padding:10px 18px;font-size:21px;font-weight:900;cursor:pointer;font-family:inherit;background:#2d9cdb;color:#fff;box-shadow:0 5px 0 #1a6fa3;margin:5px}
+.btn.g{background:#4cd18a;box-shadow:0 5px 0 #23995a}.btn.w{background:#eee;color:#333;box-shadow:0 5px 0 #bbb}
+.btn:active{transform:translateY(4px);box-shadow:none}
+.ov{position:fixed;inset:0;background:rgba(0,30,60,.6);display:none;align-items:center;justify-content:center;z-index:20;padding:16px}
+.ov.on{display:flex}
+.card{background:#fff;border-radius:26px;padding:18px;max-width:440px;width:100%;text-align:center;box-shadow:0 10px 0 rgba(0,0,0,.25);max-height:92vh;overflow:auto;animation:pop .3s}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+.card h2{margin:4px 0;color:#1a6fa3;font-size:26px}
+.big{font-size:56px}
+.lvl{display:grid;grid-template-columns:1fr;gap:8px;margin:10px 0}
+.lvl button{display:flex;align-items:center;justify-content:space-between;border:0;border-radius:16px;padding:10px 14px;font-size:20px;font-weight:800;background:#e8f4fd;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #b6d6ec}
+.lvl button.lock{opacity:.5;cursor:not-allowed}
+.st{color:#f2b705;letter-spacing:2px}
+/* 1 氣球 */
+.sky{position:relative;height:380px;border-radius:18px;background:linear-gradient(180deg,#bfe9ff,#eaf8ff);overflow:hidden}
+.bal{position:absolute;bottom:-120px;width:92px;height:112px;border:0;cursor:pointer;background:none;font-family:inherit;animation:up linear forwards;padding:0}
+.bal span{display:flex;align-items:center;justify-content:center;width:92px;height:100px;border-radius:50% 50% 46% 46%;color:#fff;font-size:32px;font-weight:900;box-shadow:inset -10px -10px 0 rgba(0,0,0,.12)}
+.bal::after{content:'';position:absolute;left:45px;top:100px;width:2px;height:30px;background:#888}
+.bal.pop{animation:none;opacity:0;transition:opacity .2s}
+@keyframes up{to{transform:translateY(-520px)}}
+/* 2 地鼠 */
+.holes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:440px;margin:0 auto}
+.hole{height:112px;background:radial-gradient(ellipse at 50% 88%,#5a3a1a 0 34%,#8fdc8a 36%);border-radius:18px;position:relative;overflow:hidden}
+.mole{position:absolute;left:50%;bottom:-110px;transform:translateX(-50%);width:88px;height:104px;border:0;background:none;cursor:pointer;transition:bottom .16s;font-family:inherit;display:flex;flex-direction:column;align-items:center;padding:0}
+.mole.up{bottom:4px}.mole .mf{font-size:52px;line-height:1}
+.mole b{background:#fff;color:#1a5f8f;border-radius:10px;padding:0 8px;font-size:24px;margin-top:-4px}
+/* 3 翻牌 */
+.memo{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:520px;margin:0 auto}
+.mc{height:86px;border:0;border-radius:16px;background:linear-gradient(160deg,#2d9cdb,#6fc3f0);box-shadow:0 5px 0 #1a6fa3;cursor:pointer;font-family:inherit;font-size:26px;font-weight:900;color:transparent;position:relative}
+.mc::after{content:'?';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:34px}
+.mc.up{background:#fff;color:#1a5f8f}.mc.up::after{content:''}.mc.ok{background:#4cd18a;color:#fff;box-shadow:0 5px 0 #23995a}
+/* 4 賽跑 */
+.track{position:relative;height:150px;background:repeating-linear-gradient(90deg,#c97a3d 0 40px,#d68a4d 40px 80px);border-radius:16px;margin-bottom:6px;overflow:hidden}
+.lane{position:absolute;left:0;right:0;height:50%;border-bottom:3px dashed #fff}
+.lane:nth-child(2){top:50%;border:0}
+.runner{position:absolute;font-size:46px;left:2%;transition:left .4s;transform:scaleX(-1)}
+.finish{position:absolute;right:4%;top:0;bottom:0;width:14px;background:repeating-linear-gradient(0deg,#fff 0 12px,#222 12px 24px)}
+/* 5 接水果 */
+.field{position:relative;height:380px;border-radius:18px;background:linear-gradient(180deg,#d8f3ff,#fff8e6);overflow:hidden}
+.fruit{position:absolute;top:-80px;width:33.33%;text-align:center;font-size:24px;font-weight:900}
+.fruit span{display:inline-block;background:#fff;border:3px solid #ff8a3d;border-radius:50%;width:66px;height:66px;line-height:60px}
+.basket{position:absolute;bottom:6px;width:33.33%;text-align:center;font-size:60px;transition:left .15s}
+.lanes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.lanes button{height:60px;font-size:28px;border-radius:16px;border:0;background:#ffe9cf;box-shadow:0 4px 0 #e0b98a;cursor:pointer}
+/* 6 填表 */
+.row9{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin:8px 0}
+.cell{border-radius:10px;background:#fff;border:2px solid #cfe4f3;text-align:center;padding:4px 0}
+.cell small{display:block;font-size:13px;color:#888}
+.cell b{font-size:24px}
+.cell.blank b{color:#c0392b}.cell.cur{border-color:#ff8a3d;background:#fff4e6}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:8px}
+.tile{font-size:28px;font-weight:900;width:72px;height:60px;border-radius:14px;border:0;background:#fff3c4;box-shadow:0 4px 0 #e0c060;cursor:pointer;font-family:inherit}
+.tile.used{visibility:hidden}
+/* 7 天平 */
+.scale{position:relative;height:200px;margin:10px auto;max-width:460px}
+.beam{position:absolute;left:5%;right:5%;top:60px;height:10px;background:#8a5a2b;border-radius:6px;transition:transform .5s;transform-origin:50% 50%}
+.pan{position:absolute;top:-56px;width:150px;text-align:center;font-size:26px;font-weight:900;background:#fff;border:3px solid #8a5a2b;border-radius:14px;padding:6px 0}
+.pan.l{left:-20px}.pan.r{right:-20px}
+.post{position:absolute;left:50%;top:66px;width:12px;height:110px;background:#8a5a2b;transform:translateX(-50%)}
+.base{position:absolute;left:50%;bottom:0;width:140px;height:14px;background:#8a5a2b;transform:translateX(-50%);border-radius:8px}
+/* 8 點點 */
+.dots{display:inline-grid;gap:6px;padding:10px;background:#fff;border-radius:16px;border:3px solid #cfe4f3}
+.dots i{width:22px;height:22px;border-radius:50%;display:block}
+/* 10 真假 */
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.tf button{font-size:44px;height:110px;border-radius:22px;border:0;cursor:pointer;font-weight:900}
+.tf .y{background:#d9f7e5;box-shadow:0 6px 0 #8fd6aa}.tf .n{background:#ffe1e1;box-shadow:0 6px 0 #f0a0a0}
+.timer{height:10px;background:#eee;border-radius:99px;overflow:hidden}
+.timer i{display:block;height:100%;background:#ff8a3d}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:30}
+@media(max-width:520px){.top h1{font-size:19px;flex-basis:100%}.ghead{flex-wrap:wrap}.ghead .t{order:3;flex-basis:100%;text-align:center}.isl .ic{font-size:42px}.isl b{font-size:16px}.q{font-size:36px}.opt{font-size:28px}.pan{width:120px;font-size:20px}.cell b{font-size:18px}.row9{grid-template-columns:repeat(5,1fr)}.memo .mc{height:70px;font-size:20px}}
+</style>
+</head>
+<body>
+<!-- ===== 帳號登入（Firebase）：只用在 GitHub Pages 分享版 ===== -->
+<style>
+#gate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#9fd8f0,#4aa8d8);font-family:"Noto Sans TC",system-ui,sans-serif}
+#gate .gbox{background:#fffdf8;border-radius:24px;padding:28px 26px;width:min(92vw,380px);box-shadow:0 10px 30px #0003;text-align:center}
+#gate h1{margin:0 0 4px;font-size:28px}#gate p{margin:4px 0 16px;color:#666;font-size:15px}
+#gate input{width:100%;box-sizing:border-box;font:inherit;font-size:18px;padding:12px 14px;border:2px solid #e6e0d4;border-radius:14px;margin:6px 0}
+#gate button{width:100%;font:inherit;font-size:19px;font-weight:700;border:0;border-radius:14px;padding:13px;margin-top:10px;background:#f2a51f;color:#fff;cursor:pointer}
+#gate button:disabled{opacity:.6}
+#gate .gerr{color:#e0443c;min-height:22px;font-size:15px;margin-top:8px}
+#gate .gtip{font-size:12.5px;color:#888;margin-top:12px;line-height:1.6}
+#acct{position:fixed;left:50%;transform:translateX(-50%);bottom:6px;z-index:60;opacity:.85;display:flex;gap:6px;align-items:center;font-family:"Noto Sans TC",system-ui,sans-serif;font-size:13px}
+#acct span,#acct button{background:#fffdf8e8;border:1px solid #e6e0d4;border-radius:999px;padding:4px 10px;cursor:pointer;color:#333}
+#acct span{cursor:default}
+#allacct{position:fixed;inset:0;z-index:9998;background:#0006;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:30px 10px;font-family:"Noto Sans TC",system-ui,sans-serif}
+#allacct .abox{background:#fffdf8;border-radius:20px;padding:20px;width:min(96vw,760px)}
+#allacct table{width:100%;border-collapse:collapse;font-size:14px}#allacct th,#allacct td{border-bottom:1px solid #e6e0d4;padding:6px;text-align:left}
+#allacct .x{float:right;border:0;background:#eee;border-radius:999px;padding:6px 12px;cursor:pointer}
+</style>
+<div id="gate"><div class="gbox">
+  <h1>🏝️ 九九乘法遊戲島</h1><p>請登入你的帳號</p>
+  <form id="gform" autocomplete="on">
+    <input id="guser" placeholder="帳號" autocomplete="username" autocapitalize="off" required>
+    <input id="gpass" type="password" placeholder="密碼" autocomplete="current-password" required>
+    <button id="gbtn" type="submit">登入</button>
+  </form>
+  <div class="gerr" id="gerr"></div>
+  <div class="gtip">帳號由家長在後台建立。忘記密碼請找家長幫忙重設。</div>
+</div></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut,setPersistence,browserLocalPersistence} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,collection,getDocs,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+const firebaseConfig={"apiKey": "AIzaSyBhpd4pDiVT9suLCvP4ys35qReI8OlaJQ4", "authDomain": "tangba-123.firebaseapp.com", "projectId": "tangba-123", "storageBucket": "tangba-123.firebasestorage.app", "messagingSenderId": "256828390653", "appId": "1:256828390653:web:fc76cddb05db53f4ccd294"};
+const PARENT_UIDS=["9EQCZLh8l2eISIrzAP1C7cViqXi2"];      // 家長帳號（可以看全部人的紀錄）
+const DOMAIN="@family.app";              // 帳號沒打 @ 時自動補上
+const STORES=[["tt99g10", "data_tt99g10", "tt99g10.owner"]];   // [這頁的瀏覽器資料名稱, 雲端欄位, 主人標記]
+const WATCH=new Set(STORES.map(s=>s[0]));
+
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+setPersistence(auth,browserLocalPersistence).catch(()=>{});
+const $=id=>document.getElementById(id);
+const rawSet=localStorage.setItem.bind(localStorage);
+let user=null, started=false, upT=null, dirty=false;
+
+const ERR={"auth/invalid-credential":"帳號或密碼不對，再試一次","auth/wrong-password":"帳號或密碼不對，再試一次","auth/user-not-found":"沒有這個帳號","auth/invalid-email":"帳號格式不對","auth/user-disabled":"這個帳號已經停用，請找家長","auth/too-many-requests":"試太多次了，請等一下再試","auth/network-request-failed":"網路連不上，請檢查網路"};
+$("gform").addEventListener("submit",async e=>{
+  e.preventDefault(); $("gerr").textContent=""; $("gbtn").disabled=true;
+  let u=$("guser").value.trim().toLowerCase(); if(!u.includes("@")) u+=DOMAIN;
+  try{ await signInWithEmailAndPassword(auth,u,$("gpass").value); }
+  catch(err){ $("gerr").textContent=ERR[err.code]||("登入失敗："+(err.code||err.message)); $("gbtn").disabled=false; }
+});
+
+async function upload(){
+  if(!user||!dirty) return; dirty=false;
+  const o={email:user.email,updatedAt:serverTimestamp()}; STORES.forEach(([k,f])=>{o[f]=localStorage.getItem(k)||""});
+  try{ await setDoc(doc(db,"users",user.uid),o,{merge:true}); setStat("☁️ 已同步"); }
+  catch(e){ dirty=true; setStat("⚠️ 尚未同步"); }
+}
+function queue(){ dirty=true; setStat("☁️ 同步中…"); clearTimeout(upT); upT=setTimeout(upload,2500); }
+document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="hidden"){clearTimeout(upT);upload();} });
+window.addEventListener("pagehide",()=>{clearTimeout(upT);upload();});
+function setStat(s){const el=$("acstat");if(el)el.textContent=s;}
+
+onAuthStateChanged(auth,async u=>{
+  if(!u){ if(started){ location.reload(); } $("gate").style.display="flex"; $("gbtn").disabled=false; return; }
+  user=u; $("gate").querySelector("p").textContent="載入你的紀錄中…";
+  let d={}, ok=true;
+  try{ const snap=await getDoc(doc(db,"users",u.uid)); d=snap.exists()?snap.data():{}; }catch(e){ ok=false; }
+  STORES.forEach(([k,f,ow])=>{
+    const owner=localStorage.getItem(ow), remote=d[f]||"";
+    if(!ok){ if(owner!==u.uid) localStorage.removeItem(k); }        // 離線時只用自己的紀錄
+    else if(remote){ rawSet(k,remote); }
+    else if(owner&&owner!==u.uid){ localStorage.removeItem(k); }    // 別人的紀錄不要帶過來
+    else if(!owner&&localStorage.getItem(k)){ dirty=true; }         // 第一次登入：把這台裝置原本的紀錄搬上去
+    rawSet(ow,u.uid);
+  });
+  start(u);
+  if(dirty) upload();
+});
+
+function start(u){
+  if(started) return; started=true;
+  localStorage.setItem=function(k,v){ rawSet(k,v); if(WATCH.has(k)) queue(); };
+  const rawRm=localStorage.removeItem.bind(localStorage); localStorage.removeItem=function(k){ rawRm(k); if(WATCH.has(k)) queue(); };
+  $("gate").style.display="none";
+  const name=(u.email||"").replace(DOMAIN,"");
+  const bar=document.createElement("div"); bar.id="acct";
+  bar.innerHTML=`<span>👤 ${name.replace(/[<>&]/g,"")}</span><span id="acstat">☁️ 已同步</span>${PARENT_UIDS.includes(u.uid)?'<button id="acall">👨‍👩‍👧 全部帳號</button>':""}<button id="acout">登出</button>`;
+  document.body.appendChild(bar);
+  $("acout").onclick=async()=>{ clearTimeout(upT); await upload(); [["islandExplorer.v1","","islandExplorer.owner"],["tt99game","","tt99game.owner"],["tt99","","tt99.owner"],["tt99g10","","tt99g10.owner"]].forEach(([k,,ow])=>{localStorage.removeItem(k);localStorage.removeItem(ow)}); await signOut(auth); };
+  if($("acall")) $("acall").onclick=showAll;
+  // 依序執行遊戲程式
+  document.querySelectorAll('script[type="text/x-deferred"]').forEach(old=>{ const s=document.createElement("script"); s.textContent=old.textContent; old.replaceWith(s); });
+}
+
+async function showAll(){
+  const box=document.createElement("div"); box.id="allacct"; box.innerHTML='<div class="abox"><button class="x">✕ 關閉</button><h2>👨‍👩‍👧 全部帳號的紀錄</h2><p style="font-size:13px;color:#888">隊員、貝殼等欄位是島嶼探險隊的紀錄。</p><p id="aload">讀取中…</p></div>';
+  document.body.appendChild(box); box.querySelector(".x").onclick=()=>box.remove();
+  try{
+    const qs=await getDocs(collection(db,"users")); const rows=[];
+    qs.forEach(d=>{ const v=d.data(); let m={}; try{m=JSON.parse(v.data||"{}")}catch(e){}
+      const other=[["data_tt99game","數學大冒險"],["data_tt99","乘法遊樂園"],["data_tt99g10","乘法遊戲島"]].filter(([f])=>v[f]).map(([,n])=>n).join("、")||"—";
+      const profs=Object.values(m.profiles||{});
+      const when=v.updatedAt&&v.updatedAt.toDate?v.updatedAt.toDate().toLocaleString("zh-TW"):"—";
+      if(!profs.length) rows.push(`<tr><td>${(v.email||"").replace(DOMAIN,"")}</td><td>—</td><td></td><td></td><td></td><td></td><td>${other}</td><td>${when}</td></tr>`);
+      profs.forEach(p=>{ const lv=Object.keys(p.levels||{}).length, wr=Object.keys(p.wrong||{}).length, e=p.eng||{};
+        const ed=Object.keys((e.stats||{}).days||{}).length, el=Object.values(e.learned||{}).reduce((s,x)=>s+Object.keys(x).length,0);
+        rows.push(`<tr><td>${(v.email||"").replace(DOMAIN,"")}</td><td>${String(p.name||"").replace(/[<>&]/g,"")}</td><td>🐚 ${p.shells||0}</td><td>${lv} 關</td><td>${wr} 題</td><td>英文 ${ed} 天・${el} 課</td><td>${other}</td><td>${when}</td></tr>`); });
+    });
+    box.querySelector("#aload").outerHTML=`<table><tr><th>帳號</th><th>隊員</th><th>貝殼</th><th>闖過</th><th>錯題</th><th>英文島</th><th>其他遊戲</th><th>最後同步</th></tr>${rows.join("")}</table><p style="font-size:13px;color:#888">新增、停用帳號或重設密碼，請到 Firebase 主控台 → Authentication → 使用者。</p>`;
+  }catch(e){ box.querySelector("#aload").textContent="讀不到（請確認資料庫規則裡有你的家長 UID）："+(e.code||e.message); }
+}
+</script>
+
+<div class="wrap">
+<div class="top">
+<h1>🏝️ <span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">九</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">乘</span><span class="b"><span>ㄔ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">法</span><span class="b"><span>ㄈ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">遊</span><span class="b"><span>ㄧ</span><span>ㄡ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">戲</span><span class="b"><span>ㄒ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">島</span><span class="b"><span>ㄉ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span></h1>
+<span class="stars nz">⭐ <b id="totStars">0</b></span>
+<button class="pill" id="sndBtn"></button>
+<button class="pill" id="sayBtn"></button>
+<button class="pill" id="zyBtn"><span class="z"><span class="h">注</span><span class="b"><span>ㄓ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span>：<span class="z"><span class="h">開</span><span class="b"><span>ㄎ</span><span>ㄞ</span></span></span></button>
+</div>
+<div class="view on" id="v-map">
+<p style="text-align:center;margin:4px 0 10px"><span class="z"><span class="h">每</span><span class="b"><span>ㄇ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">座</span><span class="b"><span>ㄗ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">島</span><span class="b"><span>ㄉ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">有</span><span class="b"><span>ㄧ</span><span>ㄡ<i class="zt">ˇ</i></span></span></span> <b class="nz">5</b> <span class="z"><span class="h">關</span><span class="b"><span>ㄍ</span><span>ㄨ</span><span>ㄢ</span></span></span>，<span class="z"><span class="h">打</span><span class="b"><span>ㄉ</span><span>ㄚ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">贏</span><span class="b"><span>ㄧ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">第</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span> <b class="nz">1</b> <span class="z"><span class="h">關</span><span class="b"><span>ㄍ</span><span>ㄨ</span><span>ㄢ</span></span></span><span class="z"><span class="h">就</span><span class="b"><span>ㄐ</span><span>ㄧ</span><span>ㄡ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">能</span><span class="b"><span>ㄋ</span><span>ㄥ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">去</span><span class="b"><span>ㄑ</span><span>ㄩ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">下</span><span class="b"><span>ㄒ</span><span>ㄧ</span><span>ㄚ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">座</span><span class="b"><span>ㄗ</span><span>ㄨ</span><span>ㄛ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">島</span><span class="b"><span>ㄉ</span><span>ㄠ<i class="zt">ˇ</i></span></span></span>！<span class="z"><span class="h">題</span><span class="b"><span>ㄊ</span><span>ㄧ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">目</span><span class="b"><span>ㄇ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">每</span><span class="b"><span>ㄇ</span><span>ㄟ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">次</span><span class="b"><span>ㄘ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">都</span><span class="b"><span>ㄉ</span><span>ㄡ</span></span></span><span class="z"><span class="h">不</span><span class="b"><span>ㄅ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">一</span><span class="b"><span>ㄧ</span></span></span><span class="z"><span class="h">樣</span><span class="b"><span>ㄧ</span><span>ㄤ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">喔</span><span class="b"><span>ㄛ</span></span></span>。</p>
+<div class="islands" id="islands"></div>
+<p style="text-align:center;margin-top:14px"><button class="pill" id="vkOpen">🔊 <span class="z"><span class="h">語</span><span class="b"><span>ㄩ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span><span class="z"><span class="h">設</span><span class="b"><span>ㄕ</span><span>ㄜ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">定</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄥ<i class="zt">ˋ</i></span></span></span>（<span class="z"><span class="h">聲</span><span class="b"><span>ㄕ</span><span>ㄥ</span></span></span><span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span>、<span class="z"><span class="h">語</span><span class="b"><span>ㄩ<i class="zt">ˇ</i></span></span></span><span class="z"><span class="h">速</span><span class="b"><span>ㄙ</span><span>ㄨ<i class="zt">ˋ</i></span></span></span>、<span class="z"><span class="h">音</span><span class="b"><span>ㄧ</span><span>ㄣ</span></span></span><span class="z"><span class="h">調</span><span class="b"><span>ㄉ</span><span>ㄧ</span><span>ㄠ<i class="zt">ˋ</i></span></span></span>）</button></p>
+</div>
+<div class="view" id="v-game">
+<div class="game">
+<div class="ghead"><button class="pill" id="back">← <span class="z"><span class="h">回</span><span class="b"><span>ㄏ</span><span>ㄨ</span><span>ㄟ<i class="zt">ˊ</i></span></span></span><span class="z"><span class="h">地</span><span class="b"><span>ㄉ</span><span>ㄧ<i class="zt">ˋ</i></span></span></span><span class="z"><span class="h">圖</span><span class="b"><span>ㄊ</span><span>ㄨ<i class="zt">ˊ</i></span></span></span></button><button class="pill" id="readQ" title="念題目">🔊</button><div class="t" id="gTitle"></div><div class="stars nz" id="gScore"></div></div>
+<div class="prog"><i id="gProg"></i></div>
+<div id="gBody"></div>
+</div>
+</div>
+</div>
+<div class="ov" id="ov"><div class="card" id="ovCard"></div></div><script type="text/x-deferred">
+var ZY={"{n}的乘法": [null, null, null, "ㄉㄜ˙", "ㄔㄥˊ", "ㄈㄚˇ"], "一一得一": ["ㄧ", "ㄧ", "ㄉㄜˊ", "ㄧ"], "一七得七": ["ㄧ", "ㄑㄧ", "ㄉㄜˊ", "ㄑㄧ"], "一三得三": ["ㄧ", "ㄙㄢ", "ㄉㄜˊ", "ㄙㄢ"], "一九得九": ["ㄧ", "ㄐㄧㄡˇ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "一二得二": ["ㄧ", "ㄦˋ", "ㄉㄜˊ", "ㄦˋ"], "一五得五": ["ㄧ", "ㄨˇ", "ㄉㄜˊ", "ㄨˇ"], "一八得八": ["ㄧ", "ㄅㄚ", "ㄉㄜˊ", "ㄅㄚ"], "一六得六": ["ㄧ", "ㄌㄧㄡˋ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "一十": ["ㄧ", "ㄕˊ"], "一四得四": ["ㄧ", "ㄙˋ", "ㄉㄜˊ", "ㄙˋ"], "七一得七": ["ㄑㄧ", "ㄧ", "ㄉㄜˊ", "ㄑㄧ"], "七七四十九": ["ㄑㄧ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄐㄧㄡˇ"], "七三二十一": ["ㄑㄧ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄧ"], "七九六十三": ["ㄑㄧ", "ㄐㄧㄡˇ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙㄢ"], "七二十四": ["ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "七五三十五": ["ㄑㄧ", "ㄨˇ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "七八五十六": ["ㄑㄧ", "ㄅㄚ", "ㄨˇ", "ㄕˊ", "ㄌㄧㄡˋ"], "七六四十二": ["ㄑㄧ", "ㄌㄧㄡˋ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "七四二十八": ["ㄑㄧ", "ㄙˋ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "三一得三": ["ㄙㄢ", "ㄧ", "ㄉㄜˊ", "ㄙㄢ"], "三七二十一": ["ㄙㄢ", "ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄧ"], "三三得九": ["ㄙㄢ", "ㄙㄢ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "三九二十七": ["ㄙㄢ", "ㄐㄧㄡˇ", "ㄦˋ", "ㄕˊ", "ㄑㄧ"], "三二得六": ["ㄙㄢ", "ㄦˋ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "三五十五": ["ㄙㄢ", "ㄨˇ", "ㄕˊ", "ㄨˇ"], "三八二十四": ["ㄙㄢ", "ㄅㄚ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "三六十八": ["ㄙㄢ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄅㄚ"], "三四十二": ["ㄙㄢ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "下一關": ["ㄒㄧㄚˋ", "ㄧ", "ㄍㄨㄢ"], "乘法表拼圖": ["ㄔㄥˊ", "ㄈㄚˇ", "ㄅㄧㄠˇ", "ㄆㄧㄣ", "ㄊㄨˊ"], "九一得九": ["ㄐㄧㄡˇ", "ㄧ", "ㄉㄜˊ", "ㄐㄧㄡˇ"], "九七六十三": ["ㄐㄧㄡˇ", "ㄑㄧ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙㄢ"], "九三二十七": ["ㄐㄧㄡˇ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄑㄧ"], "九九八十一": ["ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄅㄚ", "ㄕˊ", "ㄧ"], "九二十八": ["ㄐㄧㄡˇ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "九五四十五": ["ㄐㄧㄡˇ", "ㄨˇ", "ㄙˋ", "ㄕˊ", "ㄨˇ"], "九八七十二": ["ㄐㄧㄡˇ", "ㄅㄚ", "ㄑㄧ", "ㄕˊ", "ㄦˋ"], "九六五十四": ["ㄐㄧㄡˇ", "ㄌㄧㄡˋ", "ㄨˇ", "ㄕˊ", "ㄙˋ"], "九四三十六": ["ㄐㄧㄡˇ", "ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "二一得二": ["ㄦˋ", "ㄧ", "ㄉㄜˊ", "ㄦˋ"], "二七十四": ["ㄦˋ", "ㄑㄧ", "ㄕˊ", "ㄙˋ"], "二三得六": ["ㄦˋ", "ㄙㄢ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "二九十八": ["ㄦˋ", "ㄐㄧㄡˇ", "ㄕˊ", "ㄅㄚ"], "二二得四": ["ㄦˋ", "ㄦˋ", "ㄉㄜˊ", "ㄙˋ"], "二五一十": ["ㄦˋ", "ㄨˇ", "ㄧ", "ㄕˊ"], "二八十六": ["ㄦˋ", "ㄅㄚ", "ㄕˊ", "ㄌㄧㄡˋ"], "二六十二": ["ㄦˋ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄦˋ"], "二四得八": ["ㄦˋ", "ㄙˋ", "ㄉㄜˊ", "ㄅㄚ"], "五一得五": ["ㄨˇ", "ㄧ", "ㄉㄜˊ", "ㄨˇ"], "五七三十五": ["ㄨˇ", "ㄑㄧ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "五三十五": ["ㄨˇ", "ㄙㄢ", "ㄕˊ", "ㄨˇ"], "五九四十五": ["ㄨˇ", "ㄐㄧㄡˇ", "ㄙˋ", "ㄕˊ", "ㄨˇ"], "五二一十": ["ㄨˇ", "ㄦˋ", "ㄧ", "ㄕˊ"], "五五二十五": ["ㄨˇ", "ㄨˇ", "ㄦˋ", "ㄕˊ", "ㄨˇ"], "五八四十": ["ㄨˇ", "ㄅㄚ", "ㄙˋ", "ㄕˊ"], "五六三十": ["ㄨˇ", "ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ"], "五四二十": ["ㄨˇ", "ㄙˋ", "ㄦˋ", "ㄕˊ"], "你好！二成八等於十六。我們一起來練習九九乘法吧！": ["ㄋㄧˇ", "ㄏㄠˇ", null, "ㄦˋ", "ㄔㄥˊ", "ㄅㄚ", "ㄉㄥˇ", "ㄩˊ", "ㄕˊ", "ㄌㄧㄡˋ", null, "ㄨㄛˇ", "ㄇㄣ˙", "ㄧ", "ㄑㄧˇ", "ㄌㄞˊ", "ㄌㄧㄢˋ", "ㄒㄧˊ", "ㄐㄧㄡˇ", "ㄐㄧㄡˇ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄅㄚ˙", null], "個，有": ["ㄍㄜˋ", null, "ㄧㄡˇ"], "先打贏上一座島的第1關喔！": ["ㄒㄧㄢ", "ㄉㄚˇ", "ㄧㄥˊ", "ㄕㄤˋ", "ㄧ", "ㄗㄨㄛˋ", "ㄉㄠˇ", "ㄉㄜ˙", "ㄉㄧˋ", null, "ㄍㄨㄢ", "ㄛ", null], "全部": ["ㄑㄩㄢˊ", "ㄅㄨˋ"], "八一得八": ["ㄅㄚ", "ㄧ", "ㄉㄜˊ", "ㄅㄚ"], "八七五十六": ["ㄅㄚ", "ㄑㄧ", "ㄨˇ", "ㄕˊ", "ㄌㄧㄡˋ"], "八三二十四": ["ㄅㄚ", "ㄙㄢ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "八九七十二": ["ㄅㄚ", "ㄐㄧㄡˇ", "ㄑㄧ", "ㄕˊ", "ㄦˋ"], "八二十六": ["ㄅㄚ", "ㄦˋ", "ㄕˊ", "ㄌㄧㄡˋ"], "八五四十": ["ㄅㄚ", "ㄨˇ", "ㄙˋ", "ㄕˊ"], "八八六十四": ["ㄅㄚ", "ㄅㄚ", "ㄌㄧㄡˋ", "ㄕˊ", "ㄙˋ"], "八六四十八": ["ㄅㄚ", "ㄌㄧㄡˋ", "ㄙˋ", "ㄕˊ", "ㄅㄚ"], "八四三十二": ["ㄅㄚ", "ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "六一得六": ["ㄌㄧㄡˋ", "ㄧ", "ㄉㄜˊ", "ㄌㄧㄡˋ"], "六七四十二": ["ㄌㄧㄡˋ", "ㄑㄧ", "ㄙˋ", "ㄕˊ", "ㄦˋ"], "六三十八": ["ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ", "ㄅㄚ"], "六九五十四": ["ㄌㄧㄡˋ", "ㄐㄧㄡˇ", "ㄨˇ", "ㄕˊ", "ㄙˋ"], "六二十二": ["ㄌㄧㄡˋ", "ㄦˋ", "ㄕˊ", "ㄦˋ"], "六五三十": ["ㄌㄧㄡˋ", "ㄨˇ", "ㄙㄢ", "ㄕˊ"], "六八四十八": ["ㄌㄧㄡˋ", "ㄅㄚ", "ㄙˋ", "ㄕˊ", "ㄅㄚ"], "六六三十六": ["ㄌㄧㄡˋ", "ㄌㄧㄡˋ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "六四二十四": ["ㄌㄧㄡˋ", "ㄙˋ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "再想想！": ["ㄗㄞˋ", "ㄒㄧㄤˇ", "ㄒㄧㄤ˙", null], "再玩一次": ["ㄗㄞˋ", "ㄨㄢˊ", "ㄧ", "ㄘˋ"], "再試一次！": ["ㄗㄞˋ", "ㄕˋ", "ㄧ", "ㄘˋ", null], "十": ["ㄕˊ"], "口訣接龍": ["ㄎㄡˇ", "ㄐㄩㄝˊ", "ㄐㄧㄝ", "ㄌㄨㄥˊ"], "口訣的後半句是什麼？": ["ㄎㄡˇ", "ㄐㄩㄝˊ", "ㄉㄜ˙", "ㄏㄡˋ", "ㄅㄢˋ", "ㄐㄩˋ", "ㄕˋ", "ㄕㄣˊ", "ㄇㄜ˙", null], "四一得四": ["ㄙˋ", "ㄧ", "ㄉㄜˊ", "ㄙˋ"], "四七二十八": ["ㄙˋ", "ㄑㄧ", "ㄦˋ", "ㄕˊ", "ㄅㄚ"], "四三十二": ["ㄙˋ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "四九三十六": ["ㄙˋ", "ㄐㄧㄡˇ", "ㄙㄢ", "ㄕˊ", "ㄌㄧㄡˋ"], "四二得八": ["ㄙˋ", "ㄦˋ", "ㄉㄜˊ", "ㄅㄚ"], "四五二十": ["ㄙˋ", "ㄨˇ", "ㄦˋ", "ㄕˊ"], "四八三十二": ["ㄙˋ", "ㄅㄚ", "ㄙㄢ", "ㄕˊ", "ㄦˋ"], "四六二十四": ["ㄙˋ", "ㄌㄧㄡˋ", "ㄦˋ", "ㄕˊ", "ㄙˋ"], "四四十六": ["ㄙˋ", "ㄙˋ", "ㄕˊ", "ㄌㄧㄡˋ"], "回地圖": ["ㄏㄨㄟˊ", "ㄉㄧˋ", "ㄊㄨˊ"], "大陸口音": ["ㄉㄚˋ", "ㄌㄨˋ", "ㄎㄡˇ", "ㄧㄣ"], "天平比大小": ["ㄊㄧㄢ", "ㄆㄧㄥˊ", "ㄅㄧˇ", "ㄉㄚˋ", "ㄒㄧㄠˇ"], "太棒了！": ["ㄊㄞˋ", "ㄅㄤˋ", "ㄌㄜ˙", null], "好厲害！": ["ㄏㄠˇ", "ㄌㄧˋ", "ㄏㄞˋ", null], "左邊": ["ㄗㄨㄛˇ", "ㄅㄧㄢ"], "得": ["ㄉㄜˊ"], "得到貝殼": ["ㄉㄜˊ", "ㄉㄠˋ", "ㄅㄟˋ", "ㄎㄜˊ"], "念題目：": ["ㄋㄧㄢˋ", "ㄊㄧˊ", "ㄇㄨˋ", null], "成": ["ㄔㄥˊ"], "戳破寫著正確答案的氣球": ["ㄔㄨㄛ", "ㄆㄛˋ", "ㄒㄧㄝˇ", "ㄓㄨˋ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄚˊ", "ㄢˋ", "ㄉㄜ˙", "ㄑㄧˋ", "ㄑㄧㄡˊ"], "打地鼠": ["ㄉㄚˇ", "ㄉㄧˋ", "ㄕㄨˇ"], "打開了下一關！": ["ㄉㄚˇ", "ㄎㄞ", "ㄌㄜ˙", "ㄒㄧㄚˋ", "ㄧ", "ㄍㄨㄢ", null], "打開了新的島嶼：": ["ㄉㄚˇ", "ㄎㄞ", "ㄌㄜ˙", "ㄒㄧㄣ", "ㄉㄜ˙", "ㄉㄠˇ", "ㄩˇ", null], "把口訣的後半句接上去": ["ㄅㄚˇ", "ㄎㄡˇ", "ㄐㄩㄝˊ", "ㄉㄜ˙", "ㄏㄡˋ", "ㄅㄢˋ", "ㄐㄩˋ", "ㄐㄧㄝ", "ㄕㄤˋ", "ㄑㄩˋ"], "把算式和答案配成一對": ["ㄅㄚˇ", "ㄙㄨㄢˋ", "ㄕˋ", "ㄏㄜˊ", "ㄉㄚˊ", "ㄢˋ", "ㄆㄟˋ", "ㄔㄥˊ", "ㄧ", "ㄉㄨㄟˋ"], "把缺少的答案放回乘法表": ["ㄅㄚˇ", "ㄑㄩㄝ", "ㄕㄠˇ", "ㄉㄜ˙", "ㄉㄚˊ", "ㄢˋ", "ㄈㄤˋ", "ㄏㄨㄟˊ", "ㄔㄥˊ", "ㄈㄚˇ", "ㄅㄧㄠˇ"], "排，要選哪一個算式": ["ㄆㄞˊ", null, "ㄧㄠˋ", "ㄒㄩㄢˇ", "ㄋㄚˇ", "ㄧ", "ㄍㄜˋ", "ㄙㄨㄢˋ", "ㄕˋ"], "接水果": ["ㄐㄧㄝ", "ㄕㄨㄟˇ", "ㄍㄨㄛˇ"], "敲出拿著正確答案的地鼠": ["ㄑㄧㄠ", "ㄔㄨ", "ㄋㄚˊ", "ㄓㄨˋ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄚˊ", "ㄢˋ", "ㄉㄜ˙", "ㄉㄧˋ", "ㄕㄨˇ"], "每一排都一樣多，選出正確的算式": ["ㄇㄟˇ", "ㄧ", "ㄆㄞˊ", "ㄉㄡ", "ㄧ", "ㄧㄤˋ", "ㄉㄨㄛ", null, "ㄒㄩㄢˇ", "ㄔㄨ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄜ˙", "ㄙㄨㄢˋ", "ㄕˋ"], "每排": ["ㄇㄟˇ", "ㄆㄞˊ"], "每排{a}個，有{b}排": ["ㄇㄟˇ", "ㄆㄞˊ", null, null, null, "ㄍㄜˋ", null, "ㄧㄡˇ", null, null, null, "ㄆㄞˊ"], "氣球射擊": ["ㄑㄧˋ", "ㄑㄧㄡˊ", "ㄕㄜˋ", "ㄐㄧˊ"], "注音：開": ["ㄓㄨˋ", "ㄧㄣ", null, "ㄎㄞ"], "注音：關": ["ㄓㄨˋ", "ㄧㄣ", null, "ㄍㄨㄢ"], "看看哪一邊比較重": ["ㄎㄢˋ", "ㄎㄢ˙", "ㄋㄚˇ", "ㄧ", "ㄅㄧㄢ", "ㄅㄧˇ", "ㄐㄧㄠˋ", "ㄓㄨㄥˋ"], "看點點，選出正確的算式": ["ㄎㄢˋ", "ㄉㄧㄢˇ", "ㄉㄧㄢˇ", null, "ㄒㄩㄢˇ", "ㄔㄨ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄜ˙", "ㄙㄨㄢˋ", "ㄕˋ"], "真假快判": ["ㄓㄣ", "ㄐㄧㄚˇ", "ㄎㄨㄞˋ", "ㄆㄢˋ"], "知道了": ["ㄓ", "ㄉㄠˋ", "ㄌㄜ˙"], "確定": ["ㄑㄩㄝˋ", "ㄉㄧㄥˋ"], "移動籃子，接住正確答案": ["ㄧˊ", "ㄉㄨㄥˋ", "ㄌㄢˊ", "ㄗ˙", null, "ㄐㄧㄝ", "ㄓㄨˋ", "ㄓㄥˋ", "ㄑㄩㄝˋ", "ㄉㄚˊ", "ㄢˋ"], "第{n}關": ["ㄉㄧˋ", null, null, null, "ㄍㄨㄢ"], "等一下": ["ㄉㄥˇ", "ㄧˊ", "ㄒㄧㄚˋ"], "等於": ["ㄉㄥˇ", "ㄩˊ"], "答對了！": ["ㄉㄚˊ", "ㄉㄨㄟˋ", "ㄌㄜ˙", null], "答對就往前跑，比烏龜先到終點": ["ㄉㄚˊ", "ㄉㄨㄟˋ", "ㄐㄧㄡˋ", "ㄨㄤˇ", "ㄑㄧㄢˊ", "ㄆㄠˇ", null, "ㄅㄧˇ", "ㄨ", "ㄍㄨㄟ", "ㄒㄧㄢ", "ㄉㄠˋ", "ㄓㄨㄥ", "ㄉㄧㄢˇ"], "算式對的按圈圈，錯的按叉叉": ["ㄙㄨㄢˋ", "ㄕˋ", "ㄉㄨㄟˋ", "ㄉㄜ˙", "ㄢˋ", "ㄑㄩㄢ", "ㄑㄩㄢ", null, "ㄘㄨㄛˋ", "ㄉㄜ˙", "ㄢˋ", "ㄔㄚ", "ㄔㄚ"], "翻牌配對": ["ㄈㄢ", "ㄆㄞˊ", "ㄆㄟˋ", "ㄉㄨㄟˋ"], "翻開兩張牌，找出算式和答案一樣的一對": ["ㄈㄢ", "ㄎㄞ", "ㄌㄧㄤˇ", "ㄓㄤ", "ㄆㄞˊ", null, "ㄓㄠˇ", "ㄔㄨ", "ㄙㄨㄢˋ", "ㄕˋ", "ㄏㄜˊ", "ㄉㄚˊ", "ㄢˋ", "ㄧ", "ㄧㄤˋ", "ㄉㄜ˙", "ㄧ", "ㄉㄨㄟˋ"], "翻開兩張，算式和答案一樣就配成一對！": ["ㄈㄢ", "ㄎㄞ", "ㄌㄧㄤˇ", "ㄓㄤ", null, "ㄙㄨㄢˋ", "ㄕˋ", "ㄏㄜˊ", "ㄉㄚˊ", "ㄢˋ", "ㄧ", "ㄧㄤˋ", "ㄐㄧㄡˋ", "ㄆㄟˋ", "ㄔㄥˊ", "ㄧ", "ㄉㄨㄟˋ", null], "臺灣": ["ㄊㄞˊ", "ㄨㄢ"], "要再練習：": ["ㄧㄠˋ", "ㄗㄞˋ", "ㄌㄧㄢˋ", "ㄒㄧˊ", null], "賽跑大賽": ["ㄙㄞˋ", "ㄆㄠˇ", "ㄉㄚˋ", "ㄙㄞˋ"], "這台裝置找不到中文語音。": ["ㄓㄜˋ", "ㄊㄞˊ", "ㄓㄨㄤ", "ㄓˋ", "ㄓㄠˇ", "ㄅㄨˊ", "ㄉㄠˋ", "ㄓㄨㄥ", "ㄨㄣˊ", "ㄩˇ", "ㄧㄣ", null], "過關了！": ["ㄍㄨㄛˋ", "ㄍㄨㄢ", "ㄌㄜ˙", null], "開": ["ㄎㄞ"], "關": ["ㄍㄨㄢ"], "零一二三四五六七八九": ["ㄌㄧㄥˊ", "ㄧ", "ㄦˋ", "ㄙㄢ", "ㄙˋ", "ㄨˇ", "ㄌㄧㄡˋ", "ㄑㄧ", "ㄅㄚ", "ㄐㄧㄡˇ"], "音效：": ["ㄧㄣ", "ㄒㄧㄠˋ", null], "香港／粵語": ["ㄒㄧㄤ", "ㄍㄤˇ", null, "ㄩㄝˋ", "ㄩˇ"], "點下面的數字，從左到右填進紅色的空格": ["ㄉㄧㄢˇ", "ㄒㄧㄚˋ", "ㄇㄧㄢˋ", "ㄉㄜ˙", "ㄕㄨˋ", "ㄗˋ", null, "ㄘㄨㄥˊ", "ㄗㄨㄛˇ", "ㄉㄠˋ", "ㄧㄡˋ", "ㄊㄧㄢˊ", "ㄐㄧㄣˋ", "ㄏㄨㄥˊ", "ㄙㄜˋ", "ㄉㄜ˙", "ㄎㄨㄥˋ", "ㄍㄜˊ"], "點點陣列": ["ㄉㄧㄢˇ", "ㄉㄧㄢˇ", "ㄓㄣˋ", "ㄌㄧㄝˋ"], "，右邊": [null, "ㄧㄡˋ", "ㄅㄧㄢ"], "，哪一邊比較重": [null, "ㄋㄚˇ", "ㄧ", "ㄅㄧㄢ", "ㄅㄧˇ", "ㄐㄧㄠˋ", "ㄓㄨㄥˋ"], "，對不對": [null, "ㄉㄨㄟˋ", "ㄅㄨˋ", "ㄉㄨㄟˋ"], "，後半句是什麼": [null, "ㄏㄡˋ", "ㄅㄢˋ", "ㄐㄩˋ", "ㄕˋ", "ㄕㄣˊ", "ㄇㄜ˙"], "，答案是什麼": [null, "ㄉㄚˊ", "ㄢˋ", "ㄕˋ", "ㄕㄣˊ", "ㄇㄜ˙"], "💡 iPhone 可以下載「美佳（加強版）」，聲音會柔和很多。": [null, null, null, null, null, null, null, null, null, "ㄎㄜˇ", "ㄧˇ", "ㄒㄧㄚˋ", "ㄗㄞˋ", null, "ㄇㄟˇ", "ㄐㄧㄚ", null, "ㄐㄧㄚ", "ㄑㄧㄤˊ", "ㄅㄢˇ", null, null, null, "ㄕㄥ", "ㄧㄣ", "ㄏㄨㄟˋ", "ㄖㄡˊ", "ㄏㄜˊ", "ㄏㄣˇ", "ㄉㄨㄛ", null], "💡 這台 Android 沒有臺灣口音的語音，請照下面說明下載「中文（臺灣）」。": [null, null, "ㄓㄜˋ", "ㄊㄞˊ", null, null, null, null, null, null, null, null, null, "ㄇㄟˊ", "ㄧㄡˇ", "ㄊㄞˊ", "ㄨㄢ", "ㄎㄡˇ", "ㄧㄣ", "ㄉㄜ˙", "ㄩˇ", "ㄧㄣ", null, "ㄑㄧㄥˇ", "ㄓㄠˋ", "ㄒㄧㄚˋ", "ㄇㄧㄢˋ", "ㄕㄨㄛ", "ㄇㄧㄥˊ", "ㄒㄧㄚˋ", "ㄗㄞˋ", null, "ㄓㄨㄥ", "ㄨㄣˊ", null, "ㄊㄞˊ", "ㄨㄢ", null, null, null]};
+function $(id){return document.getElementById(id)}
+function rb(ch,b){var light=b.indexOf('˙')>=0,body=b.replace('˙',''),tone='';
+ if('ˊˇˋ'.indexOf(body.slice(-1))>=0&&body.length>1){tone=body.slice(-1);body=body.slice(0,-1)}
+ var s='';for(var i=0;i<body.length;i++)s+='<span>'+body[i]+(i==body.length-1&&tone?'<i class="zt">'+tone+'</i>':'')+'</span>';
+ if(light)s='<span class="l">˙</span>'+s;return '<span class="z"><span class="h">'+ch+'</span><span class="b">'+s+'</span></span>'}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function T(tpl,v){var bs=ZY[tpl],out='';for(var i=0;i<tpl.length;i++){var ch=tpl[i];
+ if(ch=='{'&&v){var j=tpl.indexOf('}',i);out+='<b class="nz">'+esc(v[tpl.slice(i+1,j)])+'</b>';i=j;continue}
+ var b=bs?bs[i]:null;out+=b?rb(ch,b):esc(ch)}return out}
+var CH={};for(var k in ZY){for(var i=0;i<k.length;i++)if(ZY[k][i]&&!CH[k[i]])CH[k[i]]=ZY[k][i]}
+function TZ(s){var bs=ZY[s];if(!bs){bs=[];for(var i=0;i<s.length;i++)bs.push(CH[s[i]]||null)}var o='';for(var i=0;i<s.length;i++)o+=bs[i]?rb(s[i],bs[i]):esc(s[i]);return o}
+var CN='零一二三四五六七八九';
+function cnNum(n){if(n<10)return CN[n];if(n==10)return'一十';var t=Math.floor(n/10),o=n%10;return(t==1?'十':CN[t]+'十')+(o?CN[o]:'')}
+function kjText(a,b){var p=a*b;return p<10?CN[a]+CN[b]+'得'+CN[p]:CN[a]+CN[b]+cnNum(p)}
+function kjAns(a,b){var p=a*b;return p<10?'得'+CN[p]:cnNum(p)}
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function pick(a){return a[rnd(0,a.length-1)]}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var COL={2:'#f2994a',3:'#27ae60',4:'#2d9cdb',5:'#eb5757',6:'#9b51e0',7:'#e0a800',8:'#1fb5d6',9:'#e86fb0'};
+
+// ---------- 念題目 ----------
+// ================= 語音設定（各頁共用，存在 ttVoice，同一個網站的頁面互通） =================
+var VK=(function(){
+ var K='ttVoice',st={};try{st=JSON.parse(localStorage.getItem(K)||'{}')||{}}catch(e){st={}}
+ function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+ function all(){try{return (window.speechSynthesis&&speechSynthesis.getVoices())||[]}catch(e){return[]}}
+ try{if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.addEventListener('voiceschanged',function(){if(document.getElementById('vkBox'))fill()})}}catch(e){}
+ function isTW(v){return /(zh|cmn)[-_](hant[-_])?tw/i.test(v.lang)||/(臺灣|台灣|taiwan|國語)/i.test(v.name)}
+ function isHK(v){return /(zh|yue)[-_](hant[-_])?hk|yue/i.test(v.lang)||/(香港|粵|cantonese|hong kong)/i.test(v.name)}
+ function score(v){if(!(/^(zh|cmn|yue)/i.test(v.lang)||/(國語|中文|普通話|chinese)/i.test(v.name)))return -1;
+  var sc=isTW(v)?100:isHK(v)?2:20;
+  if(/natural|online|neural/i.test(v.name))sc+=30;
+  if(/加強|enhanced|premium|進階|高品質|優化/i.test(v.name))sc+=25;
+  if(/hsiaochen|hsiaoyu|曉臻|曉雨|美佳|mei-?jia/i.test(v.name))sc+=10;
+  if(/google/i.test(v.name))sc+=3;return sc}
+ function tag(v){return isTW(v)?'臺灣':isHK(v)?'香港／粵語':'大陸口音'}
+ function list(){return all().filter(function(v){return score(v)>=0}).sort(function(a,b){return score(b)-score(a)})}
+ function pick(){var vs=all();if(st.voice){for(var i=0;i<vs.length;i++)if(vs[i].name===st.voice)return vs[i]}
+  var best=null,bs=-1;vs.forEach(function(v){var s=score(v);if(s>bs){bs=s;best=v}});return bs>=0?best:null}
+ function apply(u,rate){var v=pick();if(v){u.voice=v;u.lang=v.lang}else u.lang='zh-TW';u.rate=rate||st.rate||0.9;u.pitch=st.pitch||1.1;return u}
+ function test(){try{var u=new SpeechSynthesisUtterance('你好！二成八等於十六。我們一起來練習九九乘法吧！');apply(u);speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+ function fill(){var sel=document.getElementById('vkSel'),box=document.getElementById('vkInfo');if(!sel)return;var vs=list(),cur=pick(),top=vs[0];
+  sel.innerHTML='<option value="">自動選擇（臺灣口音、品質最好的優先）</option>'+vs.map(function(v){return '<option value="'+esc(v.name)+'"'+(st.voice===v.name?' selected':'')+'>'+(v===top&&isTW(v)?'⭐ ':'')+esc(v.name)+'【'+tag(v)+'】</option>'}).join('');
+  var ua=navigator.userAgent,edge=/Edg\//.test(ua),win=/Windows/.test(ua),and=/Android/.test(ua),ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&'ontouchend' in document);
+  var tip='';
+  if(win&&!edge)tip='💡 Windows 請改用 <b>Edge 瀏覽器</b>打開，會有很自然的臺灣口音（HsiaoChen、HsiaoYu）。';
+  else if(and&&!vs.some(isTW))tip='💡 這台 Android 沒有臺灣口音的語音，請照下面說明下載「中文（臺灣）」。';
+  else if(ios&&!vs.some(function(v){return isTW(v)&&/加強|enhanced|premium/i.test(v.name)}))tip='💡 iPhone 可以下載「美佳（加強版）」，聲音會柔和很多。';
+  box.innerHTML=(cur?'目前使用：<b>'+esc(cur.name)+'</b>【'+tag(cur)+'】':'這台裝置找不到中文語音。')+(cur&&!isTW(cur)?'<br>⚠️ 這是大陸或香港口音，建議換成標「臺灣」的聲音。':'')+(tip?'<br>'+tip:'');
+  document.getElementById('vkRateV').textContent=(st.rate||0.9).toFixed(2)+'×';document.getElementById('vkPitchV').textContent=(st.pitch||1.1).toFixed(2)}
+ function open(){if(document.getElementById('vkBox'))return;
+  var d=document.createElement('div');d.id='vkBox';d.className='nz';
+  d.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,40,60,.5);display:flex;align-items:center;justify-content:center;padding:14px;font-family:inherit');
+  d.innerHTML='<div style="background:#fffdf7;border-radius:22px;padding:18px 18px 14px;max-width:460px;width:100%;max-height:92vh;overflow:auto;color:#1f3347;font-size:16px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.3)">'+
+   '<div style="font-size:22px;font-weight:900;margin-bottom:6px">🔊 語音設定</div>'+
+   '<div id="vkInfo" style="background:#f3f8ff;border-radius:12px;padding:8px 12px;font-size:14px"></div>'+
+   '<div style="margin:10px 0 6px;font-weight:700">選聲音</div><select id="vkSel" style="width:100%;font-size:15px;padding:8px;border-radius:10px;border:2px solid #cfe0ef"></select>'+
+   '<div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-weight:700">🐢 語速 <input type="range" id="vkRate" min="0.6" max="1.2" step="0.05" value="'+(st.rate||0.9)+'" style="flex:1"> <b id="vkRateV" style="min-width:52px"></b></div>'+
+   '<div style="display:flex;align-items:center;gap:8px;margin-top:6px;font-weight:700">🎵 音調 <input type="range" id="vkPitch" min="0.8" max="1.5" step="0.05" value="'+(st.pitch||1.1)+'" style="flex:1"> <b id="vkPitchV" style="min-width:52px"></b></div>'+
+   '<div style="font-size:13px;color:#667">念慢一點、音調高一點，聽起來會比較柔和。這裡的設定，島嶼探險隊、魔法數學大冒險、九九乘法遊樂園會一起用（同一台裝置、同一個瀏覽器）。</div>'+
+   '<details style="margin-top:8px;font-size:14px"><summary style="font-weight:700;cursor:pointer">怎麼換成自然的臺灣口音？</summary><ul style="padding-left:20px;margin:6px 0">'+
+   '<li><b>Windows</b>：用 <b>Edge</b> 打開這個網頁，選「Microsoft HsiaoChen／HsiaoYu Online (Natural)」。</li>'+
+   '<li><b>Android</b>：設定 → 系統 → 語言 → 文字轉語音 → 引擎選 Google → 齒輪 → 安裝語音資料 → 下載「中文（臺灣）」，再把 Chrome 關掉重開。</li>'+
+   '<li><b>iPhone</b>：設定 → 輔助使用 → 朗讀內容 → 聲音 → 中文（臺灣）→ 下載「美佳（加強版）」，再重開這個網頁。</li>'+
+   '<li>標「大陸口音」的聲音盡量不要選。</li></ul></details>'+
+   '<div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px">'+
+   '<button id="vkReset" style="border:0;border-radius:12px;padding:8px 12px;background:#eee;font:inherit;font-weight:700;cursor:pointer">恢復建議值</button>'+
+   '<button id="vkTest" style="border:0;border-radius:12px;padding:8px 14px;background:#4cd18a;color:#fff;font:inherit;font-weight:800;cursor:pointer">▶ 試聽</button>'+
+   '<button id="vkClose" style="border:0;border-radius:12px;padding:8px 14px;background:#2d9cdb;color:#fff;font:inherit;font-weight:800;cursor:pointer">好了</button></div></div>';
+  document.body.appendChild(d);fill();setTimeout(fill,700);
+  d.onclick=function(e){if(e.target===d)d.remove()};
+  document.getElementById('vkClose').onclick=function(){d.remove()};
+  document.getElementById('vkTest').onclick=test;
+  document.getElementById('vkSel').onchange=function(e){st.voice=e.target.value;save();fill();test()};
+  document.getElementById('vkRate').oninput=function(e){st.rate=+e.target.value;save();fill()};
+  document.getElementById('vkPitch').oninput=function(e){st.pitch=+e.target.value;save();fill()};
+  document.getElementById('vkReset').onclick=function(){st.rate=0.9;st.pitch=1.1;save();document.getElementById('vkRate').value=0.9;document.getElementById('vkPitch').value=1.1;fill();test()}}
+ return {apply:apply,open:open,pick:pick,st:st};
+})();
+
+function speakTxt(t){try{if(!window.speechSynthesis||!t)return;var u=new SpeechSynthesisUtterance(t);VK.apply(u);speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function stopSay(){try{if(window.speechSynthesis)speechSynthesis.cancel()}catch(e){}}
+function setQ(t){if(!R)return;R.qs=t;if(S.say)speakTxt(t)}
+function mulSay(a,b){return a+'成'+b+'，答案是什麼'}
+// ---------- 資料 ----------
+var LEVELS=[{n:[2,5],t:'2、5'},{n:[4,8],t:'4、8'},{n:[3,6],t:'3、6'},{n:[7,9],t:'7、9'},{n:[2,3,4,5,6,7,8,9],t:'全部'}];
+var GAMES=[
+ {id:'balloon',ic:'🎈',name:'氣球射擊',info:'戳破寫著正確答案的氣球'},
+ {id:'mole',ic:'🐹',name:'打地鼠',info:'敲出拿著正確答案的地鼠'},
+ {id:'memory',ic:'🃏',name:'翻牌配對',info:'把算式和答案配成一對'},
+ {id:'race',ic:'🏃',name:'賽跑大賽',info:'答對就往前跑，比烏龜先到終點'},
+ {id:'catch',ic:'🍎',name:'接水果',info:'移動籃子，接住正確答案'},
+ {id:'table',ic:'🧩',name:'乘法表拼圖',info:'把缺少的答案放回乘法表'},
+ {id:'scale',ic:'⚖️',name:'天平比大小',info:'看看哪一邊比較重'},
+ {id:'dots',ic:'🟦',name:'點點陣列',info:'看點點，選出正確的算式'},
+ {id:'chant',ic:'🎵',name:'口訣接龍',info:'把口訣的後半句接上去'},
+ {id:'truefalse',ic:'✅',name:'真假快判',info:'算式對的按圈圈，錯的按叉叉'}];
+var HOST=null;try{if(window.parent!==window&&window.parent.G10HOST)HOST=window.parent.G10HOST}catch(e){}
+var S={st:{},snd:true};try{var r=HOST?HOST.store.get():JSON.parse(localStorage.getItem('tt99g10')||'null');if(r)S=JSON.parse(JSON.stringify(r))}catch(e){}if(!S.st)S.st={};if(S.snd===undefined)S.snd=true;
+function save(){try{if(HOST)HOST.store.set(JSON.parse(JSON.stringify(S)));else localStorage.setItem('tt99g10',JSON.stringify(S))}catch(e){}}
+function stars(g,l){return (S.st[g]&&S.st[g][l])||0}
+function islandOpen(i){return i==0||stars(GAMES[i-1].id,0)>0}
+function levelOpen(g,l){return l==0||stars(g,l-1)>0}
+function total(){var t=0;for(var g in S.st)for(var l in S.st[g])t+=S.st[g][l];return t}
+
+// ---------- 聲音 ----------
+var AC=null,PAUSED=false;
+function ac(){try{if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state=='suspended'&&!PAUSED)AC.resume()}catch(e){}return AC}
+function sfx(k){if(!S.snd||PAUSED||!ac())return;try{var N={ok:[660,880],no:[220,160],win:[523,659,784,1046],pop:[900],tick:[1200],step:[520]}[k]||[440];
+ N.forEach(function(f,i){var o=AC.createOscillator(),g=AC.createGain(),t0=AC.currentTime+i*.1;o.type=k=='no'?'sawtooth':'triangle';o.frequency.value=f;g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(k=='tick'||k=='step'?.06:.15,t0+.015);g.gain.exponentialRampToValueAtTime(.0001,t0+.16);o.connect(g);g.connect(AC.destination);o.start(t0);o.stop(t0+.18)})}catch(e){}}
+var lastRAF=Date.now();(function raf(){lastRAF=Date.now();requestAnimationFrame(raf)})();
+setInterval(function(){var h=document.hidden||(Date.now()-lastRAF>800);if(h!=PAUSED){PAUSED=h;try{if(AC){if(h)AC.suspend();else AC.resume()}}catch(e){}}},400);
+function sayLabel(){$('sayBtn').innerHTML='🗣️ '+T('念題目：')+T(S.say?'開':'關')}
+$('sayBtn').onclick=function(){S.say=!S.say;save();sayLabel();if(S.say&&R&&!R.done&&R.qs)speakTxt(R.qs);else if(!S.say)stopSay()};
+function sndLabel(){$('sndBtn').innerHTML='🔊 '+T('音效：')+T(S.snd?'開':'關')}
+$('sndBtn').onclick=function(){S.snd=!S.snd;save();sndLabel();sfx('ok')};
+var zyOn=true;$('zyBtn').onclick=function(){zyOn=!zyOn;document.body.classList.toggle('nozy',!zyOn);$('zyBtn').innerHTML=zyOn?T('注音：開'):T('注音：關')};
+
+// ---------- 地圖 ----------
+function drawMap(){var h='';GAMES.forEach(function(g,i){var op=islandOpen(i);
+ h+='<button class="isl'+(op?'':' lock')+'" data-i="'+i+'"><span class="no nz">'+(i+1)+'</span><div class="ic nz">'+(op?g.ic:'🔒')+'</div><b>'+T(g.name)+'</b><div class="lv nz">'+
+  LEVELS.map(function(L,l){var s=stars(g.id,l);return '<i class="s'+s+'">'+(s?'★':l+1)+'</i>'}).join('')+'</div></button>'});
+ $('islands').innerHTML=h;$('totStars').textContent=total();
+ $('islands').querySelectorAll('.isl').forEach(function(b){b.onclick=function(){var i=+b.dataset.i;if(!islandOpen(i)){sfx('no');toast(T('先打贏上一座島的第1關喔！'));return}levelPick(i)}})}
+function toast(h){$('ovCard').innerHTML='<div style="font-size:21px;line-height:2">'+h+'</div><button class="btn" onclick="closeOv()">'+T('知道了')+'</button>';$('ov').classList.add('on')}
+function closeOv(){$('ov').classList.remove('on')}
+function levelPick(i){var g=GAMES[i];
+ $('ovCard').innerHTML='<div class="big nz">'+g.ic+'</div><h2>'+T(g.name)+'</h2><div>'+T(g.info)+'</div><div class="lvl">'+LEVELS.map(function(L,l){var op=levelOpen(g.id,l),s=stars(g.id,l);
+  return '<button class="'+(op?'':'lock')+'" data-l="'+l+'"><span>'+T('第{n}關',{n:l+1})+'　'+TZ(L.t)+'</span><span class="st nz">'+(op?'★'.repeat(s)+'<span style="color:#ccc">'+'★'.repeat(3-s)+'</span>':'🔒')+'</span></button>'}).join('')+
+  '</div><button class="btn w" onclick="closeOv()">'+T('等一下')+'</button>';
+ $('ov').classList.add('on');
+ $('ovCard').querySelectorAll('.lvl button').forEach(function(b){b.onclick=function(){var l=+b.dataset.l;if(!levelOpen(g.id,l)){sfx('no');return}closeOv();startGame(i,l)}})}
+
+// ---------- 出題 ----------
+var R=null; // 目前這一回
+function newQ(){var L=LEVELS[R.l],t=0,a,b;do{a=pick(L.n);b=rnd(L.n.length>2?2:1,9);t++}while(R.seen[a+'x'+b]&&t<40);R.seen[a+'x'+b]=1;return{a:a,b:b,p:a*b}}
+function wrongs(p,a,b,k){var c=[a*(b+1),a*(b-1),(a+1)*b,(a-1)*b,p+1,p-1,p+10,p-10,p+2],s={},out=[];s[p]=1;shuffle(c).forEach(function(x){if(out.length<k&&x>0&&x<=90&&!s[x]){s[x]=1;out.push(x)}});var t=3;while(out.length<k){if(!s[p+t]){s[p+t]=1;out.push(p+t)}t++}return out}
+function kj(a,b){return TZ(kjText(a,b))}
+function prog(x){$('gProg').style.width=Math.min(100,x*100)+'%'}
+function score(){$('gScore').innerHTML='✔ '+R.ok+'　✘ '+R.bad}
+function good(q){R.ok++;sfx('ok');$('fb')&&($('fb').className='fb good',$('fb').innerHTML=T(pick(['答對了！','太棒了！','好厲害！']))+' <span class="nz">'+q.a+'×'+q.b+'='+q.p+'</span>　'+kj(q.a,q.b));score()}
+function bad(q){R.bad++;sfx('no');if(q)R.miss.push(q.a+'×'+q.b+'='+q.p);$('fb')&&($('fb').className='fb bad',$('fb').innerHTML=T('再想想！')+(q?' <span class="nz">'+q.a+'×'+q.b+'='+q.p+'</span>　'+kj(q.a,q.b):''));score()}
+function later(f,ms){var id=setTimeout(f,ms);R.timers.push(id);return id}
+function every(f,ms){var id=setInterval(function(){if(!PAUSED)f()},ms);R.timers.push(id);return id}
+function clearAll(){stopSay();if(!R)return;R.timers.forEach(function(t){clearTimeout(t);clearInterval(t)});R.timers=[];R.done=true}
+function countdown(sec,onEnd){var left=sec*1000,last=Date.now();var id=setInterval(function(){var n=Date.now();if(!PAUSED)left-=n-last;last=n;$('tbar')&&($('tbar').style.width=Math.max(0,left/(sec*10))+'%');prog(1-left/(sec*1000));if(left<=0){clearInterval(id);onEnd()}},100);R.timers.push(id)}
+function keypad(onDone){var s='';[1,2,3,4,5,6,7,8,9].forEach(function(k){s+='<button data-k="'+k+'">'+k+'</button>'});s+='<button data-k="del">⌫</button><button data-k="0">0</button><button data-k="ok" class="ok">'+T('確定')+'</button>';
+ var el=document.createElement('div');el.className='pad nz';el.innerHTML=s;var inp='';
+ el.querySelectorAll('button').forEach(function(b){b.onclick=function(){if(R.lock)return;var k=b.dataset.k;if(k=='del')inp=inp.slice(0,-1);else if(k=='ok'){if(inp){var v=+inp;inp='';$('ansBox').textContent='?';onDone(v)}return}else if(inp.length<2)inp+=k;$('ansBox').textContent=inp||'?'}});return el}
+
+// ---------- 開始／結束 ----------
+function startGame(i,l){clearAll();var g=GAMES[i];R={i:i,l:l,g:g,ok:0,bad:0,seen:{},timers:[],miss:[],done:false,lock:false,t0:Date.now()};
+ $('v-map').classList.remove('on');$('v-game').classList.add('on');$('gTitle').innerHTML=g.ic+' '+T(g.name)+'　<span style="font-size:16px">'+TZ(LEVELS[l].t)+'</span>';
+ prog(0);score();window.scrollTo(0,0);GAME[g.id]()}
+function finish(st){if(R.done)return;clearAll();var g=R.g,l=R.l,old=stars(g.id,l);
+ if(!S.st[g.id])S.st[g.id]={};if(st>old)S.st[g.id][l]=st;save();var got=0;if(HOST&&st>0){try{got=HOST.award(st,5)||0}catch(e){}}if(st>0){sfx('win');celebrate()}else sfx('no');
+ var unl='';if(st>0&&old==0){if(l<4)unl=T('打開了下一關！');if(l==0&&R.i<9)unl+='<br>'+T('打開了新的島嶼：')+T(GAMES[R.i+1].name)+' '+GAMES[R.i+1].ic}
+ $('ovCard').innerHTML='<h2>'+(st?T('過關了！'):T('再試一次！'))+'</h2><div class="big st nz">'+'★'.repeat(st)+'<span style="color:#ddd">'+'★'.repeat(3-st)+'</span></div>'+
+  '<div style="font-size:20px" class="nz">✔ '+R.ok+'　✘ '+R.bad+'</div>'+(got?'<div style="font-weight:900;color:#c07a00;font-size:20px">'+T('得到貝殼')+' <span class="nz">🐚 +'+got+'</span></div>':'')+(unl?'<div style="background:#e9fbe9;border-radius:14px;padding:6px;margin:8px 0;font-weight:900;color:#1a7a43">'+unl+'</div>':'')+
+  (R.miss.length?'<div style="color:#c0392b;font-size:16px;margin-top:6px">'+T('要再練習：')+' <span class="nz">'+R.miss.slice(0,6).join('　')+'</span></div>':'')+
+  '<div style="margin-top:8px"><button class="btn w" id="rMap">'+T('回地圖')+'</button><button class="btn" id="rAgain">'+T('再玩一次')+'</button>'+(st&&l<4?'<button class="btn g" id="rNext">'+T('下一關')+'</button>':'')+'</div>';
+ $('ov').classList.add('on');
+ $('rMap').onclick=function(){closeOv();goMap()};$('rAgain').onclick=function(){closeOv();startGame(R.i,R.l)};if($('rNext'))$('rNext').onclick=function(){closeOv();startGame(R.i,R.l+1)}}
+function starsBy(ok,total){var r=ok/total;return r>=.9?3:r>=.7?2:r>=.5?1:0}
+function goMap(){clearAll();$('v-game').classList.remove('on');$('v-map').classList.add('on');drawMap();window.scrollTo(0,0)}
+$('back').onclick=goMap;
+
+// ---------- 10 個遊戲 ----------
+var GAME={};
+// 1 氣球射擊：10 題
+GAME.balloon=function(){var n=0,q;$('gBody').innerHTML='<div class="q nz" id="qq"></div><div class="sky" id="sky"></div><div class="fb" id="fb"></div>';
+ function round(){if(R.done)return;if(n>=10){finish(starsBy(R.ok,10));return}n++;prog((n-1)/10);q=newQ();R.lock=false;$('qq').textContent=q.a+' × '+q.b+' = ?';setQ(mulSay(q.a,q.b));var sky=$('sky');sky.innerHTML='';
+  var vals=shuffle([q.p].concat(wrongs(q.p,q.a,q.b,3))),cols=['#ff6b6b','#ffb02e','#4cd18a','#2d9cdb'],dur=Math.max(5,10-R.l);
+  vals.forEach(function(v,k){var b=document.createElement('button');b.className='bal nz';b.style.left=(4+k*24)+'%';b.style.animationDuration=(dur+Math.random()*1.5)+'s';b.style.animationDelay=(k*.25)+'s';b.innerHTML='<span style="background:'+cols[k]+'">'+v+'</span>';
+   b.onclick=function(){if(R.lock)return;R.lock=true;b.classList.add('pop');if(v==q.p){good(q)}else{bad(q)}later(round,1200)};
+   b.onanimationend=function(){if(!R.lock&&v==q.p){R.lock=true;bad(q);later(round,1200)}};sky.appendChild(b)})}
+ round()};
+// 2 打地鼠：40 秒
+GAME.mole=function(){var q;$('gBody').innerHTML='<div class="timer"><i id="tbar"></i></div><div class="q nz" id="qq"></div><div class="holes nz" id="holes">'+[0,1,2,3,4,5,6,7,8].map(function(){return '<div class="hole"><button class="mole"><span class="mf">🐹</span><b></b></button></div>'}).join('')+'</div><div class="fb" id="fb"></div>';
+ var holes=document.querySelectorAll('#holes .mole');function nq(){q=newQ();$('qq').textContent=q.a+' × '+q.b+' = ?';setQ(mulSay(q.a,q.b))}nq();
+ function pop(){var free=[];holes.forEach(function(h,i){if(!h.classList.contains('up'))free.push(i)});if(!free.length)return;var has=[].some.call(holes,function(h){return h.classList.contains('up')&&+h.dataset.v==q.p});
+  var h=holes[pick(free)],v=!has&&Math.random()<.55?q.p:pick(wrongs(q.p,q.a,q.b,3));h.dataset.v=v;h.querySelector('b').textContent=v;h.classList.add('up');later(function(){h.classList.remove('up')},2100-R.l*150)}
+ holes.forEach(function(h){h.onclick=function(){if(!h.classList.contains('up'))return;h.classList.remove('up');if(+h.dataset.v==q.p){good(q);sfx('pop');holes.forEach(function(x){x.classList.remove('up')});nq()}else bad(q)}});
+ every(pop,700);pop();countdown(40,function(){var t=R.ok,st=t>=12&&R.bad<=3?3:t>=8?2:t>=5?1:0;finish(st)})};
+// 3 翻牌配對
+GAME.memory=function(){var used={},pairs=[];while(pairs.length<6){var q=newQ();if(!used[q.p]){used[q.p]=1;pairs.push(q)}}
+ var cards=[];pairs.forEach(function(q,i){cards.push({k:i,t:q.a+'×'+q.b});cards.push({k:i,t:String(q.p)})});shuffle(cards);var open=[],got=0,moves=0;
+ $('gBody').innerHTML='<div class="hint">'+T('翻開兩張，算式和答案一樣就配成一對！')+'</div><div class="memo nz">'+cards.map(function(c,i){return '<button class="mc" data-i="'+i+'">'+c.t+'</button>'}).join('')+'</div><div class="fb" id="fb"></div>';
+ setQ('翻開兩張牌，找出算式和答案一樣的一對');var bs=document.querySelectorAll('.mc');bs.forEach(function(b){b.onclick=function(){var i=+b.dataset.i;if(open.length>=2||b.classList.contains('up'))return;b.classList.add('up');sfx('tick');open.push(i);
+  if(open.length==2){moves++;var A=cards[open[0]],B=cards[open[1]];if(A.k==B.k){got++;R.ok++;sfx('ok');bs[open[0]].classList.add('ok');bs[open[1]].classList.add('ok');var q=pairs[A.k];$('fb').className='fb good';$('fb').innerHTML='<span class="nz">'+q.a+'×'+q.b+'='+q.p+'</span>　'+kj(q.a,q.b);open=[];prog(got/6);score();
+   if(got==6)later(function(){finish(moves<=9?3:moves<=13?2:1)},800)}else{R.bad++;score();sfx('no');var o=open.slice();later(function(){o.forEach(function(k){bs[k].classList.remove('up')});open=[]},850)}}}})};
+// 4 賽跑大賽
+GAME.race=function(){var me=0,tu=0,q,goal=10;$('gBody').innerHTML='<div class="track"><div class="lane"><span class="runner nz" id="me">🏃</span></div><div class="lane"><span class="runner nz" id="tu">🐢</span></div><div class="finish"></div></div><div class="q nz"><span id="qq"></span><span class="ans" id="ansBox">?</span></div><div class="fb" id="fb"></div>';
+ $('gBody').appendChild(keypad(function(v){if(v==q.p){good(q);me++;$('me').style.left=(2+me*(86/goal))+'%';if(me>=goal){finish(tu<goal*.5?3:tu<goal*.8?2:1);return}}else bad(q);nq()}));
+ function nq(){q=newQ();$('qq').textContent=q.a+' × '+q.b+' = ';setQ(mulSay(q.a,q.b))}nq();
+ var speed=[5200,4600,4200,3800,3400][R.l];every(function(){tu++;$('tu').style.left=(2+tu*(86/goal))+'%';sfx('step');prog(Math.max(me,tu)/goal);if(tu>=goal)finish(0)},speed)};
+// 5 接水果：10 題
+GAME.catch=function(){var n=0,pos=1,q,y=-80,vals;$('gBody').innerHTML='<div class="q nz" id="qq"></div><div class="field" id="fld"><div class="basket nz" id="bk">🧺</div></div><div class="lanes"><button data-d="-1">⬅️</button><button data-d="0">⏺</button><button data-d="1">➡️</button></div><div class="fb" id="fb"></div>';
+ function place(){$('bk').style.left=(pos*33.33)+'%'}place();
+ document.querySelectorAll('.lanes button').forEach(function(b){b.onclick=function(){var d=+b.dataset.d;if(d==0)return;pos=Math.max(0,Math.min(2,pos+d));place();sfx('tick')}});
+ R.key=function(e){if(e.key=='ArrowLeft'){pos=Math.max(0,pos-1);place()}if(e.key=='ArrowRight'){pos=Math.min(2,pos+1);place()}};
+ var fr=[];function round(){if(R.done)return;if(n>=10){finish(starsBy(R.ok,10));return}n++;prog((n-1)/10);q=newQ();$('qq').textContent=q.a+' × '+q.b+' = ?';setQ(mulSay(q.a,q.b));vals=shuffle([q.p].concat(wrongs(q.p,q.a,q.b,2)));y=-80;
+  fr.forEach(function(f){f.remove()});fr=vals.map(function(v,k){var d=document.createElement('div');d.className='fruit nz';d.style.left=(k*33.33)+'%';d.innerHTML='<span>'+v+'</span>';$('fld').appendChild(d);return d})}
+ round();var h=380,sp=[2.2,2.6,3,3.3,3.6][R.l];
+ every(function(){y+=sp*2;fr.forEach(function(f){f.style.top=y+'px'});if(y>h-130){var v=vals[pos];if(v==q.p)good(q);else bad(q);y=-9999;fr.forEach(function(f,k){f.querySelector('span').style.borderColor=vals[k]==q.p?'#4cd18a':'#ddd'});later(round,1100)}},40)};
+document.addEventListener('keydown',function(e){if(R&&!R.done&&R.key)R.key(e)});
+// 6 乘法表拼圖：3 排
+GAME.table=function(){var rows=shuffle(LEVELS[R.l].n.slice()).concat(shuffle(LEVELS[R.l].n.slice())).slice(0,3),ri=0,blanks,ci,a;
+ $('gBody').innerHTML='<div class="hint">'+T('點下面的數字，從左到右填進紅色的空格')+'</div><div id="tb"></div><div class="tiles nz" id="tiles"></div><div class="fb" id="fb"></div>';
+ function row(){if(R.done)return;if(ri>=3){finish(R.bad<=1?3:R.bad<=3?2:R.bad<=6?1:0);return}a=rows[ri];ri++;prog((ri-1)/3);
+  var k=R.l==4?5:4;blanks=shuffle([1,2,3,4,5,6,7,8,9]).slice(0,k).sort(function(x,y){return x-y});ci=0;draw();
+  var row=[1,2,3,4,5,6,7,8,9].map(function(b){return a*b}),ex=[];[a*10,a*5+1,a*3-1,a*7+2,a*9-1,a*4+1].forEach(function(x){if(ex.length<2&&row.indexOf(x)<0&&x>0)ex.push(x)});var ts=shuffle(blanks.map(function(b){return a*b}).concat(ex));$('tiles').innerHTML=ts.map(function(v){return '<button class="tile" data-v="'+v+'">'+v+'</button>'}).join('');
+  document.querySelectorAll('#tiles .tile').forEach(function(t){t.onclick=function(){var need=a*blanks[ci],v=+t.dataset.v;var q={a:a,b:blanks[ci],p:need};
+   if(v==need){t.classList.add('used');ci++;good(q);draw();if(ci>=blanks.length)later(row,1000)}else bad(q)}})}
+ function draw(){$('tb').innerHTML='<div style="font-weight:900;color:'+COL[a]+'">'+T('{n}的乘法',{n:a})+'</div><div class="row9 nz">'+[1,2,3,4,5,6,7,8,9].map(function(b){var bi=blanks.indexOf(b),show=bi<0||bi<ci;
+  return '<div class="cell'+(bi>=0?' blank':'')+(bi==ci?' cur':'')+'"><small>'+a+'×'+b+'</small><b>'+(show?a*b:'?')+'</b></div>'}).join('')+'</div>';if(ci<blanks.length)setQ(mulSay(a,blanks[ci]))}
+ row()};
+// 7 天平比大小：10 題
+GAME.scale=function(){var n=0,L,Rr,s;$('gBody').innerHTML='<div class="scale nz"><div class="beam" id="beam"><div class="pan l" id="pl"></div><div class="pan r" id="pr"></div></div><div class="post"></div><div class="base"></div></div><div class="opts nz" style="grid-template-columns:repeat(3,1fr)"><button class="opt" data-s="&gt;">&gt;</button><button class="opt" data-s="=">=</button><button class="opt" data-s="&lt;">&lt;</button></div><div class="fb" id="fb"></div>';
+ function round(){if(R.done)return;if(n>=10){finish(starsBy(R.ok,10));return}n++;prog((n-1)/10);L=newQ();if(Math.random()<.3)Rr={a:L.b,b:L.a,p:L.p};else Rr=newQ();s=L.p>Rr.p?'>':L.p<Rr.p?'<':'=';
+  $('pl').textContent=L.a+' × '+L.b;$('pr').textContent=Rr.a+' × '+Rr.b;$('beam').style.transform='rotate(0deg)';setQ('左邊'+L.a+'成'+L.b+'，右邊'+Rr.a+'成'+Rr.b+'，哪一邊比較重');R.lock=false;document.querySelectorAll('.opt').forEach(function(b){b.className='opt'})}
+ document.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){if(R.lock)return;R.lock=true;var ok=b.dataset.s==s;$('beam').style.transform='rotate('+(s=='>'?-8:s=='<'?8:0)+'deg)';
+  $('fb').className='fb '+(ok?'good':'bad');$('fb').innerHTML=(ok?T('答對了！'):T('再想想！'))+' <span class="nz">'+L.a+'×'+L.b+'='+L.p+'　'+Rr.a+'×'+Rr.b+'='+Rr.p+'</span>';
+  if(ok){R.ok++;sfx('ok')}else{R.bad++;sfx('no');R.miss.push(L.a+'×'+L.b+' '+s+' '+Rr.a+'×'+Rr.b)}score();b.classList.add(ok?'right':'wrong');later(round,1500)}});
+ round()};
+// 8 點點陣列：8 題
+GAME.dots=function(){var n=0,q;$('gBody').innerHTML='<div class="hint">'+T('每一排都一樣多，選出正確的算式')+'</div><div style="text-align:center" id="dz"></div><div class="opts nz" id="op"></div><div class="fb" id="fb"></div>';
+ function round(){if(R.done)return;if(n>=8){finish(starsBy(R.ok,8));return}n++;prog((n-1)/8);q=newQ();if(q.b==1)q.b=2,q.p=q.a*2;R.lock=false;
+  var d='<div class="dots" style="grid-template-columns:repeat('+q.a+',22px)">';for(var r=0;r<q.b;r++)for(var c=0;c<q.a;c++)d+='<i style="background:'+COL[q.a]+';opacity:'+(r%2?'.65':'1')+'"></i>';$('dz').innerHTML=d+'</div><div class="hint">'+T('每排{a}個，有{b}排',{a:q.a,b:q.b})+'</div>';
+  setQ('每排'+q.a+'個，有'+q.b+'排，要選哪一個算式');var ops=shuffle([[q.a,q.b,q.p,1],[q.a,q.b,q.p+q.a,0],[q.a+1,q.b,(q.a+1)*q.b,0],[q.a,q.b+1,q.a*(q.b+1),0]]);
+  $('op').innerHTML=ops.map(function(o){return '<button class="opt" style="font-size:26px" data-r="'+o[3]+'">'+o[0]+' × '+o[1]+' = '+o[2]+'</button>'}).join('');
+  document.querySelectorAll('#op .opt').forEach(function(b){b.onclick=function(){if(R.lock)return;R.lock=true;if(b.dataset.r=='1'){good(q);b.classList.add('right')}else{bad(q);b.classList.add('wrong');document.querySelector('#op .opt[data-r="1"]').classList.add('right')}later(round,1400)}})}
+ round()};
+// 9 口訣接龍：10 題
+GAME.chant=function(){var n=0,q;$('gBody').innerHTML='<div class="hint">'+T('口訣的後半句是什麼？')+'</div><div class="q" id="qq" style="font-family:inherit"></div><div class="opts" id="op"></div><div class="fb" id="fb"></div>';
+ function round(){if(R.done)return;if(n>=10){finish(starsBy(R.ok,10));return}n++;prog((n-1)/10);q=newQ();R.lock=false;
+  $('qq').innerHTML=TZ(CN[q.a]+CN[q.b])+' ＿＿　<span class="nz" style="font-size:24px;color:#888">('+q.a+'×'+q.b+')</span>';
+  setQ(CN[q.a]+CN[q.b]+'，後半句是什麼');var ps=[q.p].concat(wrongs(q.p,q.a,q.b,3)),ops=shuffle(ps.map(function(p){return p==q.p?kjAns(q.a,q.b):(p<10?'得'+CN[p]:cnNum(p))}));
+  $('op').innerHTML=ops.map(function(o){return '<button class="opt" style="font-size:28px" data-v="'+o+'">'+TZ(o)+'</button>'}).join('');
+  document.querySelectorAll('#op .opt').forEach(function(b){b.onclick=function(){if(R.lock)return;R.lock=true;if(b.dataset.v==kjAns(q.a,q.b)){good(q);b.classList.add('right')}else{bad(q);b.classList.add('wrong')}later(round,1500)}})}
+ round()};
+// 10 真假快判：40 秒
+GAME.truefalse=function(){var q,shown,truth;$('gBody').innerHTML='<div class="timer"><i id="tbar"></i></div><div class="q nz" id="qq" style="font-size:52px;margin-top:20px"></div><div class="tf"><button class="y" data-v="1">⭕</button><button class="n" data-v="0">❌</button></div><div class="fb" id="fb"></div>';
+ function nq(){q=newQ();truth=Math.random()<.5;shown=truth?q.p:pick(wrongs(q.p,q.a,q.b,3));$('qq').textContent=q.a+' × '+q.b+' = '+shown;setQ(q.a+'成'+q.b+'等於'+shown+'，對不對')}nq();
+ document.querySelectorAll('.tf button').forEach(function(b){b.onclick=function(){if(R.done)return;if((b.dataset.v=='1')==truth)good(q);else bad(q);nq()}});
+ countdown(40,function(){var t=R.ok;finish(t>=16&&R.bad<=2?3:t>=11?2:t>=7?1:0)})};
+
+function celebrate(){var c=document.createElement('canvas');c.className='confetti';c.width=innerWidth;c.height=innerHeight;document.body.appendChild(c);var x=c.getContext('2d'),ps=[],cols=['#ffd84d','#ff8a3d','#4cd18a','#4dd2ff','#e86fb0','#9b51e0'];
+ for(var i=0;i<120;i++)ps.push({x:Math.random()*c.width,y:-20-Math.random()*300,v:2+Math.random()*4,r:5+Math.random()*5,c:cols[i%6],s:Math.random()*6});
+ var t=0;(function f(){x.clearRect(0,0,c.width,c.height);ps.forEach(function(p){p.y+=p.v;p.x+=Math.sin((t+p.s)/10)*2;x.fillStyle=p.c;x.fillRect(p.x,p.y,p.r,p.r*1.6)});t++;if(t<160)requestAnimationFrame(f);else c.remove()})()}
+document.addEventListener('pointerdown',function(){ac()},{passive:true});
+sndLabel();sayLabel();drawMap();
+$('readQ').onclick=function(){if(R&&R.qs)speakTxt(R.qs)};
+$('vkOpen').onclick=function(){VK.open()};
+</script>
+</body>
+</html>
