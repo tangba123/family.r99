@@ -259,6 +259,7 @@ textarea.bk{width:100%;max-width:none;height:70px;font-size:12px;margin:6px 0;fo
 @media(max-width:520px){h1{font-size:24px}.qeq{font-size:40px}.monster{font-size:72px}.opts button{font-size:32px}.node{width:56px;height:56px;font-size:21px}.node.boss{width:68px;height:68px}.token{width:50px;height:50px;font-size:28px}}
 .heat{border-collapse:collapse;margin:6px 0;font-size:13px}.heat th,.heat td{width:34px;height:28px;text-align:center;border:2px solid #fff;border-radius:6px}.heat th{color:#666}.heat .hn{background:#eceaf2}.heat .h0{background:#8ee09a}.heat .h1{background:#ffe066}.heat .h2{background:#ffb066}.heat .h3{background:#ff7a7a;color:#fff;font-weight:700}</style>
 <script>if(window.top!==window)document.documentElement.classList.add("embedded")</script><style>.embedded #acct{display:none!important}.speak.auto{float:none;display:inline-block;margin:8px auto 0;font-size:15px;width:auto;height:36px;padding:0 12px;border-radius:99px}.speak.auto.on{background:#ffe066}</style>
+<style>.avimg{display:inline-block;width:1.3em;height:1.3em;vertical-align:middle;background:url(chars/avatars.webp) no-repeat;background-size:700% 200%}.avatar{overflow:hidden}.avatar .avimg{width:100%;height:100%}.item .m .avimg{width:64px;height:64px}.bigstar .avimg{width:120px;height:120px}</style>
 </head>
 <body>
 <!-- ===== 帳號登入（Firebase）：只用在 GitHub Pages 分享版 ===== -->
@@ -679,6 +680,14 @@ var AVATARS=[
  {id:'mermaid',e:'🧜‍♀️',n:'美人魚',p:600},{id:'unicorn',e:'🦄',n:'獨角獸',p:700},
  {id:'ninja',e:'🥷',n:'忍者',p:800},{id:'astro',e:'🧑‍🚀',n:'太空人',p:900},
  {id:'wizard',e:'🧙',n:'魔法師',p:1200},{id:'superhero',e:'🦸‍♀️',n:'超級英雄',p:1500}];
+var AV_OK=false;
+function avH(id){var j=-1;for(var k=0;k<AVATARS.length;k++)if(AVATARS[k].id==id)j=k;if(j<0)return '🧒';
+ if(!AV_OK)return AVATARS[j].e;return '<span class="avimg" role="img" aria-label="'+AVATARS[j].n+'" style="background-position:'+((j%7)*100/6).toFixed(3)+'% '+(Math.floor(j/7)*100)+'%"></span>'}
+(function(){var im=new Image();im.onload=function(){AV_OK=true;
+ try{if($('avatar'))$('avatar').innerHTML=avE()}catch(e){}
+ try{if($('ttlAv'))$('ttlAv').innerHTML=avE()}catch(e){}
+ try{if($('token'))$('token').innerHTML=avE()}catch(e){}
+ try{var p=$('p-shop');if(p&&p.innerHTML)drawShop()}catch(e){}};im.src='chars/avatars.webp'})();
 var PETS={bunny:{n:'棉花兔',c:'#ffc2d6',d:'#f58bb0'},cat:{n:'橘子貓',c:'#ffd29a',d:'#f0a04b'},dragon:{n:'薄荷龍',c:'#a8ecc0',d:'#4fc283'},
  bear:{n:'布丁熊',c:'#e8c49a',d:'#b88a5a'},penguin:{n:'冰冰企鵝',c:'#8fa6d6',d:'#55689a'},sheep:{n:'雲朵羊',c:'#fff1dc',d:'#c9a87a'},
  fox:{n:'阿橘',c:'#ffb27a',d:'#e0742f'},panda:{n:'圓圓',c:'#f5f5f2',d:'#555555'},leopard:{n:'點點',c:'#e8c08a',d:'#a8743c'},
@@ -711,7 +720,7 @@ var CUR=null; // 目前區域
 function RD(){return S.R[CUR.id]}
 function lim(L,hard){var t=L.time*SPEED[S.speed][1]*(hard?0.75:1);return Math.max(3,Math.round(t))}
 function rankOf(xp){var i=0;for(var k=0;k<RANKS.length;k++)if(xp>=RANKS[k][0])i=k;return i}
-function avE(){var a=AVATARS.filter(function(x){return x.id==S.av})[0];return a?a.e:'🧒'}
+function avE(){var a=AVATARS.filter(function(x){return x.id==S.av})[0];return a?avH(a.id):'🧒'}
 function regStars(id){var d=S.R[id],t=0;for(var k in d.stars)t+=d.stars[k];for(var k2 in d.hstars)t+=d.hstars[k2];return t}
 function totalStars(){var t=0;REGIONS.forEach(function(R){t+=regStars(R.id)});return t}
 function cleared(id){return (RD().stars[id]||0)>0}
@@ -723,7 +732,7 @@ function petStageMax(){var m=-1;S.pets.forEach(function(p){m=Math.max(m,petStage
 function activePet(){return S.pets[S.ap]||S.pets[0]||null}
 function titleText(){var n=S.name||NAME_DEFAULT;return (ZY[n]?T(n):'<b>'+esc(n)+'</b>')+T('的魔法乘法大冒險')}
 function drawBar(){var i=rankOf(S.xp),R=RANKS[i],N=RANKS[i+1];
- $('lvNum').textContent='Lv.'+(i+1);$('rankName').innerHTML=T(R[1]);$('avatar').textContent=avE();
+ $('lvNum').textContent='Lv.'+(i+1);$('rankName').innerHTML=T(R[1]);$('avatar').innerHTML=avE();
  if(N){$('xpBar').style.width=Math.min(100,(S.xp-R[0])/(N[0]-R[0])*100)+'%';$('xpText').innerHTML=T('經驗值{a}，再{b}就升級',{a:S.xp,b:N[0]-S.xp})}
  else{$('xpBar').style.width='100%';$('xpText').innerHTML=T('經驗值{a}，最高等級！',{a:S.xp})}
  $('coins').textContent=S.coins;$('totalStars').textContent=totalStars();
@@ -764,7 +773,7 @@ function toggleMusic(){S.music=!S.music;save();soundBtns();if(S.music)musicPlay(
 
 // ================= 首頁 =================
 function showTitle(){curPage='title';$('title').style.display='flex';$('main').style.display='none';$('tabs').style.display='none';
- var P=activePet();$('ttl').innerHTML=titleText();$('ttlAv').textContent=avE();$('ttlPet').innerHTML=P&&petStage(P.g)>0?petSVG(P.type,petStage(P.g),90):'';
+ var P=activePet();$('ttl').innerHTML=titleText();$('ttlAv').innerHTML=avE();$('ttlPet').innerHTML=P&&petStage(P.g)>0?petSVG(P.type,petStage(P.g),90):'';
  $('ttlInfo').innerHTML=T('已經拿到{n}顆星星',{n:totalStars()})+'　Lv.'+(rankOf(S.xp)+1);soundBtns();musicPlay('planet')}
 function leaveTitle(){$('title').style.display='none';$('main').style.display='block';show('hub')}
 
@@ -1055,7 +1064,7 @@ function heartFx(){var s=$('stage');if(!s)return;var svg=s.querySelector('svg,.c
 function drawShop(){var p=$('p-shop');
  var h='<h2 class="sec">'+T('商店')+'</h2><div class="panel"><h3>'+T('頭像')+'</h3><div class="grid">';
  AVATARS.forEach(function(a){var own=S.own.indexOf(a.id)>=0,use=S.av==a.id;
-  h+='<div class="item'+(use?' use':own?' own':'')+'"><div class="m nz">'+a.e+'</div><div class="nm">'+T(a.n)+'</div>'+
+  h+='<div class="item'+(use?' use':own?' own':'')+'"><div class="m nz">'+avH(a.id)+'</div><div class="nm">'+T(a.n)+'</div>'+
   (use?'<div class="small" style="color:#c08a00;font-weight:900">'+T('使用中')+'</div>':own?'<button class="mini g" data-use="'+a.id+'">'+T('換上')+'</button>':'<button class="mini" data-buy="'+a.id+'"'+(S.coins<a.p?' disabled':'')+'>🪙 '+a.p+'</button>')+'</div>'});
  h+='</div></div><div class="panel"><h3>'+T('寵物點心')+'</h3><div class="grid"><div class="item"><div class="m nz">🍪</div><div class="nm">'+T('一個點心')+'</div><button class="mini" id="buySnack"'+(S.coins<30?' disabled':'')+'>🪙 30</button></div>'+
   '<div class="item"><div class="m nz">🧁</div><div class="nm">'+T('五個點心')+'</div><button class="mini" id="buySnack5"'+(S.coins<120?' disabled':'')+'>🪙 120</button></div></div>'+
@@ -1063,7 +1072,7 @@ function drawShop(){var p=$('p-shop');
   '<p class="small" style="text-align:center">'+T('金幣哪裡來？打關卡就會得到，分數越高金幣越多！')+'</p>';
  p.innerHTML=h;
  p.querySelectorAll('[data-buy]').forEach(function(b){b.onclick=function(){var a=AVATARS.filter(function(x){return x.id==b.dataset.buy})[0];if(S.coins<a.p)return;
-  $('ovCard').innerHTML='<div class="bigstar nz">'+a.e+'</div><div class="qtext">'+T('要用{n}金幣買這個頭像嗎？',{n:a.p})+'<br>'+T(a.n)+'</div><button class="btn w" onclick="closeOv()">'+T('不要')+'</button><button class="btn g" id="okBuy">'+T('買！')+'</button>';$('ov').classList.add('on');
+  $('ovCard').innerHTML='<div class="bigstar nz">'+avH(a.id)+'</div><div class="qtext">'+T('要用{n}金幣買這個頭像嗎？',{n:a.p})+'<br>'+T(a.n)+'</div><button class="btn w" onclick="closeOv()">'+T('不要')+'</button><button class="btn g" id="okBuy">'+T('買！')+'</button>';$('ov').classList.add('on');
   $('okBuy').onclick=function(){S.coins-=a.p;S.own.push(a.id);S.av=a.id;save();sfx('buy');celebrate();closeOv();drawShop();drawBar()}}});
  p.querySelectorAll('[data-use]').forEach(function(b){b.onclick=function(){S.av=b.dataset.use;save();sfx('ok');drawShop();drawBar()}});
  $('buySnack').onclick=function(){if(S.coins<30)return;S.coins-=30;S.snacks++;save();sfx('buy');drawShop();drawBar()};
