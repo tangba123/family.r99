@@ -2226,8 +2226,9 @@ function gFull(fix,music){
   document.body.classList.add("gfull");document.body.classList.toggle("gfix",!!fix);try{window.scrollTo(0,0)}catch(e){}
   return `<div class="gfab"><button id="gfback" title="回地圖" aria-label="回地圖">🏝️</button>${music?`<button id="gfmus" title="背景音樂">${ST.music?"🎵":"🔇"}</button>`:""}</div>`;}
 function gFullBind(back){
-  const b=document.getElementById("gfback");if(b)b.onclick=()=>{Sound.sfx("click");back();};
-  const m=document.getElementById("gfmus");if(m)m.onclick=()=>{ST.music=!ST.music;save();Sound.apply();m.textContent=ST.music?"🎵":"🔇";};}
+  const t0=Date.now(),ok=()=>Date.now()-t0>700;  // 剛進島的那一下點擊不算（避免手指點島時，同一下又按到回地圖）
+  const b=document.getElementById("gfback");if(b)b.onclick=e=>{if(!ok())return;Sound.sfx("click");back();};
+  const m=document.getElementById("gfmus");if(m)m.onclick=e=>{if(!ok())return;ST.music=!ST.music;save();Sound.apply();m.textContent=ST.music?"🎵":"🔇";};}
 function gFullOff(){document.body.classList.remove("gfull","gfix");}
 function setPage(html,{overlay=true}={}){
   engStop();gFullOff();
