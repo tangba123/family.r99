@@ -24,6 +24,17 @@ button{font-family:inherit;cursor:pointer}
 #hud{position:fixed;inset:0;z-index:2;pointer-events:none}
 #hud .hud-in{pointer-events:auto}
 #app{position:relative;z-index:3}
+/* ---- 遊戲全螢幕模式 ---- */
+body.gfull #acct,body.gfull #ttnav{display:none!important}
+body.gfull.gfix{overflow:hidden}
+body.gfull #app.overlay{background:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.gfull .wrap{max-width:none;padding:0}
+.gframe{position:fixed;left:0;top:0;width:100%;height:100vh;height:100dvh;border:0;display:block;z-index:8}
+.gfab{position:fixed;z-index:9;left:calc(6px + env(safe-area-inset-left));bottom:calc(6px + env(safe-area-inset-bottom));display:flex;gap:6px}
+.gfab button{width:40px;height:40px;opacity:.92;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.9);box-shadow:0 3px 8px rgba(0,0,0,.25);font-size:19px;line-height:1;cursor:pointer;padding:0;font-family:inherit}
+.gfab button:active{transform:scale(.92)}
+#enghost.gfeng{display:block}
+
 #app.overlay{min-height:100vh;background:rgba(160,214,239,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .wrap{max-width:960px;margin:0 auto;padding:16px 16px 48px}
 .topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
@@ -2209,8 +2220,17 @@ function bindToggles(root){
     document.body.classList.toggle("zy",ST.zhuyin);Sound.apply();Sound.sfx("click");rerender();});
 }
 function finish(root){bindToggles(root);applyZhuyin(root);const sp=root.querySelector("#shellPill");if(sp)sp.onclick=()=>{Sound.sfx("click");showShop();};}
+
+// ---- 遊戲全螢幕模式
+function gFull(fix,music){
+  document.body.classList.add("gfull");document.body.classList.toggle("gfix",!!fix);try{window.scrollTo(0,0)}catch(e){}
+  return `<div class="gfab"><button id="gfback" title="回地圖" aria-label="回地圖">🏝️</button>${music?`<button id="gfmus" title="背景音樂">${ST.music?"🎵":"🔇"}</button>`:""}</div>`;}
+function gFullBind(back){
+  const b=document.getElementById("gfback");if(b)b.onclick=()=>{Sound.sfx("click");back();};
+  const m=document.getElementById("gfmus");if(m)m.onclick=()=>{ST.music=!ST.music;save();Sound.apply();m.textContent=ST.music?"🎵":"🔇";};}
+function gFullOff(){document.body.classList.remove("gfull","gfix");}
 function setPage(html,{overlay=true}={}){
-  engStop();
+  engStop();gFullOff();
   $app.className=overlay?"overlay":"";
   $app.innerHTML=`<div class="wrap">${html}</div>`;
   finish($app);
@@ -3103,9 +3123,8 @@ function recDone(lid){const p=prof();if(!p)return;const r=todayRec(p),lv=LEVELS[
 function showMathQ(){
   const p=prof();if(!p)return showProfiles();
   rerender=showMathQ;$hud.innerHTML="";bgWorld(false);Sound.play("off");renderBuddy(false);
-  setPage(header(`<button class="btn small" id="mqback">🏝️ 回地圖</button>`)+`<iframe id="mqframe" title="魔法數學大冒險" src="index.html?embed=1" allow="autoplay" style="display:block;width:100%;height:calc(100vh - 110px);min-height:600px;border:0;border-radius:18px;margin-top:8px;background:#2d1b5e"></iframe>
-   <p class="note zyok" style="text-align:center">這裡的進度跟「魔法數學大冒險」網頁是同一份，在哪裡玩都一樣。</p>`);
-  document.getElementById("mqback").onclick=()=>{Sound.sfx("click");mapMode();};
+  setPage(`<iframe id="mqframe" class="gframe" title="魔法數學大冒險" src="index.html?embed=1" allow="autoplay" style="background:#2d1b5e"></iframe>`);
+  $app.insertAdjacentHTML("beforeend",gFull(true,false));gFullBind(mapMode);
 }
 // ---- 學習總覽（家長）
 function weakFacts(){const W={};const add=(a,b,n,src)=>{a=+a;b=+b;if(!(a>=2&&a<=9&&b>=1&&b<=9)||!n)return;const k=Math.min(a,b)+"×"+Math.max(a,b);const o=W[k]=W[k]||{n:0,src:{}};o.n+=n;o.src[src]=(o.src[src]||0)+n;};
@@ -3852,7 +3871,7 @@ async function bgWorld(on){
   $cv.classList.remove("hidden");w.setActive(on);return w;
 }
 
-async function showMap(){
+async function showMap(){gFullOff();
   const p=prof();if(!p)return showProfiles();
   rerender=showMap;engStop();
   $app.className="";$app.innerHTML=`<div class="loading">⛵ 正在航向島嶼…</div>`;
@@ -3930,7 +3949,7 @@ function renderHUD(){
   document.body.classList.toggle("panel-open",!!is);
 }
 
-function showMap2D(){
+function showMap2D(){gFullOff();
   const p=prof();if(!p)return showProfiles();
   rerender=showMap2D;$hud.innerHTML="";bgWorld(false);
   Sound.play("sea");
@@ -3991,15 +4010,16 @@ let mapMode=()=>World?showMap():showMap2D();
 function showEnglish(){
   const p=prof();if(!p)return showProfiles();
   rerender=showEnglish;$hud.innerHTML="";bgWorld(false);Sound.play("study");renderBuddy(false);
-  setPage(header(`<button class="btn small" id="engback">🏝️ 回地圖</button>`)+`<div id="enghost"></div>`);
+  setPage(`<div id="enghost" class="gfeng"></div>`);
+  $app.insertAdjacentHTML("beforeend",gFull(false,true));
   const host=document.getElementById("enghost");const sr=host.attachShadow({mode:"open"});
-  sr.innerHTML=`<style>${ENG_CSS}\n#engroot{border-radius:18px;overflow:clip;margin-top:8px}</style>${ENG_BODY}`;
+  sr.innerHTML=`<style>${ENG_CSS}\n#engroot{min-height:100vh;padding-bottom:64px}</style>${ENG_BODY}`;
   const h1=sr.querySelector("h1");if(h1)h1.textContent="🔤 英文島";
   ENG_APP=EnglishApp(sr,{embedded:true,
     store:{get:()=>{const q=prof();return q&&q.eng||null},set:o=>{const q=prof();if(q){q.eng=o;save();}}},
     award:(n,xp)=>{const q=prof();if(!q)return 0;q.shells=(q.shells||0)+n;save();if(xp)addXP(xp);
       const sp=document.getElementById("shellPill");if(sp)sp.textContent="🐚 "+q.shells;try{Sound.sfx("shell")}catch(e){}return n;}});
-  document.getElementById("engback").onclick=()=>{Sound.sfx("click");engStop();mapMode();};
+  gFullBind(()=>{engStop();mapMode();});
 }
 
 /* ===== 乘法遊戲島（九九乘法遊戲島，iframe 內執行；紀錄存在隊員的 profile.g10） ===== */
@@ -4011,9 +4031,10 @@ function showG10(){
     store:{get:()=>g10Data(),set:o=>{try{localStorage.setItem("tt99g10",JSON.stringify(o))}catch(e){}}},
     award:(n,xp)=>{const q=prof();if(!q)return 0;q.shells=(q.shells||0)+n;save();if(xp)addXP(xp);
       const sp=document.getElementById("shellPill");if(sp)sp.textContent="🐚 "+q.shells;try{Sound.sfx("shell")}catch(e){}return n;}};
-  setPage(header(`<button class="btn small" id="g10back">🏝️ 回地圖</button>`)+`<iframe id="g10frame" title="乘法遊戲島" style="display:block;width:100%;height:calc(100vh - 110px);min-height:560px;border:0;border-radius:18px;margin-top:8px;background:#bfeaff"></iframe>`);
+  setPage(`<iframe id="g10frame" class="gframe" title="乘法遊戲島" style="background:#bfeaff"></iframe>`);
+  $app.insertAdjacentHTML("beforeend",gFull(true,true));
   document.getElementById("g10frame").srcdoc=G10_HTML;
-  document.getElementById("g10back").onclick=()=>{Sound.sfx("click");mapMode();};
+  gFullBind(mapMode);
 }
 
 /* =================== 作答 =================== */

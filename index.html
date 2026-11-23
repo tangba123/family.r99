@@ -258,7 +258,7 @@ textarea.bk{width:100%;max-width:none;height:70px;font-size:12px;margin:6px 0;fo
 
 @media(max-width:520px){h1{font-size:24px}.qeq{font-size:40px}.monster{font-size:72px}.opts button{font-size:32px}.node{width:56px;height:56px;font-size:21px}.node.boss{width:68px;height:68px}.token{width:50px;height:50px;font-size:28px}}
 .heat{border-collapse:collapse;margin:6px 0;font-size:13px}.heat th,.heat td{width:34px;height:28px;text-align:center;border:2px solid #fff;border-radius:6px}.heat th{color:#666}.heat .hn{background:#eceaf2}.heat .h0{background:#8ee09a}.heat .h1{background:#ffe066}.heat .h2{background:#ffb066}.heat .h3{background:#ff7a7a;color:#fff;font-weight:700}</style>
-<script>if(window.top!==window)document.documentElement.classList.add("embedded")</script><style>.embedded #acct{display:none!important}.speak.auto{right:auto;left:8px;font-size:15px;width:auto;padding:0 10px;border-radius:99px}.speak.auto.on{background:#ffe066}</style>
+<script>if(window.top!==window)document.documentElement.classList.add("embedded")</script><style>.embedded #acct{display:none!important}.speak.auto{float:none;display:inline-block;margin:8px auto 0;font-size:15px;width:auto;height:36px;padding:0 12px;border-radius:99px}.speak.auto.on{background:#ffe066}</style>
 </head>
 <body>
 <!-- ===== 帳號登入（Firebase）：只用在 GitHub Pages 分享版 ===== -->
@@ -873,7 +873,7 @@ function next(){G.lock=false;$('fb').innerHTML='';$('fb').className='fb';var q=G
  var mode=G.hard?'pad':(G.L.mode=='mix'?(Math.random()<.5?'opt':'pad'):G.L.mode);if(q.syms)mode='opt';G.mode=mode;
  var h=q.h||'',box='<span class="ans" id="ansBox">?</span>',below='';
  if(mode=='pad'){if(h.indexOf('?')>=0)h=h.replace('?',box);else if(h.indexOf('□')>=0)below='<div class="qeq nz" style="font-size:34px">□ = '+box+'</div>';else below='<div class="qeq nz">'+box+'</div>'}
- $('qArea').innerHTML='<button class="speak" onclick="speakQ()" title="念題目">🔊</button><button class="speak auto'+(S.autoSay?' on':'')+'" onclick="toggleAutoSay(this)" title="每題自動念">🗣️ '+T(S.autoSay?'自動念：開':'自動念：關')+'</button>'+(q.rev?'<div class="revtag">🔁 '+T('複習題')+'</div>':'')+(q.t?'<div class="qtext">'+T(q.t,q.tv)+'</div>':'')+(h?'<div class="qeq nz'+(h.length>40?' long':'')+'">'+h+'</div>':'')+below;if(S.autoSay)setTimeout(function(){if(G&&G.q===q)speakQ()},450);
+ $('qArea').innerHTML='<button class="speak" onclick="speakQ()" title="念題目">🔊</button>'+(q.rev?'<div class="revtag">🔁 '+T('複習題')+'</div>':'')+(q.t?'<div class="qtext">'+T(q.t,q.tv)+'</div>':'')+(h?'<div class="qeq nz'+(h.length>40?' long':'')+'">'+h+'</div>':'')+'<div class="autorow"><button class="speak auto'+(S.autoSay?' on':'')+'" onclick="toggleAutoSay(this)" title="每題自動念">🗣️ '+T(S.autoSay?'自動念：開':'自動念：關')+'</button></div>'+below;if(S.autoSay)setTimeout(function(){if(G&&G.q===q)speakQ()},450);
  G.maxLen=Math.min(7,Math.max(2,fmt(q.ans).length+1));
  if(mode=='opt'){$('inputArea').innerHTML='<div class="opts nz">'+distract(q).map(function(x){return '<button data-v="'+(q.syms?x:fmt(x))+'">'+(q.syms?x:fmt(x))+'</button>'}).join('')+'</div>';
   $('inputArea').querySelectorAll('.opts button').forEach(function(b){b.onclick=function(){answer(b.dataset.v,b)}})}
