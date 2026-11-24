@@ -3416,7 +3416,12 @@ function gQuick(){
       <div class="qbtns"><button class="qo" data-v="1">○</button><button class="qo x" data-v="0">╳</button></div><div class="zyok" style="min-height:28px;font-weight:700">${fb}</div></div>`:"");
     $app.querySelectorAll(".qo").forEach(b=>b.onclick=()=>{const ok=(+b.dataset.v)===items[i][1];
       if(ok){Sound.sfx("correct");i++;if(i>=items.length){draw();gWin();}else draw("答對了！");}
-      else{gMiss(b);const ans=items[i][1]?"○（這句是對的）":"╳（這句是錯的）";i++;if(i>=items.length){draw();gWin();}else draw(`正確答案是 ${ans}`);}});
+      else{gMiss(b);const it=items[i],ans=it[1]?"○（這句是對的）":"╳（這句是錯的）";
+        $app.querySelectorAll(".qo").forEach(x=>{x.disabled=true;x.style.opacity=(+x.dataset.v)===it[1]?"1":".35";});
+        const fbEl=$app.querySelector(".quick > div:last-child");
+        if(fbEl){fbEl.innerHTML=`<div>這題的正確答案是 ${ans}</div>${it[2]?`<div class="note" style="margin-top:4px">${esc(it[2])}</div>`:""}<button class="btn small" id="qnext" style="margin-top:8px">下一題 ▶</button>`;
+          document.getElementById("qnext").onclick=()=>{Sound.sfx("click");i++;if(i>=items.length){draw();gWin();}else draw();};}
+        else{i++;if(i>=items.length){draw();gWin();}else draw();}}});
   };draw();
 }
 
@@ -3457,7 +3462,13 @@ Object.assign(GEN,{
       for(const s of shuffle(c.sim)){const bad=w.replace(c.c,s);if(!all.has(bad)){items.push([bad,0]);break;}}}
     return {prompt:"戳破所有「寫對」的語詞！（小心形狀很像的錯字）",items};},
   tfqs(lid){const qs=pickN(LEVELS[lid].qs,Math.min(10,LEVELS[lid].qs.length));
-    return {items:qs.map((q,i)=>{const t=Math.random()<.5;const o=t?q.o[0]:q.o[1+rint(0,q.o.length-2)];return [q.q+"　答："+o,t?1:0];})};},
+    const isAll=o=>ALL_OPT.test(o),others=(q,o)=>q.o.filter(x=>x!==o&&!isAll(x));
+    return {items:qs.map((q,i)=>{const t=Math.random()<.5;
+      if(isAll(q.o[0])){const sub=others(q,q.o[0]);  // 正確答案是「以上都可以」：寫出完整內容；錯的說法改成「只能用其中一種」
+        return t?[q.q+"　答："+sub.join("、")+"都可以",1,q.e||""]:[q.q+"　答：只能用「"+sub[rint(0,sub.length-1)]+"」，其他都不行",0,q.e||""];}
+      let o=t?q.o[0]:q.o[1+rint(0,q.o.length-2)];
+      if(isAll(o))o=q.o.filter(x=>!isAll(x)).join("、")+"都可以";
+      return [q.q+"　答："+o,t?1:0,t?"":("正確答案："+q.o[0])];})};},
   clearSort(lid){const c=(REVIEW[lid]||{}).clear||[];
     return {bins:["✅ 對的想法","❌ 錯的想法"],items:shuffle([...c.map(x=>[x.o,0]),...c.map(x=>[x.x,1])])};},
   clearQuick(lid){const R=REVIEW[lid]||{};const t=(R.points||[]).filter(p=>p.length<=42).map(p=>[p,1]);
