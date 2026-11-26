@@ -3856,6 +3856,7 @@ function showExport(){
 }
 
 /* =================== 畫面 =================== */
+let profBack=null;
 function showProfiles(){
   renderBuddy(false);document.body.classList.remove('panel-open');
   rerender=showProfiles;
@@ -3863,17 +3864,19 @@ function showProfiles(){
   Sound.play("sea");
   $hud.innerHTML="";
   bgWorld(true);
-  setPage(header()+`<div class="card"><h2 class="zyok">誰要出發探險？</h2>
+  const back=profBack&&mem.profiles[profBack]?profBack:null;
+  setPage(header(back?`<button class="btn small" id="pback">← 回到 ${esc(back)} 的地圖</button>`:"")+`<div class="card"><h2 class="zyok">誰要出發探險？</h2>
   ${names.length?`<div class="profiles">${names.map(n=>`<button class="prof" data-n="${esc(n)}"><span class="av">${mem.profiles[n].avatar}</span><span class="nozy">${esc(n)}</span><br><small style="font-size:14px;color:#5b6b7a">🐚 ${mem.profiles[n].shells||0}</small></button>`).join("")}</div>`:`<p>還沒有探險隊員，先建立一位吧！</p>`}
   <h3 style="margin:16px 0 4px">新增隊員</h3>
   <div class="avatars" id="avs">${AVATARS.map((a,i)=>`<button data-a="${a}" class="${i===0?"sel":""}">${a}</button>`).join("")}</div>
   <div class="addrow"><input id="nm" maxlength="10" placeholder="輸入名字"><button class="btn primary" id="add">建立</button></div>
   <p class="note" style="margin-top:14px">紀錄會跟著你的帳號存到雲端，換裝置登入同一個帳號就能接著玩。</p></div>`);
-  $app.querySelectorAll(".prof").forEach(b=>b.onclick=()=>{Sound.sfx("click");mem.current=b.dataset.n;save();showMap();});
+  if(back)document.getElementById("pback").onclick=()=>{Sound.sfx("click");mem.current=back;profBack=null;save();showMap();};
+  $app.querySelectorAll(".prof").forEach(b=>b.onclick=()=>{Sound.sfx("click");profBack=null;mem.current=b.dataset.n;save();showMap();});
   $app.querySelectorAll("#avs button").forEach(b=>b.onclick=()=>{sel=b.dataset.a;$app.querySelectorAll("#avs button").forEach(x=>x.classList.toggle("sel",x===b));});
   const add=()=>{const n=document.getElementById("nm").value.trim();if(!n)return;
     if(!mem.profiles[n])mem.profiles[n]={name:n,avatar:sel,shells:0,levels:{},wrong:{}};
-    mem.current=n;save();Sound.sfx("flag");showMap();};
+    profBack=null;mem.current=n;save();Sound.sfx("flag");showMap();};
   document.getElementById("add").onclick=add;
   document.getElementById("nm").onkeydown=e=>{if(e.key==="Enter")add();};
 }
@@ -3935,7 +3938,7 @@ function renderHUD(){
   </div>`;
   const hint=document.getElementById("hint");hint.classList.remove("nozy");
   finish($hud);
-  $hud.querySelector("#sw").onclick=()=>{Sound.sfx("click");mem.current=null;worldFocus=null;save();showProfiles();};
+  $hud.querySelector("#sw").onclick=()=>{Sound.sfx("click");profBack=mem.current;mem.current=null;worldFocus=null;save();showProfiles();};
   const goSea=()=>{Sound.sfx("whoosh");worldFocus=null;World.goTo(null);Sound.play("sea");renderHUD();};
   const s2=$hud.querySelector("#sea2");if(s2)s2.onclick=goSea;
   const sea=$hud.querySelector("#sea");if(sea)sea.onclick=()=>{Sound.sfx("whoosh");worldFocus=null;World.goTo(null);Sound.play("sea");renderHUD();};
@@ -3984,7 +3987,7 @@ function showMap2D(){gFullOff();
     <button class="card" id="adult" style="border:none;text-align:left;font-size:18px"><span class="big">📋</span><span><b style="font-size:20px">大人看這裡</b><br>學習紀錄與使用說明</span></button>
   </div>`,{overlay:!!World});
   $app.querySelectorAll(".lv").forEach(b=>b.onclick=()=>{Sound.sfx("flag");showLevel(b.dataset.id);});
-  document.getElementById("sw").onclick=()=>{mem.current=null;save();showProfiles();};
+  document.getElementById("sw").onclick=()=>{profBack=mem.current;mem.current=null;save();showProfiles();};
   const t3=document.getElementById("to3d");if(t3)t3.onclick=()=>{Sound.sfx("click");showMap();};
   document.getElementById("cave").onclick=startCave;
   document.getElementById("adult").onclick=showAdult;
